@@ -14,10 +14,11 @@
         tools:layout_editor_absoluteY="87dp">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/calculation_textarea"
             android:layout_width="match_parent"
             android:layout_height="310dp"
-            android:text="@string/app_name" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/design_default_color_primary_dark" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/operations_tabs"

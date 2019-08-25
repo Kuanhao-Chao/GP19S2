@@ -1,3 +1,31 @@
 <resources>
-    <string name="app_name">Calculator</string>
+    <string name="app_name">Scientific Calculator</string>
+    <string name="ac">AC</string>
+    <string name="delete">DEL</string>
+    <string name="percentage">%</string>
+    <string name="divide">÷</string>
+    <string name="dgt_9">9</string>
+    <string name="dgt_8">8</string>
+    <string name="dgt_7">7</string>
+    <string name="multiply">x</string>
+    <string name="dgt_6">6</string>
+    <string name="dgt_5">5</string>
+    <string name="dgt_4">4</string>
+    <string name="subtraction">-</string>
+    <string name="dgt_3">3</string>
+    <string name="dgt_2">2</string>
+    <string name="dgt_1">1</string>
+    <string name="addition">+</string>
+    <string name="sign_switch">+/-</string>
+    <string name="dgt_0">0</string>
+    <string name="decimal">.</string>
+    <string name="equals">=</string>
+    <string name="alpha">ɑ</string>
+    <string name="beta">β</string>
+    <string name="gamma">ɣ</string>
+    <string name="delta">Δ</string>
+    <string name="w">w</string>
+    <string name="x">x</string>
+    <string name="y">y</string>
+    <string name="z">z</string>
 </resources>
