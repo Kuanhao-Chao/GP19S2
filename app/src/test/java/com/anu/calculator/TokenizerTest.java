@@ -1,79 +1,69 @@
 package com.anu.calculator;
 
 import org.junit.Test;
+
 import com.anu.calculator.expressionparser.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class TokenizerTest {
-    /**
-     *  JUint Test for Tokenizer  -- 2019.8
-     */
+    // Tokenizer test class, each test case will instantiate this class.
+    private class TestCase {
+        private String testcase;
+        private List<Token.Type> tokens;
 
+        public TestCase(String testcase, List<Token.Type> tokens) {
+            this.testcase = testcase;
+            this.tokens = tokens;
+        }
+    }
+
+    // Instantiate a tokenizer to use in the tests.
     private static Tokenizer tokenizer;
-    private static final String testCase = "(100 + 2 - 40) / 10 * 4789";
-    private static final String passCase = "+-";
 
     @Test
-    public void testAddSub() {
-    	tokenizer = new Tokenizer(passCase);
-    	
-    	//check the type of the first token is LBRA
-        assertEquals("wrong token type", Token.Type.ADD, tokenizer.current().type());
-        //check the actual token is "("
-        assertEquals("wrong token value", "+", tokenizer.current().token());
-        
-        
-        //extract next token
-        tokenizer.next();
-        
-    	//check the type of the first token is LBRA
-        assertEquals("wrong token type", Token.Type.SUB, tokenizer.current().type());
-        //check the actual token is "("
-        assertEquals("wrong token value", "-", tokenizer.current().token());
-    }
-    
-    @Test
-    public void testFirst(){
-    	tokenizer = new Tokenizer(testCase);
-    	
-    	//check the type of the first token is LBRA
-        assertEquals("wrong token type", Token.Type.LBRA, tokenizer.current().type());
-        //check the actual token is "("
-        assertEquals("wrong token value", "(", tokenizer.current().token());
+    public void testAddition() {
+        // Declare each of the test cases
+        ArrayList<TestCase> testCases = new ArrayList<>(0);
+        testCases.add(new TestCase("1+1",
+                Arrays.asList(Token.Type.INT, Token.Type.ADD, Token.Type.INT)));
+        testCases.add(new TestCase("5+",
+                Arrays.asList(Token.Type.INT, Token.Type.ADD)));
+        testCases.add(new TestCase("1000+1+1+",
+                Arrays.asList(Token.Type.INT, Token.Type.ADD, Token.Type.INT, Token.Type.ADD, Token.Type.INT, Token.Type.ADD)));
+
+        // Run each test case programmatically by looping over the cases
+        for (int i = 0; i < testCases.size(); i++) {
+            tokenizer = new Tokenizer(testCases.get(i).testcase);
+            for (Token.Type token : testCases.get(i).tokens) {
+                assertEquals("wrong token type", token, tokenizer.current().type());
+                tokenizer.next();
+            }
+        }
     }
 
     @Test
-    public void testTokenResult(){
-    	tokenizer = new Tokenizer(testCase);
-    	
-        // test first token (
-        assertEquals(Token.Type.LBRA, tokenizer.current().type());
-        
-        // test second token 100
-        tokenizer.next();
-        assertEquals(Token.Type.INT, tokenizer.current().type());
-        assertEquals("100", tokenizer.current().token());
+    public void testSubtraction() {
+        // Declare each of the test cases
+        ArrayList<TestCase> testCases = new ArrayList<>(0);
+        testCases.add(new TestCase("8-1",
+                Arrays.asList(Token.Type.INT, Token.Type.SUB, Token.Type.INT)));
+        testCases.add(new TestCase("5--",
+                Arrays.asList(Token.Type.INT, Token.Type.SUB, Token.Type.SUB)));
+        testCases.add(new TestCase("1124-124-1",
+                Arrays.asList(Token.Type.INT, Token.Type.SUB, Token.Type.INT, Token.Type.SUB, Token.Type.INT)));
 
-        // test third token +
-        tokenizer.next();
-        assertEquals(Token.Type.ADD, tokenizer.current().type());
-        assertEquals("+", tokenizer.current().token());
-
-        // test fourth token 2
-        tokenizer.next();
-        assertEquals(Token.Type.INT, tokenizer.current().type());
-        assertEquals("2", tokenizer.current().token());
-
-        // test fourth token -
-        tokenizer.next();
-        assertEquals(Token.Type.SUB, tokenizer.current().type());
-        assertEquals("-", tokenizer.current().token());
-        
-        // test sixth token ), note that we call next twice. 
-        // Correct implementation of tokenizer.current() should return ')' this case (not 40)
-        tokenizer.next();
-        tokenizer.next();
-        assertEquals(Token.Type.RBRA, tokenizer.current().type());
+        // Run each test case programmatically by looping over the cases
+        for (int i = 0; i < testCases.size(); i++) {
+            tokenizer = new Tokenizer(testCases.get(i).testcase);
+            for (Token.Type token : testCases.get(i).tokens) {
+                assertEquals("wrong token type", token, tokenizer.current().type());
+                tokenizer.next();
+            }
+        }
     }
 }
