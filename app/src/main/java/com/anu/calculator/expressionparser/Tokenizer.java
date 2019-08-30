@@ -1,14 +1,6 @@
 package com.anu.calculator.expressionparser;
 
 /**
- * Name: Tokenizer.java
- * <p>
- * Remind:
- * 1. Your job is to implement next() method.
- * 2. Please do not modify anything else.
- * 3. Check the correctness of implementation via "com.anu.calculator.TokenizerTest.java" before the submission.
- * 4. You may create additional fields or methods to finish your implementation.
- *
  * @author: Michael Betterton
  * @Uid: u6797866
  * @Date: 15 Aug 2019
