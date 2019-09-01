@@ -1,12 +1,7 @@
 package com.anu.calculator.expressionparser;
 
 /**
- * DivExp: it is extended from the abstract class Exp.
- * 		    This class is used to represent the expression of division
- *
- * You are not required to implement any function inside this class.
- * Please do not change anything inside this class as well.
- *
+ * DivExp: This class is used to represent the expression of division
  */
 
 public class DivExp extends Exp {
@@ -24,7 +19,7 @@ public class DivExp extends Exp {
 	}
 
 	@Override
-	public int evaluate() {
+	public double evaluate() {
 		return (factor.evaluate() / term.evaluate());
 	}
 

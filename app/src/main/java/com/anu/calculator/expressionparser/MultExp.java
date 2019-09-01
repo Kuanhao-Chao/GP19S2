@@ -1,11 +1,7 @@
 package com.anu.calculator.expressionparser;
 
 /**
- * MultExp: it is extended from the abstract class Exp,
- * 		    This class is used to represent the expression of multiplication
- *
- * You are not required to implement any function inside this class.
- * Please do not change anything inside this class as well.
+ * MultExp: This class is used to represent the expression of multiplication
  */
 
 public class MultExp extends Exp {
@@ -16,8 +12,6 @@ public class MultExp extends Exp {
 	public MultExp(Exp factor, Exp term) {
 		this.factor = factor;		
 		this.term = term;
-
-
 	}
 
 	@Override
@@ -26,7 +20,7 @@ public class MultExp extends Exp {
 	}
 
 	@Override
-	public int evaluate() {
+	public double evaluate() {
 		return (factor.evaluate() * term.evaluate());
 	}
 

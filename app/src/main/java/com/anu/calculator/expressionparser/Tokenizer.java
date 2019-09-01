@@ -1,11 +1,5 @@
 package com.anu.calculator.expressionparser;
 
-/**
- * @author: Michael Betterton
- * @Uid: u6797866
- * @Date: 15 Aug 2019
- */
-
 public class Tokenizer {
 
     private String _buffer;        //save text
@@ -14,7 +8,6 @@ public class Tokenizer {
     /**
      * Tokenizer class constructor
      * The constructor extracts the first token and save it to currentToken
-     * **** please do not modify this part ****
      */
     public Tokenizer(String text) {
         _buffer = text;        // save input text (string)
@@ -45,19 +38,54 @@ public class Tokenizer {
             currentToken = new Token("(", Token.Type.LBRA);
         if (firstChar == ')')
             currentToken = new Token(")", Token.Type.RBRA);
-        if (Character.isDigit(firstChar)) {
-            StringBuilder sb = new StringBuilder();
-            String tempbfr = _buffer;
-            int currPos = 0;
-            while (Character.isDigit(tempbfr.charAt(currPos))) {
-                sb.append(tempbfr.charAt(currPos));
-                currPos ++;
-                if(currPos >= tempbfr.length()){
-                    break;
-                }
-            }
-            currentToken = new Token(sb.toString(), Token.Type.INT);
+        if(firstChar == 'f')
+            currentToken = new Token("fac", Token.Type.FAC);
+        if (firstChar == ',')
+            currentToken = new Token(",", Token.Type.COMMA);
+        if (firstChar == '#')
+        {
+            if(_buffer.charAt(1) == 'P') currentToken = new Token("#PI", Token.Type.PI);
+            else if(_buffer.charAt(1) == 'E') currentToken = new Token("#E", Token.Type.E);
+            else if(_buffer.charAt(1) == 'R') currentToken = new Token("#R", Token.Type.RAND);
+            else currentToken = new Token(_buffer.substring(0, 2), Token.Type.UNKVAR);
         }
+        if (firstChar == 's')
+        {
+            if(_buffer.charAt(1) == 'q') currentToken = new Token("sqrt", Token.Type.SQRT);
+            else if(_buffer.charAt(3) == '-') currentToken = new Token("sin-1", Token.Type.ASIN);
+            else currentToken = new Token("sin", Token.Type.SIN);
+        }
+        if (firstChar == 'c')
+        {
+            if(_buffer.charAt(2) == 'm') currentToken = new Token("comb", Token.Type.COMB);
+            else if(_buffer.charAt(3) == '-') currentToken = new Token("cos-1", Token.Type.ACOS);
+            else currentToken = new Token("cos", Token.Type.COS);
+        }
+        if (firstChar == 't')
+        {
+            if(_buffer.charAt(3) == '-') currentToken = new Token("tan-1", Token.Type.ATAN);
+            else currentToken = new Token("tan", Token.Type.TAN);
+        }
+        if (firstChar == 'l')
+        {
+            if(_buffer.charAt(3) == '1') currentToken = new Token("log10", Token.Type.LOGTEN);
+            else currentToken = new Token("log", Token.Type.LOGNAT);
+        }
+        if (firstChar == 'p')
+        {
+            if(_buffer.charAt(1) == 'w') currentToken = new Token("pwr", Token.Type.PWR);
+            else currentToken = new Token("perm", Token.Type.PERM);
+        }
+        if(Character.isDigit(firstChar))
+        {
+            int pos = 0;
+            while(pos < _buffer.length() && (_buffer.charAt(pos) == '.' || Character.isDigit(_buffer.charAt(pos))))
+            {
+                pos++;
+            }
+            currentToken = new Token(_buffer.substring(0, pos), Token.Type.DOUBLE);
+        }
+
         // Remove the extracted token from buffer
         int tokenLen = currentToken.token().length();
         _buffer = _buffer.substring(tokenLen);
@@ -65,7 +93,6 @@ public class Tokenizer {
 
     /**
      * returned the current token extracted by {@code next()}
-     * **** please do not modify this part ****
      *
      * @return type: Token
      */
@@ -75,7 +102,6 @@ public class Tokenizer {
 
     /**
      * check whether there still exists another tokens in the buffer or not
-     * **** please do not modify this part ****
      *
      * @return type: boolean
      */

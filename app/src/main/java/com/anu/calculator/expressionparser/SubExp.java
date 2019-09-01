@@ -1,10 +1,7 @@
 package com.anu.calculator.expressionparser;
 
 /**
- * SubExp: it is extended from the abstract class Exp,
- * 		    This class is used to represent the expression of subtraction
- *
- * Please do not change anything else.
+ * SubExp: This class is used to represent the expression of subtraction
  */
 
 public class SubExp extends Exp {
@@ -20,13 +17,11 @@ public class SubExp extends Exp {
 
 	@Override
 	public String show() {
-		// TODO: Implement show() function for displaying the expression
 		return "(" + term.show() + " - " + exp.show() + ")";
 	}
 
 	@Override
-	public int evaluate() {
-		// TODO: Implement evaluate() function for evaluating the result
+	public double evaluate() {
 		return (term.evaluate() - exp.evaluate());
 	}
 

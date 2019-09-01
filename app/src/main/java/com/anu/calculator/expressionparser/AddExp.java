@@ -1,11 +1,7 @@
 package com.anu.calculator.expressionparser;
 
 /**
- * AddExp: it is extended from the abstract class Exp.
- *         This class is used to represent the expression of addition
- *
- * You are not required to implement any function inside this class.
- * Please do not change anything inside this class as well.
+ * AddExp: This class is used to represent the expression of addition
  */
 
 public class AddExp extends Exp {
@@ -23,7 +19,7 @@ public class AddExp extends Exp {
 	}
 
 	@Override
-	public int evaluate() {
+	public double evaluate() {
 		return (term.evaluate() + exp.evaluate());
 	}
 
