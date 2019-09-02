@@ -16,7 +16,7 @@ public class MultExp extends Exp {
 
 	@Override
 	public String show() {
-		return "(" + factor.show() + " * " + term.show() + ")";
+		return "(" + factor.show() + " x " + term.show() + ")";
 	}
 
 	@Override

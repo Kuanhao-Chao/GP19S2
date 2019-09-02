@@ -5,6 +5,9 @@ import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 
 import com.anu.calculator.R;
+import com.anu.calculator.expressionparser.Exp;
+import com.anu.calculator.expressionparser.ExpressionParser;
+import com.anu.calculator.expressionparser.Tokenizer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Objects;
@@ -21,17 +25,45 @@ import java.util.Objects;
 public class DigitFragment extends Fragment {
 
     private static final String TAG = "DIGIT_TAB";
-    private static final String dgt_1 = "1";
 
     public static DigitFragment newInstance() {
         return new DigitFragment();
+    }
+
+    /**
+     * Inserts the provided textToAdd into the selected region of an editText area. If the user has
+     * selected an area of text (multiple characters), that text is replaced with the new text.
+     *
+     * @param editText  An Edit Text Area to add text to.
+     * @param textToAdd A String to insert into the Edit Text Area.
+     */
+    private void addText(@org.jetbrains.annotations.NotNull EditText editText, String textToAdd) {
+        int start = Math.max(editText.getSelectionStart(), 0);
+        int end = Math.max(editText.getSelectionEnd(), 0);
+        editText.getText().replace(Math.min(start, end), Math.max(start, end),
+                textToAdd, 0, textToAdd.length());
+    }
+
+    /**
+     * Returns a double nicely formatted without unnecessary trailing spaces.
+     *
+     * @param d The double to return nicely formatted
+     * @return The nicely formatted double as a string.
+     */
+    public static String fmt(double d)
+    {
+        if(d == (long) d)
+            return String.format("%d",(long)d);
+        else
+            return String.format("%s",d);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        final TextView calculation_area = (TextView) getActivity().findViewById(R.id.calculation_textarea);
+        final EditText calculation_area = Objects.requireNonNull(getActivity()).findViewById(R.id.calculation_textarea);
+        calculation_area.setCursorVisible(true);
 
         View rootView = inflater.inflate(R.layout.digit_fragment, container, false);
 
@@ -39,7 +71,8 @@ public class DigitFragment extends Fragment {
         btn_dgt_0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                calculation_area.append(getString(R.string.dgt_0));
+                String input = getString(R.string.dgt_0);
+                addText(calculation_area, input);
             }
         });
 
@@ -47,7 +80,8 @@ public class DigitFragment extends Fragment {
         btn_dgt_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                calculation_area.append(getString(R.string.dgt_1));
+                String input = getString(R.string.dgt_1);
+                addText(calculation_area, input);
             }
         });
 
@@ -55,7 +89,8 @@ public class DigitFragment extends Fragment {
         btn_dgt_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                calculation_area.append(getString(R.string.dgt_2));
+                String input = getString(R.string.dgt_2);
+                addText(calculation_area, input);
             }
         });
 
@@ -63,7 +98,8 @@ public class DigitFragment extends Fragment {
         btn_dgt_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                calculation_area.append(getString(R.string.dgt_3));
+                String input = getString(R.string.dgt_3);
+                addText(calculation_area, input);
             }
         });
 
@@ -71,7 +107,8 @@ public class DigitFragment extends Fragment {
         btn_dgt_4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                calculation_area.append(getString(R.string.dgt_4));
+                String input = getString(R.string.dgt_4);
+                addText(calculation_area, input);
             }
         });
 
@@ -79,7 +116,8 @@ public class DigitFragment extends Fragment {
         btn_dgt_5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                calculation_area.append(getString(R.string.dgt_5));
+                String input = getString(R.string.dgt_5);
+                addText(calculation_area, input);
             }
         });
 
@@ -87,7 +125,8 @@ public class DigitFragment extends Fragment {
         btn_dgt_6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                calculation_area.append(getString(R.string.dgt_6));
+                String input = getString(R.string.dgt_6);
+                addText(calculation_area, input);
             }
         });
 
@@ -95,7 +134,8 @@ public class DigitFragment extends Fragment {
         btn_dgt_7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                calculation_area.append(getString(R.string.dgt_7));
+                String input = getString(R.string.dgt_7);
+                addText(calculation_area, input);
             }
         });
 
@@ -103,7 +143,8 @@ public class DigitFragment extends Fragment {
         btn_dgt_8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                calculation_area.append(getString(R.string.dgt_8));
+                String input = getString(R.string.dgt_8);
+                addText(calculation_area, input);
             }
         });
 
@@ -111,7 +152,8 @@ public class DigitFragment extends Fragment {
         btn_dgt_9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                calculation_area.append(getString(R.string.dgt_9));
+                String input = getString(R.string.dgt_9);
+                addText(calculation_area, input);
             }
         });
 
@@ -119,7 +161,8 @@ public class DigitFragment extends Fragment {
         sign_switch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                calculation_area.append(getString(R.string.sign_switch));
+                String input = getString(R.string.sign_switch);
+                addText(calculation_area, input);
             }
         });
 
@@ -127,7 +170,8 @@ public class DigitFragment extends Fragment {
         decimal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                calculation_area.append(getString(R.string.decimal));
+                String input = getString(R.string.decimal);
+                addText(calculation_area, input);
             }
         });
 
@@ -135,7 +179,8 @@ public class DigitFragment extends Fragment {
         addition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                calculation_area.append(getString(R.string.addition));
+                String input = getString(R.string.addition);
+                addText(calculation_area, input);
             }
         });
 
@@ -143,7 +188,8 @@ public class DigitFragment extends Fragment {
         subtraction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                calculation_area.append(getString(R.string.subtraction));
+                String input = getString(R.string.subtraction);
+                addText(calculation_area, input);
             }
         });
 
@@ -151,7 +197,8 @@ public class DigitFragment extends Fragment {
         multiply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                calculation_area.append(getString(R.string.multiply));
+                String input = getString(R.string.multiply);
+                addText(calculation_area, input);
             }
         });
 
@@ -159,7 +206,8 @@ public class DigitFragment extends Fragment {
         divide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                calculation_area.append(getString(R.string.divide));
+                String input = getString(R.string.divide);
+                addText(calculation_area, input);
             }
         });
 
@@ -167,7 +215,8 @@ public class DigitFragment extends Fragment {
         percentage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                calculation_area.append(getString(R.string.percentage));
+                String input = getString(R.string.percentage);
+                addText(calculation_area, input);
             }
         });
 
@@ -190,6 +239,17 @@ public class DigitFragment extends Fragment {
             }
         });
 
+        Button equals = (Button) rootView.findViewById(R.id.evaluate);
+        equals.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                String expression = calculation_area.getText().toString();
+                Tokenizer tokenizer = new Tokenizer(expression);
+                Exp exp = new ExpressionParser(tokenizer).parseExp();
+                String evaluation = "=" + fmt(exp.evaluate());
+                calculation_area.setText(evaluation);
+            }
+        });
 
         return rootView;
     }

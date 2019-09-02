@@ -16,32 +16,36 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/sin"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="SIN" />
+                android:text="@string/sin" />
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/cos"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="COS" />
+                android:text="@string/cos" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/tan"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TAN" />
+                android:text="@string/tan" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/squared"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Button" />
+                android:text="@string/squared" />
         </LinearLayout>
 
         <LinearLayout
@@ -50,32 +54,36 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button5"
+                android:id="@+id/natural_log"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="ln" />
+                android:text="@string/natural_log" />
 
             <Button
-                android:id="@+id/button6"
+                android:id="@+id/log10"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Log10" />
+                android:text="@string/log10" />
 
             <Button
-                android:id="@+id/button7"
+                android:id="@+id/power"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="etc." />
+                android:text="@string/power" />
 
             <Button
-                android:id="@+id/button8"
+                android:id="@+id/cubed"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="etc." />
+                android:text="@string/cubed" />
         </LinearLayout>
 
         <LinearLayout
@@ -84,32 +92,36 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button9"
+                android:id="@+id/permutation"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="etc." />
+                android:text="@string/npr" />
 
             <Button
-                android:id="@+id/button10"
+                android:id="@+id/combinations"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="etc." />
+                android:text="@string/ncr" />
 
             <Button
-                android:id="@+id/button11"
+                android:id="@+id/pi"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="etc." />
+                android:text="@string/pi" />
 
             <Button
-                android:id="@+id/button12"
+                android:id="@+id/sqrt"
                 android:layout_width="wrap_content"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="etc." />
+                android:text="@string/sqrt" />
         </LinearLayout>
 
         <LinearLayout
@@ -118,67 +130,76 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button13"
+                android:id="@+id/arc_sin"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="a" />
+                android:text="@string/arc_sin" />
 
             <Button
-                android:id="@+id/button14"
+                android:id="@+id/arc_cos"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="b" />
+                android:text="@string/arc_cos" />
 
             <Button
-                android:id="@+id/button15"
+                android:id="@+id/arc_tan"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="C" />
+                android:text="@string/arc_tan" />
 
             <Button
-                android:id="@+id/button16"
+                android:id="@+id/cubed_root"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="D" />
+                android:text="@string/cubed_root" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button13"
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/lbra"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="W" />
+                android:text="@string/lbra" />
 
             <Button
-                android:id="@+id/button14"
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/rbra"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="X" />
+                android:text="@string/rbra" />
 
             <Button
-                android:id="@+id/button15"
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/random_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Y" />
+                android:text="@string/rand" />
 
             <Button
-                android:id="@+id/button16"
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/factorial"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Z" />
+                android:text="@string/factorial" />
+
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

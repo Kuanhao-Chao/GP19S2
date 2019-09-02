@@ -28,4 +28,26 @@
     <string name="x">x</string>
     <string name="y">y</string>
     <string name="z">z</string>
+    <string name="tab_basic">Basic</string>
+    <string name="tab_scientific">Scientific</string>
+    <string name="sin">sin</string>
+    <string name="cos">cos</string>
+    <string name="tan">tan</string>
+    <string name="squared">x²</string>
+    <string name="natural_log">ln</string>
+    <string name="log10">log10</string>
+    <string name="power">power</string>
+    <string name="cubed">x³</string>
+    <string name="npr">nPr</string>
+    <string name="ncr">nCr</string>
+    <string name="pi">π</string>
+    <string name="sqrt">√</string>
+    <string name="arc_sin">sin⁻¹</string>
+    <string name="arc_cos">cos⁻¹</string>
+    <string name="arc_tan">tan⁻¹</string>
+    <string name="cubed_root">∛</string>
+    <string name="lbra">(</string>
+    <string name="rbra">)</string>
+    <string name="rand">rand</string>
+    <string name="factorial">!</string>
 </resources>

@@ -30,8 +30,8 @@ public class Tokenizer {
             currentToken = new Token("+", Token.Type.ADD);
         if (firstChar == '-')
             currentToken = new Token("-", Token.Type.SUB);
-        if (firstChar == '*')
-            currentToken = new Token("*", Token.Type.MUL);
+        if (firstChar == 'x')
+            currentToken = new Token("x", Token.Type.MUL);
         if (firstChar == '/')
             currentToken = new Token("/", Token.Type.DIV);
         if (firstChar == '(')
