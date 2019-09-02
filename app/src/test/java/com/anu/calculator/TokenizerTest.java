@@ -30,11 +30,11 @@ public class TokenizerTest {
         // Declare each of the test cases
         ArrayList<TestCase> testCases = new ArrayList<>(0);
         testCases.add(new TestCase("1+1",
-                Arrays.asList(Token.Type.INT, Token.Type.ADD, Token.Type.INT)));
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.ADD, Token.Type.DOUBLE)));
         testCases.add(new TestCase("5+",
-                Arrays.asList(Token.Type.INT, Token.Type.ADD)));
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.ADD)));
         testCases.add(new TestCase("1000+1+1+",
-                Arrays.asList(Token.Type.INT, Token.Type.ADD, Token.Type.INT, Token.Type.ADD, Token.Type.INT, Token.Type.ADD)));
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.ADD, Token.Type.DOUBLE, Token.Type.ADD, Token.Type.DOUBLE, Token.Type.ADD)));
 
         // Run each test case programmatically by looping over the cases
         for (int i = 0; i < testCases.size(); i++) {
@@ -51,11 +51,11 @@ public class TokenizerTest {
         // Declare each of the test cases
         ArrayList<TestCase> testCases = new ArrayList<>(0);
         testCases.add(new TestCase("8-1",
-                Arrays.asList(Token.Type.INT, Token.Type.SUB, Token.Type.INT)));
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.SUB, Token.Type.DOUBLE)));
         testCases.add(new TestCase("5--",
-                Arrays.asList(Token.Type.INT, Token.Type.SUB, Token.Type.SUB)));
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.SUB, Token.Type.SUB)));
         testCases.add(new TestCase("1124-124-1",
-                Arrays.asList(Token.Type.INT, Token.Type.SUB, Token.Type.INT, Token.Type.SUB, Token.Type.INT)));
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.SUB, Token.Type.DOUBLE, Token.Type.SUB, Token.Type.DOUBLE)));
 
         // Run each test case programmatically by looping over the cases
         for (int i = 0; i < testCases.size(); i++) {
