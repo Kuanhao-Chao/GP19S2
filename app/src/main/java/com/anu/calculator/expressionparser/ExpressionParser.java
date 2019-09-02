@@ -25,7 +25,7 @@ public class ExpressionParser
         Exp term = parseTerm();
         if (_tokenizer.hasNext())
         {
-            if (_tokenizer.current().type() == Token.Type.SUB)
+            if (_tokenizer.current().type() == Token.Type.SUBTRACT)
             {
                 _tokenizer.next();
                 Exp exp = parseExp();
@@ -46,13 +46,13 @@ public class ExpressionParser
         Exp oper = parseOperation();
         if (_tokenizer.hasNext())
         {
-            if (_tokenizer.current().type() == Token.Type.MUL)
+            if (_tokenizer.current().type() == Token.Type.MULTIPLY)
             {
                 _tokenizer.next();
                 Exp term = parseTerm();
                 return new MultExp(oper, term);
             }
-            if (_tokenizer.current().type() == Token.Type.DIV)
+            if (_tokenizer.current().type() == Token.Type.DIVIDE)
             {
                 _tokenizer.next();
                 Exp term = parseTerm();

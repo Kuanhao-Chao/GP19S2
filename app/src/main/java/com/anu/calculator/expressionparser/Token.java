@@ -9,33 +9,61 @@ package com.anu.calculator.expressionparser;
 
 public class Token {
 
+    public enum PowerDigit
+    {
+        PD_ONE('\u00b9', 1),
+        PD_TWO('\u00b2', 2),
+        PD_THREE('\u00b3', 3),
+        PD_FOUR('\u2074', 4),
+        PD_FIVE('\u2075', 5),
+        PD_SIX('\u2076', 6),
+        PD_SEVEN('\u2077', 7),
+        PD_EIGHT('\u2078', 8),
+        PD_NINE('\u2079', 9),
+        PD_ZERO('\u2070', 10);
+
+        private char unicode;
+        private int intValue;
+
+        PowerDigit(char unicode, int intValue)
+        {
+            this.unicode = unicode;
+            this.intValue = intValue;
+        }
+
+        public char getUnicode() { return unicode; }
+        public int getIntValue() { return intValue; }
+    }
+
     public enum Type {
-        UNKNOWN(0),
-        COMMA(0),
-        DOUBLE(0),
         ADD(2),
-        SUB(2),
-        MUL(2),
-        DIV(2),
-        LBRA(0),
-        RBRA(0),
-        SIN(1), //sine
-        ASIN(1), //arcsine
-        COS(1), //cosine
-        ACOS(1), //arccosine
-        TAN(1), //tangent
-        ATAN(1), //arctangent
-        LOGTEN(1), //log base 10
-        LOGNAT(1), //log base e
-        PWR(2), //exponent
-        FAC(1), //factorial
-        SQRT(1), //square root
-        RAND(0), //random number
-        PERM(2), //permutation
-        COMB(2), //combination
-        UNKVAR(1), //unknown variable
-        PI(0), //pi
-        E(0); //e
+        ARC_COSINE(1),
+        ARC_SINE(1),
+        ARC_TANGENT(1),
+        COMMA(0),
+        COSINE(1),
+        COMBINATION(2),
+        CUBED_ROOT(1),
+        DIVIDE(2),
+        DOUBLE(0),
+        E(0),
+        EXPONENT(1),
+        FACTORIAL(1),
+        LEFT_PARENTHESIS(0),
+        LOG_TEN(1),
+        LOG_NATURAL(1),
+        NEGATIVE(1),
+        MULTIPLY(2),
+        PERCENT(1),
+        PERMUTATION(2),
+        PI(0),
+        RANDOM_NUMBER(0),
+        RIGHT_PARENTHESIS(0),
+        SINE(1),
+        SUBTRACT(2),
+        SQUARE_ROOT(1),
+        TANGENT(1),
+        UNKNOWN_VARIABLE(1);
 
         private int numArgs;
 
@@ -50,8 +78,8 @@ public class Token {
         }
     }
 
-    private String _token = "";
-    private Type _type = Type.UNKNOWN;
+    private String _token;
+    private Type _type;
     
     public Token(String token, Type type) {
         _token = token;
