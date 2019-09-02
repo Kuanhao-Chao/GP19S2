@@ -193,7 +193,7 @@ public class OperationsFragment extends Fragment {
         lbra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                String input = getString(R.string.lbra) + getString(R.string.lbra) + getString(R.string.rbra);;
+                String input = getString(R.string.lbra);
                 addText(calculation_area, input);
             }
         });
