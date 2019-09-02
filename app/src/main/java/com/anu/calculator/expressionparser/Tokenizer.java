@@ -73,12 +73,16 @@ public class Tokenizer {
         }
         else if(isPowerDigit(_buffer.charAt(0)))
         {
-            int i;
-            for(i=0; i<_buffer.length(); i++)
+            if(_buffer.charAt(0) == Token.PowerDigit.PD_LEFT_PARENTHESIS.getUnicode())
             {
-                if(!isPowerDigit(_buffer.charAt(i))) break;
+                int i;
+                for(i=0; i<_buffer.length(); i++)
+                {
+                    if(!isPowerDigit(_buffer.charAt(i))) break;
+                }
+                currentToken = new Token(_buffer.substring(1, i - 1), Token.Type.EXPONENT);
             }
-            currentToken = new Token(_buffer.substring(0, i), Token.Type.EXPONENT);
+            else currentToken = new Token(_buffer.substring(0, 1), Token.Type.EXPONENT);
         }
         else if(Character.isDigit(_buffer.charAt(0)))
         {

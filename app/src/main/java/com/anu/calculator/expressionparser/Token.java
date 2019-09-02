@@ -11,28 +11,30 @@ public class Token {
 
     public enum PowerDigit
     {
-        PD_ONE('\u00b9', 1),
-        PD_TWO('\u00b2', 2),
-        PD_THREE('\u00b3', 3),
-        PD_FOUR('\u2074', 4),
-        PD_FIVE('\u2075', 5),
-        PD_SIX('\u2076', 6),
-        PD_SEVEN('\u2077', 7),
-        PD_EIGHT('\u2078', 8),
-        PD_NINE('\u2079', 9),
-        PD_ZERO('\u2070', 10);
+        PD_ONE('\u00b9', '1'),
+        PD_TWO('\u00b2', '2'),
+        PD_THREE('\u00b3', '3'),
+        PD_FOUR('\u2074', '4'),
+        PD_FIVE('\u2075', '5'),
+        PD_SIX('\u2076', '6'),
+        PD_SEVEN('\u2077', '7'),
+        PD_EIGHT('\u2078', '8'),
+        PD_NINE('\u2079', '9'),
+        PD_ZERO('\u2070', '0'),
+        PD_LEFT_PARENTHESIS('\u207d', '('),
+        PD_RIGHT_PARENTHESIS('\u207e', ')');
 
         private char unicode;
-        private int intValue;
+        private char value;
 
-        PowerDigit(char unicode, int intValue)
+        PowerDigit(char unicode, char value)
         {
             this.unicode = unicode;
-            this.intValue = intValue;
+            this.value = value;
         }
 
         public char getUnicode() { return unicode; }
-        public int getIntValue() { return intValue; }
+        public int getValue() { return value; }
     }
 
     public enum Type {

@@ -95,7 +95,7 @@ public class TokenizerTest {
                 Arrays.asList(Token.Type.LOG_TEN, Token.Type.LEFT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.RIGHT_PARENTHESIS)));
         testCases.add(new TestCase("(25.78)²",
                 Arrays.asList(Token.Type.LEFT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.RIGHT_PARENTHESIS, Token.Type.EXPONENT)));
-        testCases.add(new TestCase("(135.5)⁵⁶",
+        testCases.add(new TestCase("(135.5)⁽⁶⁶⁶⁾",
                 Arrays.asList(Token.Type.LEFT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.RIGHT_PARENTHESIS, Token.Type.EXPONENT)));
         testCases.add(new TestCase("(57)³",
                 Arrays.asList(Token.Type.LEFT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.RIGHT_PARENTHESIS, Token.Type.EXPONENT)));
