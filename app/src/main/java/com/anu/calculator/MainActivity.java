@@ -6,18 +6,16 @@ import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    private OperationsPageAdapter mOperationsPageAdapter;
-    private ViewPager mViewPager;
+    OperationsPageAdapter mOperationsPageAdapter;
+    ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +38,11 @@ public class MainActivity extends AppCompatActivity {
         calculation_area.setShowSoftInputOnFocus(false);
     }
 
-    private void setupViewOperationsPager(ViewPager viewPager){
+    private void setupViewOperationsPager(ViewPager viewPager) {
         OperationsPageAdapter operationsPageAdapter = new OperationsPageAdapter(getSupportFragmentManager());
-        operationsPageAdapter.addFragment(new DigitFragment(),getString(R.string.tab_basic));
-        operationsPageAdapter.addFragment(new OperationsFragment(),getString(R.string.tab_scientific));
+        operationsPageAdapter.addFragment(new DigitFragment(), getString(R.string.tab_basic));
+        operationsPageAdapter.addFragment(new OperationsFragment(), getString(R.string.tab_scientific));
+        operationsPageAdapter.addFragment(new HistoryFragment(), getString(R.string.tab_history));
         viewPager.setAdapter(operationsPageAdapter);
     }
 

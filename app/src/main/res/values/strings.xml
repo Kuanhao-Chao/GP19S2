@@ -16,7 +16,7 @@
     <string name="dgt_2">2</string>
     <string name="dgt_1">1</string>
     <string name="addition">+</string>
-    <string name="sign_switch">+/-</string>
+    <string name="answer">ANS</string>
     <string name="dgt_0">0</string>
     <string name="decimal">.</string>
     <string name="equals">=</string>
@@ -30,6 +30,7 @@
     <string name="z">z</string>
     <string name="tab_basic">Basic</string>
     <string name="tab_scientific">Scientific</string>
+    <string name="tab_history">History</string>
     <string name="sin">sin</string>
     <string name="cos">cos</string>
     <string name="tan">tan</string>
@@ -50,4 +51,7 @@
     <string name="rbra">)</string>
     <string name="rand">rand</string>
     <string name="factorial">!</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
