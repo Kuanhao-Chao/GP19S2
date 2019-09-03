@@ -15,12 +15,12 @@ public class PowerExp extends Exp {
 
 	@Override
 	public String show() {
-		return "(" + base.show() + "^" + pwr.show() + ")";
+
+		return "power(" + base.show() + "," + pwr.show() + ")";
 	}
 
 	@Override
 	public double evaluate() {
 		return Math.pow(base.evaluate(), pwr.evaluate());
 	}
-
 }

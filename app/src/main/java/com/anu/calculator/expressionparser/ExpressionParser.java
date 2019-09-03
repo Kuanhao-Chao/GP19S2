@@ -3,12 +3,11 @@ package com.anu.calculator.expressionparser;
 /**
  * Grammar:
  * <exp> ::= <term> | <exp> + <term> | <exp> - <term>
- * <term> ::= <operation> | <term> * <operation> | <term> / <operation>
- * <operation> ::= <literal> | sin(<exp>) | sin-1(<exp>) | cos(<exp>) |
- *      cos-1(<exp>) | tan(<exp>) | tan-1(<exp>) | log10(<exp>) | log(<exp>) |
- *      fac(<exp>) | sqrt(<exp>) | rand(<exp>) | perm(<exp>,<exp>) | comb(<exp>,<exp>) |
- *      pwr(<exp>,<exp>)
- * <literal> ::= DOUBLE | #PI | #E | #[A-D,F-O,Q-Z] |(<exp>)
+ * <term> ::= <operation> | <term> × <operation> | <term> / <operation>
+ * <operation> ::= sin(<exp>) | sin⁻¹(<exp>) | cos(<exp>) | cos⁻¹(<exp>) | tan(<exp>) |
+ *      tan⁻¹(<exp>) | log₁₀(<exp>) | ln(<exp>) | !(<exp>) | √(<exp>) | ∛(<exp>) |
+ *      nPr(<exp>,<exp>) | nCr(<exp>,<exp>) | power(<exp>,<exp>) | %() | π | e | rand |
+ *      w | x | y | z | ɑ | β | ɣ | Δ | DOUBLE | (<exp>)
  */
 
 public class ExpressionParser
@@ -29,7 +28,7 @@ public class ExpressionParser
             {
                 _tokenizer.next();
                 Exp exp = parseExp();
-                return new SubExp(term, exp);
+                return new SubtractExp(term, exp);
             }
             if (_tokenizer.current().type() == Token.Type.ADD)
             {
@@ -50,13 +49,13 @@ public class ExpressionParser
             {
                 _tokenizer.next();
                 Exp term = parseTerm();
-                return new MultExp(oper, term);
+                return new MultiplyExp(oper, term);
             }
             if (_tokenizer.current().type() == Token.Type.DIVIDE)
             {
                 _tokenizer.next();
                 Exp term = parseTerm();
-                return new DivExp(oper, term);
+                return new DivideExp(oper, term);
             }
         }
         return oper;
@@ -86,7 +85,7 @@ public class ExpressionParser
         _tokenizer.next();
         switch(token)
         {
-            case "#R": return new RandExp();
+            case "#R": return new RandomNumberExp();
             case "#PI": return new PiExp();
             case "#E": return new EExp();
         }
@@ -102,16 +101,16 @@ public class ExpressionParser
         switch(token)
         {
             case "sin": return new SineExp(exp);
-            case "sin-1": return new AsineExp(exp);
-            case "cos": return new CosExp(exp);
-            case "cos-1": return new AcosExp(exp);
-            case "tan": return new TanExp(exp);
-            case "tan-1": return new AtanExp(exp);
-            case "log": return new LogNatExp(exp);
+            case "sin-1": return new ArcSineExp(exp);
+            case "cos": return new CosineExp(exp);
+            case "cos-1": return new ArcCosineExp(exp);
+            case "tan": return new TangentExp(exp);
+            case "tan-1": return new ArcTangentExp(exp);
+            case "log": return new LogNaturalExp(exp);
             case "log10": return new LogTenExp(exp);
-            case "fac": return new FacExp(exp);
-            case "sqrt": return new SqrtExp(exp);
-            default: return new UnkVarExp(exp.show().charAt(0)); //Unknown variable is returned as default as you can't guess which character will be used for the variable
+            case "fac": return new FactorialExp(exp);
+            case "sqrt": return new SquareRootExp(exp);
+            default: return new UnknownVariableExp(exp.show().charAt(0)); //Unknown variable is returned as default as you can't guess which character will be used for the variable
         }
     }
 
@@ -126,8 +125,8 @@ public class ExpressionParser
         switch(token)
         {
             case "pwr": return new PowerExp(expOne, expTwo);
-            case "perm": return new PermExp(expOne, expTwo);
-            case "comb": return new CombExp(expOne, expTwo);
+            case "perm": return new PermutationExp(expOne, expTwo);
+            case "comb": return new CombinationExp(expOne, expTwo);
         }
         return null;
     }

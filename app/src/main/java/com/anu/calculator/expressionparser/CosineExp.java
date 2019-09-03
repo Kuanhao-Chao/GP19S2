@@ -1,13 +1,13 @@
 package com.anu.calculator.expressionparser;
 
 /**
- * CosExp: This class is used to represent the expression of cosine
+ * CosineExp: This class is used to represent the expression of cosine
  */
 
-public class CosExp extends Exp {
+public class CosineExp extends Exp {
 	private Exp exp;
 
-	public CosExp(Exp exp) {
+	public CosineExp(Exp exp) {
 		this.exp = exp;
 	}
 

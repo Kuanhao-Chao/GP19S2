@@ -8,7 +8,7 @@ public class PiExp extends Exp {
 
 	@Override
 	public String show() {
-		return "PI";
+		return "" + Scripts.Operators.PI.getUnicode();
 	}
 
 	@Override

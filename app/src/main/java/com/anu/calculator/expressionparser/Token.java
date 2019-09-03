@@ -9,34 +9,6 @@ package com.anu.calculator.expressionparser;
 
 public class Token {
 
-    public enum PowerDigit
-    {
-        PD_ONE('\u00b9', '1'),
-        PD_TWO('\u00b2', '2'),
-        PD_THREE('\u00b3', '3'),
-        PD_FOUR('\u2074', '4'),
-        PD_FIVE('\u2075', '5'),
-        PD_SIX('\u2076', '6'),
-        PD_SEVEN('\u2077', '7'),
-        PD_EIGHT('\u2078', '8'),
-        PD_NINE('\u2079', '9'),
-        PD_ZERO('\u2070', '0'),
-        PD_LEFT_PARENTHESIS('\u207d', '('),
-        PD_RIGHT_PARENTHESIS('\u207e', ')');
-
-        private char unicode;
-        private char value;
-
-        PowerDigit(char unicode, char value)
-        {
-            this.unicode = unicode;
-            this.value = value;
-        }
-
-        public char getUnicode() { return unicode; }
-        public int getValue() { return value; }
-    }
-
     public enum Type {
         ADD(2),
         ARC_COSINE(1),
@@ -45,11 +17,11 @@ public class Token {
         COMMA(0),
         COSINE(1),
         COMBINATION(2),
+        CUBE(1),
         CUBED_ROOT(1),
         DIVIDE(2),
         DOUBLE(0),
         E(0),
-        EXPONENT(1),
         FACTORIAL(1),
         LEFT_PARENTHESIS(0),
         LOG_TEN(1),
@@ -59,10 +31,12 @@ public class Token {
         PERCENT(1),
         PERMUTATION(2),
         PI(0),
+        POWER(2),
         RANDOM_NUMBER(0),
         RIGHT_PARENTHESIS(0),
         SINE(1),
         SUBTRACT(2),
+        SQUARE(1),
         SQUARE_ROOT(1),
         TANGENT(1),
         UNKNOWN_VARIABLE(1);
