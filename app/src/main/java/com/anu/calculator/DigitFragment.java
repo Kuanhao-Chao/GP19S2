@@ -1,10 +1,7 @@
 package com.anu.calculator;
 
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
 
-import com.anu.calculator.R;
 import com.anu.calculator.expressionparser.Exp;
 import com.anu.calculator.expressionparser.ExpressionParser;
 import com.anu.calculator.expressionparser.Tokenizer;
@@ -12,6 +9,7 @@ import com.anu.calculator.expressionparser.Tokenizer;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.Objects;
 
@@ -65,7 +65,7 @@ public class DigitFragment extends Fragment {
         final EditText calculation_area = Objects.requireNonNull(getActivity()).findViewById(R.id.calculation_textarea);
         calculation_area.setCursorVisible(true);
 
-        View rootView = inflater.inflate(R.layout.digit_fragment, container, false);
+        final View rootView = inflater.inflate(R.layout.digit_fragment, container, false);
 
         Button btn_dgt_0 = (Button) rootView.findViewById(R.id.dgt_0);
         btn_dgt_0.setOnClickListener(new View.OnClickListener() {
@@ -157,11 +157,11 @@ public class DigitFragment extends Fragment {
             }
         });
 
-        Button sign_switch = (Button) rootView.findViewById(R.id.sign_switch);
-        sign_switch.setOnClickListener(new View.OnClickListener() {
+        Button answer = (Button) rootView.findViewById(R.id.answer);
+        answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                String input = getString(R.string.sign_switch);
+                String input = getString(R.string.answer);
                 addText(calculation_area, input);
             }
         });
@@ -243,11 +243,15 @@ public class DigitFragment extends Fragment {
         equals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                // Parse the expression and evaluate it
                 String expression = calculation_area.getText().toString();
                 Tokenizer tokenizer = new Tokenizer(expression);
                 Exp exp = new ExpressionParser(tokenizer).parseExp();
-                String evaluation = "=" + fmt(exp.evaluate());
-                calculation_area.setText(evaluation);
+                double evaluation = exp.evaluate();
+
+                // Add the text to the screen
+                String calcAreaText = "=" + fmt(exp.evaluate());
+                calculation_area.setText(calcAreaText);
             }
         });
 

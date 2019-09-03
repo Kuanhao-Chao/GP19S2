@@ -55,6 +55,8 @@ public class ExpressionParserTest {
         // Add test cases here by adding them to the test case array
         // This section contains some simple operations to confirm each operation is working as
         // expected.
+        testCases.add(new TestCase("5", (double) 5, (double) 0));
+        testCases.add(new TestCase("1.5", (double) 1.5, (double) 0));
         testCases.add(new TestCase("1.0+100", (double) 101, (double) 0));
         testCases.add(new TestCase("1.1x2.2", 2.42, 0.0001));
         testCases.add(new TestCase("12÷6", (double) 2, (double) 0));

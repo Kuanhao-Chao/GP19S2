@@ -16,7 +16,7 @@ public class TokenizerTest {
         private String testcase;
         private List<Token.Type> tokens;
 
-        public TestCase(String testcase, List<Token.Type> tokens) {
+        TestCase(String testcase, List<Token.Type> tokens) {
             this.testcase = testcase;
             this.tokens = tokens;
         }
