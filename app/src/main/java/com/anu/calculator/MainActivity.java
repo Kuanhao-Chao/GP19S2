@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         operationsPageAdapter.addFragment(new DigitFragment(), getString(R.string.tab_basic));
         operationsPageAdapter.addFragment(new OperationsFragment(), getString(R.string.tab_scientific));
         operationsPageAdapter.addFragment(new HistoryFragment(), getString(R.string.tab_history));
+        operationsPageAdapter.addFragment(new GraphFragment(), getString(R.string.tab_graph));
         viewPager.setAdapter(operationsPageAdapter);
     }
 
