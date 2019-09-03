@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class Function {
     private String input = null;
-    private List<String> sub_strings = null;
+    private List<String> subStrings = null;
     private boolean isValid = true;
 
     public Function (String input) {
@@ -37,7 +37,7 @@ public class Function {
              * Second step: Split the function into sub_expression
              */
             /**
-             * Error checking: splited sub_strings
+             * Error checking: splited subStrings
              * 1. '=' cannot be the first element of input
              *      method: check directly
              * 2. '=' cannot be the second element of input
@@ -78,10 +78,10 @@ public class Function {
              * Checking for 4.
              * Check there is not adjacent '='
              */
-            List<String> sub_strings = Arrays.asList(input.split("="));
-            for (int i = 0; i < sub_strings.size(); i++) {
-                System.out.println(i + ": " + sub_strings.get(i));
-                if (sub_strings.get(i).isEmpty()) {
+            List<String> subStrings = Arrays.asList(input.split("="));
+            for (int i = 0; i < subStrings.size(); i++) {
+                System.out.println(i + ": " + subStrings.get(i));
+                if (subStrings.get(i).isEmpty()) {
                     System.out.println("'=' should not next to each other!");
                     this.isValid = false;
                 }
@@ -90,14 +90,18 @@ public class Function {
              * Checking for 5.
              * Check there is not adjacent '='
              */
-            if (sub_strings.size() != 2) {
+            if (subStrings.size() != 2) {
                 this.isValid = false;
             }
-
-            this.sub_strings = sub_strings;
+            this.subStrings = subStrings;
+            if ( this.isValid == false) {
+                this.subStrings = null;
+            }
         }
     }
     public boolean checkValid () {
         return isValid;
     }
+
+    public List<String> getSubString() { return subStrings;}
 }

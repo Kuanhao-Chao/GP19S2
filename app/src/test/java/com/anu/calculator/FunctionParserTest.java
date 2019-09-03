@@ -29,40 +29,55 @@ public class FunctionParserTest {
          * @param input    The input expression as a string. It should conform to the known tokens of
          *                 the application. Token parsing is tested in a different test suite.
          */
-        TestCase(String input, Boolean expected) {
+        TestCase(String input, List<String> twoExpression, Boolean expected) {
             this.input = input;
+            this.twoExpression = twoExpression;
             this.validityExpected = expected;
         }
     }
-    // Instantiate a tokenizer to use in the tests.
+
+    /**
+     * First stage checking: Only check '=' in the function.
+     * 1. There is not '=' in the first character of input.
+     * 2. There is not '=' in the last character of input.
+     * 3. There is only one '=' in the input.
+     */
     @Test
-    public void testFunctionValidity() {
+    public void testFunctionResult() {
         // Declare each of the test cases
         ArrayList<FunctionParserTest.TestCase> testCases = new ArrayList<>(0);
-        testCases.add(new FunctionParserTest.TestCase("", false));
-        testCases.add(new FunctionParserTest.TestCase(" ", false));
-        testCases.add(new FunctionParserTest.TestCase("   ", false));
-        testCases.add(new FunctionParserTest.TestCase("=", false));
-        testCases.add(new FunctionParserTest.TestCase("==", false));
-        testCases.add(new FunctionParserTest.TestCase("a", false));
-        testCases.add(new FunctionParserTest.TestCase("a=", false));
-        testCases.add(new FunctionParserTest.TestCase("a==", false));
-        testCases.add(new FunctionParserTest.TestCase("=a", false));
-        testCases.add(new FunctionParserTest.TestCase("==a", false));
-        testCases.add(new FunctionParserTest.TestCase("a=b", true));
-        testCases.add(new FunctionParserTest.TestCase("a==b", false));
-        testCases.add(new FunctionParserTest.TestCase("=a=b", false));
-        testCases.add(new FunctionParserTest.TestCase("a=b=", false));
-        testCases.add(new FunctionParserTest.TestCase("=a=b=", false));
-        testCases.add(new FunctionParserTest.TestCase("a=b    ", true));
-        testCases.add(new FunctionParserTest.TestCase("    a=b", true));
-        testCases.add(new FunctionParserTest.TestCase("a    =b", true));
-        testCases.add(new FunctionParserTest.TestCase("a=     b", true));
-        testCases.add(new FunctionParserTest.TestCase("a=b=c", false));
-        testCases.add(new FunctionParserTest.TestCase("a========bc", false));
-        testCases.add(new FunctionParserTest.TestCase("a====b====c", false));
-        testCases.add(new FunctionParserTest.TestCase("a=b=c=d=e=f", false));
-        testCases.add(new FunctionParserTest.TestCase("b=a=", false));
+        testCases.add(new FunctionParserTest.TestCase("", null,false));
+        testCases.add(new FunctionParserTest.TestCase(" ", null,false));
+        testCases.add(new FunctionParserTest.TestCase("   ", null,false));
+        testCases.add(new FunctionParserTest.TestCase("=", null,false));
+        testCases.add(new FunctionParserTest.TestCase("==", null,false));
+        testCases.add(new FunctionParserTest.TestCase("a", null,false));
+        testCases.add(new FunctionParserTest.TestCase("a=", null,false));
+        testCases.add(new FunctionParserTest.TestCase("a==", null,false));
+        testCases.add(new FunctionParserTest.TestCase("=a", null,false));
+        testCases.add(new FunctionParserTest.TestCase("==a", null,false));
+        testCases.add(new FunctionParserTest.TestCase("a=b", Arrays.asList("a", "b"),true));
+        testCases.add(new FunctionParserTest.TestCase("a==b", null,false));
+        testCases.add(new FunctionParserTest.TestCase("=a=b", null,false));
+        testCases.add(new FunctionParserTest.TestCase("a=b=", null,false));
+        testCases.add(new FunctionParserTest.TestCase("=a=b=", null,false));
+        testCases.add(new FunctionParserTest.TestCase("a=b    ", Arrays.asList("a", "b"),true));
+        testCases.add(new FunctionParserTest.TestCase("    a=b", Arrays.asList("a", "b"),true));
+        testCases.add(new FunctionParserTest.TestCase("a    =b", Arrays.asList("a", "b"),true));
+        testCases.add(new FunctionParserTest.TestCase("a=     b", Arrays.asList("a", "b"),true));
+        testCases.add(new FunctionParserTest.TestCase("a=b=c", null,false));
+        testCases.add(new FunctionParserTest.TestCase("a========bc", null,false));
+        testCases.add(new FunctionParserTest.TestCase("a====b====c", null,false));
+        testCases.add(new FunctionParserTest.TestCase("a=b=c=d=e=f", null,false));
+        testCases.add(new FunctionParserTest.TestCase("aasdfaf=gsdggh", Arrays.asList("aasdfaf", "gsdggh"),true));
+        testCases.add(new FunctionParserTest.TestCase("a+1*2/3*12 = 9124", Arrays.asList("a+1*2/3*12", "9124"),true));
+        testCases.add(new FunctionParserTest.TestCase("y=x", Arrays.asList("y", "x"),true));
+        testCases.add(new FunctionParserTest.TestCase("y  =  x", Arrays.asList("y", "x"),true));
+        testCases.add(new FunctionParserTest.TestCase("y =   x", Arrays.asList("y", "x"),true));
+        testCases.add(new FunctionParserTest.TestCase("ax+by  +z=10s", Arrays.asList("ax+by+z", "10s"),true));
+        testCases.add(new FunctionParserTest.TestCase("ax +by+  z=10s", Arrays.asList("ax+by+z", "10s"),true));
+        testCases.add(new FunctionParserTest.TestCase("ax+ by+z    =10s", Arrays.asList("ax+by+z", "10s"),true));
+        testCases.add(new FunctionParserTest.TestCase("ax+by+ z= 10s", Arrays.asList("ax+by+z", "10s"),true));
 
 
         // Run each test case programmatically by looping over the cases
@@ -70,7 +85,8 @@ public class FunctionParserTest {
         for (TestCase testCase : testCases) {
             Function function = new Function(testCase.input);
             System.out.println("Finish test " + counter + " !\n");
-            assertEquals("Invalid function assessment", function.checkValid(), testCase.validityExpected);
+            assertEquals("Invalid function assessment", Arrays.asList(function.getSubString(), function.checkValid()),
+                    Arrays.asList(testCase.twoExpression, testCase.validityExpected));
             counter ++;
         }
     }
