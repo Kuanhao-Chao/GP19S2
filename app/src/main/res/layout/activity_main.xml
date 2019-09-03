@@ -48,10 +48,16 @@
                 android:text="@string/tab_scientific" />
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/history_tab"
+            android:id="@+id/history_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_history" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/graph_tab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tab_history" />
+                android:text="@string/tab_graph" />
 
         </com.google.android.material.tabs.TabLayout>
 
