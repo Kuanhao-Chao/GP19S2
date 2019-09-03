@@ -19,6 +19,14 @@ public class FunctionParserTest {
      */
     private class TestCase {
 
+        /**
+         * The default constructor for a test case.
+         *
+         * @param input The input function as a string.
+         * @param twoExpression After the function is created, two expressions on each side of '='
+         *                      will be stored in twoExpression.
+         * @param validityExpected Stored the expected answer whether function is valid.
+         */
         String input;
         List<String> twoExpression;
         Boolean validityExpected;
