@@ -82,6 +82,9 @@ public class FunctionParserTest {
         testCases.add(new FunctionParserTest.TestCase("    x=y", Arrays.asList("x", "y"),true));
         testCases.add(new FunctionParserTest.TestCase("x    =y", Arrays.asList("x", "y"),true));
         testCases.add(new FunctionParserTest.TestCase("x=     y", Arrays.asList("x", "y"),true));
+        testCases.add(new FunctionParserTest.TestCase("x=     y", Arrays.asList("x", "y"),true));
+        testCases.add(new FunctionParserTest.TestCase("1×w + 2×x + 3×y + 4×z + 5×ɑ + 6×β + 7×ɣ + 8×Δ =    1÷w + 2÷x + 3÷y + 4÷z + 5÷ɑ + 6÷β + 7÷ɣ + 8÷Δ", Arrays.asList("1×w+2×x+3×y+4×z+5×ɑ+6×β+7×ɣ+8×Δ", "1÷w+2÷x+3÷y+4÷z+5÷ɑ+6÷β+7÷ɣ+8÷Δ"),true));
+
 
 
 
@@ -90,7 +93,7 @@ public class FunctionParserTest {
         for (TestCase testCase : testCases) {
             Function function = new Function(testCase.input);
             System.out.println("Finish test " + counter + " !\n");
-            assertEquals("Invalid function assessment", Arrays.asList(function.getSubString(), function.checkValid()),
+            assertEquals("Invalid function assessment", Arrays.asList(function.getSubStrings(), function.checkValid()),
                     Arrays.asList(testCase.twoExpression, testCase.validityExpected));
             counter ++;
         }
