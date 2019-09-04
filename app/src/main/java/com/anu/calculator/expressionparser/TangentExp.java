@@ -1,13 +1,13 @@
 package com.anu.calculator.expressionparser;
 
 /**
- * TanExp: This class is used to represent the expression of tangent
+ * TangentExp: This class is used to represent the expression of tangent
  */
 
-public class TanExp extends Exp {
+public class TangentExp extends Exp {
 	private Exp exp;
 
-	public TanExp(Exp exp) {
+	public TangentExp(Exp exp) {
 		this.exp = exp;
 	}
 

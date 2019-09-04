@@ -1,22 +1,22 @@
 package com.anu.calculator.expressionparser;
 
 /**
- * MultExp: This class is used to represent the expression of multiplication
+ * MultiplyExp: This class is used to represent the expression of multiplication
  */
 
-public class MultExp extends Exp {
+public class MultiplyExp extends Exp {
 	private Exp term;
 	private Exp factor;
 
 
-	public MultExp(Exp factor, Exp term) {
+	public MultiplyExp(Exp factor, Exp term) {
 		this.factor = factor;		
 		this.term = term;
 	}
 
 	@Override
 	public String show() {
-		return "(" + factor.show() + " x " + term.show() + ")";
+		return "(" + factor.show() + Scripts.Operators.MULTIPLY.getUnicode() + term.show() + ")";
 	}
 
 	@Override
