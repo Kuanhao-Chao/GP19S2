@@ -9,20 +9,16 @@ import com.anu.calculator.expressionparser.Tokenizer;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
+
+import static com.anu.calculator.Util.*;
 
 public class DigitFragment extends Fragment {
 
@@ -32,66 +28,6 @@ public class DigitFragment extends Fragment {
         return new DigitFragment();
     }
 
-    Map<Integer, Integer> FONT_SIZES = new HashMap<Integer, Integer>() {{
-        put(-1, 18);
-        put(0, 36);
-        put(1, 30);
-        put(2, 30);
-        put(3, 30);
-        put(4, 24);
-        put(5, 24);
-        put(6, 24);
-    }};
-
-
-    /**
-     * Resets the provided EditText TextArea to its default properties. This method should be
-     * invoked whenever functions like clear and equals are executed.
-     *
-     * @param textArea The textArea to reset properties on.
-     */
-    private void resetTextArea(EditText textArea) {
-        // Set the font-size back to default
-        textArea.setTextSize(FONT_SIZES.get(0));
-        // Empty out all text
-        textArea.setText("");
-    }
-
-
-    /**
-     * Inserts the provided textToAdd into the selected region of an editText area. If the user has
-     * selected an area of text (multiple characters), that text is replaced with the new text.
-     *
-     * @param editText  An Edit Text Area to add text to.
-     * @param textToAdd A String to insert into the Edit Text Area.
-     */
-    private void addText(@org.jetbrains.annotations.NotNull EditText editText, String textToAdd) {
-        int start = Math.max(editText.getSelectionStart(), 0);
-        int end = Math.max(editText.getSelectionEnd(), 0);
-        editText.getText().replace(Math.min(start, end), Math.max(start, end),
-                textToAdd, 0, textToAdd.length());
-
-        // Set the text size to a value based on the length of the current inputs. Default it to the
-        // -1 value when no font size is set for that length (exceptionally long strings
-        int length = editText.length() / 20;
-        if (FONT_SIZES.containsKey(length))
-            editText.setTextSize((int) FONT_SIZES.get(length));
-        else
-            editText.setTextSize((int) FONT_SIZES.get(-1));
-    }
-
-    /**
-     * Returns a double nicely formatted without unnecessary trailing spaces.
-     *
-     * @param d The double to return nicely formatted
-     * @return The nicely formatted double as a string.
-     */
-    public static String fmt(double d) {
-        if (d == (long) d)
-            return String.format("%d", (long) d);
-        else
-            return String.format("%s", d);
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -102,7 +38,7 @@ public class DigitFragment extends Fragment {
 
         final View rootView = inflater.inflate(R.layout.digit_fragment, container, false);
 
-        Button btn_dgt_0 = (Button) rootView.findViewById(R.id.dgt_0);
+        Button btn_dgt_0 = rootView.findViewById(R.id.dgt_0);
         btn_dgt_0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -111,7 +47,7 @@ public class DigitFragment extends Fragment {
             }
         });
 
-        Button btn_dgt_1 = (Button) rootView.findViewById(R.id.dgt_1);
+        Button btn_dgt_1 = rootView.findViewById(R.id.dgt_1);
         btn_dgt_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -120,7 +56,7 @@ public class DigitFragment extends Fragment {
             }
         });
 
-        Button btn_dgt_2 = (Button) rootView.findViewById(R.id.dgt_2);
+        Button btn_dgt_2 = rootView.findViewById(R.id.dgt_2);
         btn_dgt_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -129,7 +65,7 @@ public class DigitFragment extends Fragment {
             }
         });
 
-        Button btn_dgt_3 = (Button) rootView.findViewById(R.id.dgt_3);
+        Button btn_dgt_3 = rootView.findViewById(R.id.dgt_3);
         btn_dgt_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -138,7 +74,7 @@ public class DigitFragment extends Fragment {
             }
         });
 
-        Button btn_dgt_4 = (Button) rootView.findViewById(R.id.dgt_4);
+        Button btn_dgt_4 = rootView.findViewById(R.id.dgt_4);
         btn_dgt_4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -147,7 +83,7 @@ public class DigitFragment extends Fragment {
             }
         });
 
-        Button btn_dgt_5 = (Button) rootView.findViewById(R.id.dgt_5);
+        Button btn_dgt_5 = rootView.findViewById(R.id.dgt_5);
         btn_dgt_5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -156,7 +92,7 @@ public class DigitFragment extends Fragment {
             }
         });
 
-        Button btn_dgt_6 = (Button) rootView.findViewById(R.id.dgt_6);
+        Button btn_dgt_6 = rootView.findViewById(R.id.dgt_6);
         btn_dgt_6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -165,7 +101,7 @@ public class DigitFragment extends Fragment {
             }
         });
 
-        Button btn_dgt_7 = (Button) rootView.findViewById(R.id.dgt_7);
+        Button btn_dgt_7 = rootView.findViewById(R.id.dgt_7);
         btn_dgt_7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -174,7 +110,7 @@ public class DigitFragment extends Fragment {
             }
         });
 
-        Button btn_dgt_8 = (Button) rootView.findViewById(R.id.dgt_8);
+        Button btn_dgt_8 = rootView.findViewById(R.id.dgt_8);
         btn_dgt_8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -183,7 +119,7 @@ public class DigitFragment extends Fragment {
             }
         });
 
-        Button btn_dgt_9 = (Button) rootView.findViewById(R.id.dgt_9);
+        Button btn_dgt_9 = rootView.findViewById(R.id.dgt_9);
         btn_dgt_9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -192,7 +128,7 @@ public class DigitFragment extends Fragment {
             }
         });
 
-        Button answer = (Button) rootView.findViewById(R.id.answer);
+        Button answer = rootView.findViewById(R.id.answer);
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -201,7 +137,7 @@ public class DigitFragment extends Fragment {
             }
         });
 
-        Button decimal = (Button) rootView.findViewById(R.id.decimal);
+        Button decimal = rootView.findViewById(R.id.decimal);
         decimal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -210,7 +146,7 @@ public class DigitFragment extends Fragment {
             }
         });
 
-        Button addition = (Button) rootView.findViewById(R.id.addition);
+        Button addition = rootView.findViewById(R.id.addition);
         addition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -219,7 +155,7 @@ public class DigitFragment extends Fragment {
             }
         });
 
-        Button subtraction = (Button) rootView.findViewById(R.id.subtraction);
+        Button subtraction = rootView.findViewById(R.id.subtraction);
         subtraction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -228,7 +164,7 @@ public class DigitFragment extends Fragment {
             }
         });
 
-        Button multiply = (Button) rootView.findViewById(R.id.multiply);
+        Button multiply = rootView.findViewById(R.id.multiply);
         multiply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -237,7 +173,7 @@ public class DigitFragment extends Fragment {
             }
         });
 
-        Button divide = (Button) rootView.findViewById(R.id.divide);
+        Button divide = rootView.findViewById(R.id.divide);
         divide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -246,7 +182,7 @@ public class DigitFragment extends Fragment {
             }
         });
 
-        Button percentage = (Button) rootView.findViewById(R.id.percentage);
+        Button percentage = rootView.findViewById(R.id.percentage);
         percentage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -255,7 +191,7 @@ public class DigitFragment extends Fragment {
             }
         });
 
-        Button all_clear = (Button) rootView.findViewById(R.id.all_clear);
+        Button all_clear = rootView.findViewById(R.id.all_clear);
         all_clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -263,7 +199,7 @@ public class DigitFragment extends Fragment {
             }
         });
 
-        Button delete = (Button) rootView.findViewById(R.id.delete);
+        Button delete = rootView.findViewById(R.id.delete);
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -274,7 +210,7 @@ public class DigitFragment extends Fragment {
             }
         });
 
-        Button equals = (Button) rootView.findViewById(R.id.evaluate);
+        Button equals = rootView.findViewById(R.id.evaluate);
         equals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
