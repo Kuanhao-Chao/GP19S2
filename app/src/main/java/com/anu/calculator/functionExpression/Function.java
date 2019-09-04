@@ -7,7 +7,10 @@ import com.anu.calculator.expressionparser.Tokenizer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.DoubleToLongFunction;
 
 /**
  * The Function class which stores function that user inputs.
@@ -19,10 +22,29 @@ import java.util.List;
 public class Function {
     private String input = null;
     private List<String> subStrings = null;
-    private List<Exp> twoExp = null;
+    private List<Exp> twoExp = new ArrayList<>(0);
+    private List<HashMap<Character, Tuple<Boolean, Double>>> twoExpParameters= new ArrayList<>(0);
     private boolean isValid = true;
 
     public Function (String input) {
+        /**
+         * Initialization for Parameters in two expression.
+         */
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                HashMap<Character, Tuple<Boolean, Double>> oneExpParameters = new HashMap<Character, Tuple<Boolean, Double>>();
+                oneExpParameters.put('w', new Tuple<Boolean, Double>(false, null));
+                oneExpParameters.put('x', new Tuple<Boolean, Double>(false, null));
+                oneExpParameters.put('y', new Tuple<Boolean, Double>(false, null));
+                oneExpParameters.put('z', new Tuple<Boolean, Double>(false, null));
+                oneExpParameters.put('ɑ', new Tuple<Boolean, Double>(false, null));
+                oneExpParameters.put('β', new Tuple<Boolean, Double>(false, null));
+                oneExpParameters.put('ɣ', new Tuple<Boolean, Double>(false, null));
+                oneExpParameters.put('Δ', new Tuple<Boolean, Double>(false, null));
+                twoExpParameters.add(oneExpParameters);
+            }
+        }
+
         /**
          * First step: Remove spaces in the input string
          */
@@ -108,12 +130,48 @@ public class Function {
                 Exp exp_1 = new ExpressionParser(tokenizer_1).parseExp();
                 Exp exp_2 = new ExpressionParser(tokenizer_2).parseExp();
 
-                List<Exp> twoExp = new ArrayList<>(0);
                 twoExp.add(exp_1);
                 twoExp.add(exp_2);
-                this.twoExp = twoExp;
-                System.out.println("exp_1: " + twoExp.get(0).evaluate());
-                System.out.println("exp_2: " + twoExp.get(1).evaluate());
+                System.out.println("exp_1: " + this.twoExp.get(0).show());
+                System.out.println("exp_2: " + this.twoExp.get(1).show());
+                for (int i = 0; i < 2; i++) {
+                    for (int j = 0; j < this.twoExp.get(i).show().length(); j++) {
+                        if (this.twoExp.get(i).show().charAt(j) == 'w') {
+                            Tuple<Boolean, Double> new_parameter = new Tuple<Boolean, Double>(true, null);
+                            twoExpParameters.get(i).put('w', new_parameter);
+                        }
+                        if (this.twoExp.get(i).show().charAt(j) == 'x') {
+                            Tuple<Boolean, Double> new_parameter = new Tuple<Boolean, Double>(true, null);
+                            twoExpParameters.get(i).put('x', new_parameter);
+                        }
+                        if (this.twoExp.get(i).show().charAt(j) == 'y') {
+                            Tuple<Boolean, Double> new_parameter = new Tuple<Boolean, Double>(true, null);
+                            twoExpParameters.get(i).put('y', new_parameter);
+                        }
+                        if (this.twoExp.get(i).show().charAt(j) == 'z') {
+                            Tuple<Boolean, Double> new_parameter = new Tuple<Boolean, Double>(true, null);
+                            twoExpParameters.get(i).put('z', new_parameter);
+                        }
+                        if (this.twoExp.get(i).show().charAt(j) == 'ɑ') {
+                            Tuple<Boolean, Double> new_parameter = new Tuple<Boolean, Double>(true, null);
+                            twoExpParameters.get(i).put('ɑ', new_parameter);
+                        }
+                        if (this.twoExp.get(i).show().charAt(j) == 'β') {
+                            Tuple<Boolean, Double> new_parameter = new Tuple<Boolean, Double>(true, null);
+                            twoExpParameters.get(i).put('β', new_parameter);
+                        }
+                        if (this.twoExp.get(i).show().charAt(j) == 'ɣ') {
+                            Tuple<Boolean, Double> new_parameter = new Tuple<Boolean, Double>(true, null);
+                            twoExpParameters.get(i).put('ɣ', new_parameter);
+                        }
+                        if (this.twoExp.get(i).show().charAt(j) == 'Δ') {
+                            Tuple<Boolean, Double> new_parameter = new Tuple<Boolean, Double>(true, null);
+                            twoExpParameters.get(i).put('Δ', new_parameter);
+                        }
+                    }
+                }
+
+                System.out.println(getVariable());
             }
         }
     }
@@ -124,4 +182,23 @@ public class Function {
     }
 
     public List<String> getSubString() { return subStrings;}
+
+    public List<String> getVariable() {
+        for (int i =0; i < 2; i++) {
+            for (Character j : twoExpParameters.get(i).keySet()) {
+                System.out.println("getVariable: " + j + " value: " + twoExpParameters.get(i).get(j).x + " " + twoExpParameters.get(i).get(j).y);
+            }
+        }
+        return null;
+    }
+
+
+    public class Tuple<X, Y> {
+        public final X x;
+        public final Y y;
+        public Tuple(X x, Y y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
 }
