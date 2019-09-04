@@ -15,26 +15,14 @@ import android.widget.EditText;
 
 import java.util.Objects;
 
+import static com.anu.calculator.Util.*;
+
 public class OperationsFragment extends Fragment {
 
     private static final String TAG = "OPERATIONS_TAB";
 
     public static OperationsFragment newInstance() {
         return new OperationsFragment();
-    }
-
-    /**
-     * Inserts the provided textToAdd into the selected region of an editText area. If the user has
-     * selected an area of text (multiple characters), that text is replaced with the new text.
-     *
-     * @param editText  An Edit Text Area to add text to.
-     * @param textToAdd A String to insert into the Edit Text Area.
-     */
-    private void addText(@org.jetbrains.annotations.NotNull EditText editText, String textToAdd) {
-        int start = Math.max(editText.getSelectionStart(), 0);
-        int end = Math.max(editText.getSelectionEnd(), 0);
-        editText.getText().replace(Math.min(start, end), Math.max(start, end),
-                textToAdd, 0, textToAdd.length());
     }
 
     @Override
@@ -45,7 +33,7 @@ public class OperationsFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.operations_fragment, container, false);
 
-        Button sin = (Button) rootView.findViewById(R.id.sin);
+        Button sin = rootView.findViewById(R.id.sin);
         sin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -54,7 +42,7 @@ public class OperationsFragment extends Fragment {
             }
         });
 
-        Button cos = (Button) rootView.findViewById(R.id.cos);
+        Button cos = rootView.findViewById(R.id.cos);
         cos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -63,7 +51,7 @@ public class OperationsFragment extends Fragment {
             }
         });
 
-        Button tan = (Button) rootView.findViewById(R.id.tan);
+        Button tan = rootView.findViewById(R.id.tan);
         tan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -72,7 +60,7 @@ public class OperationsFragment extends Fragment {
             }
         });
 
-        Button squared = (Button) rootView.findViewById(R.id.squared);
+        Button squared = rootView.findViewById(R.id.squared);
         squared.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -81,7 +69,7 @@ public class OperationsFragment extends Fragment {
             }
         });
 
-        Button natural_log = (Button) rootView.findViewById(R.id.natural_log);
+        Button natural_log = rootView.findViewById(R.id.natural_log);
         natural_log.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -90,7 +78,7 @@ public class OperationsFragment extends Fragment {
             }
         });
 
-        Button log_10 = (Button) rootView.findViewById(R.id.log10);
+        Button log_10 = rootView.findViewById(R.id.log10);
         log_10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -99,7 +87,7 @@ public class OperationsFragment extends Fragment {
             }
         });
 
-        Button power = (Button) rootView.findViewById(R.id.power);
+        Button power = rootView.findViewById(R.id.power);
         power.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -108,7 +96,7 @@ public class OperationsFragment extends Fragment {
             }
         });
 
-        Button cubed = (Button) rootView.findViewById(R.id.cubed);
+        Button cubed = rootView.findViewById(R.id.cubed);
         cubed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -117,7 +105,7 @@ public class OperationsFragment extends Fragment {
             }
         });
 
-        Button permutation = (Button) rootView.findViewById(R.id.permutation);
+        Button permutation = rootView.findViewById(R.id.permutation);
         permutation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -126,7 +114,7 @@ public class OperationsFragment extends Fragment {
             }
         });
 
-        Button combinations = (Button) rootView.findViewById(R.id.combinations);
+        Button combinations = rootView.findViewById(R.id.combinations);
         combinations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -135,7 +123,7 @@ public class OperationsFragment extends Fragment {
             }
         });
 
-        Button pi = (Button) rootView.findViewById(R.id.pi);
+        Button pi = rootView.findViewById(R.id.pi);
         pi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -144,52 +132,52 @@ public class OperationsFragment extends Fragment {
             }
         });
 
-        Button sqrt = (Button) rootView.findViewById(R.id.sqrt);
+        Button sqrt = rootView.findViewById(R.id.sqrt);
         sqrt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                String input = getString(R.string.sqrt) + getString(R.string.lbra) + getString(R.string.rbra);;
+                String input = getString(R.string.sqrt) + getString(R.string.lbra) + getString(R.string.rbra);
                 addText(calculation_area, input);
             }
         });
 
-        Button arc_sin = (Button) rootView.findViewById(R.id.arc_sin);
+        Button arc_sin = rootView.findViewById(R.id.arc_sin);
         arc_sin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                String input = getString(R.string.arc_sin) + getString(R.string.lbra) + getString(R.string.rbra);;
+                String input = getString(R.string.arc_sin) + getString(R.string.lbra) + getString(R.string.rbra);
                 addText(calculation_area, input);
             }
         });
 
-        Button arc_cos = (Button) rootView.findViewById(R.id.arc_cos);
+        Button arc_cos = rootView.findViewById(R.id.arc_cos);
         arc_cos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                String input = getString(R.string.arc_cos) + getString(R.string.lbra) + getString(R.string.rbra);;
+                String input = getString(R.string.arc_cos) + getString(R.string.lbra) + getString(R.string.rbra);
                 addText(calculation_area, input);
             }
         });
 
-        Button arc_tan = (Button) rootView.findViewById(R.id.arc_tan);
+        Button arc_tan = rootView.findViewById(R.id.arc_tan);
         arc_tan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                String input = getString(R.string.arc_tan) + getString(R.string.lbra) + getString(R.string.rbra);;
+                String input = getString(R.string.arc_tan) + getString(R.string.lbra) + getString(R.string.rbra);
                 addText(calculation_area, input);
             }
         });
 
-        Button cubed_root = (Button) rootView.findViewById(R.id.cubed_root);
+        Button cubed_root = rootView.findViewById(R.id.cubed_root);
         cubed_root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                String input = getString(R.string.cubed_root) + getString(R.string.lbra) + getString(R.string.rbra);;
+                String input = getString(R.string.cubed_root) + getString(R.string.lbra) + getString(R.string.rbra);
                 addText(calculation_area, input);
             }
         });
 
-        Button lbra = (Button) rootView.findViewById(R.id.lbra);
+        Button lbra = rootView.findViewById(R.id.lbra);
         lbra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -198,7 +186,7 @@ public class OperationsFragment extends Fragment {
             }
         });
 
-        Button rbra = (Button) rootView.findViewById(R.id.rbra);
+        Button rbra = rootView.findViewById(R.id.rbra);
         rbra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -207,7 +195,7 @@ public class OperationsFragment extends Fragment {
             }
         });
 
-        Button rand = (Button) rootView.findViewById(R.id.random_number);
+        Button rand = rootView.findViewById(R.id.random_number);
         rand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -216,7 +204,7 @@ public class OperationsFragment extends Fragment {
             }
         });
 
-        Button factorial = (Button) rootView.findViewById(R.id.factorial);
+        Button factorial = rootView.findViewById(R.id.factorial);
         factorial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
