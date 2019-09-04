@@ -28,11 +28,19 @@ public class GraphFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 graphViewer gView = rootView.findViewById(R.id.graph_view);
-                gView.turnon();
+                gView.turnon(0);
                 gView.invalidate();
             }
         });
-
+        Button btn_1 = (Button) rootView.findViewById(R.id.formula2);
+        btn_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                graphViewer gView = rootView.findViewById(R.id.graph_view);
+                gView.turnon(1);
+                gView.invalidate();
+            }
+        });
 
         return rootView;
     }

@@ -9,6 +9,8 @@ import java.util.Map;
 /**
  * This class contains common utility functions for the user interface. All methods in this class
  * should be package private & static.
+ *
+ * @author: Michael Betterton (u6797866)
  */
 class Util {
     private static Map<Integer, Integer> FONT_SIZES = new HashMap<Integer, Integer>() {{
@@ -26,6 +28,7 @@ class Util {
     /**
      * Returns a double nicely formatted without unnecessary trailing spaces.
      *
+     * @author: Michael Betterton (u6797866)
      * @param d The double to return nicely formatted
      * @return The nicely formatted double as a string.
      */
@@ -40,6 +43,7 @@ class Util {
      * Set the text size to a value based on the length of the current inputs. Default it to the
      * -1 value when no font size is set for that length (exceptionally long strings
      *
+     * @author: Michael Betterton (u6797866)
      * @param editText The EditText textArea to update the font-size of.
      */
     static void setFontSize(EditText editText) {
@@ -57,6 +61,7 @@ class Util {
      * Resets the provided EditText TextArea to its default properties. This method should be
      * invoked whenever functions like clear and equals are executed.
      *
+     * @author: Michael Betterton (u6797866)
      * @param textArea The textArea to reset properties on.
      */
     static void resetTextArea(EditText textArea) {
@@ -70,6 +75,7 @@ class Util {
      * Inserts the provided textToAdd into the selected region of an editText area. If the user has
      * selected an area of text (multiple characters), that text is replaced with the new text.
      *
+     * @author: Michael Betterton (u6797866)
      * @param editText  An Edit Text Area to add text to.
      * @param textToAdd A String to insert into the Edit Text Area.
      */

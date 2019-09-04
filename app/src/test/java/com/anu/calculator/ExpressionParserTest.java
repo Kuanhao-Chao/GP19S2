@@ -17,6 +17,8 @@ public class ExpressionParserTest {
      * a string as the input expression, the expected output of the string as an equation and a
      * delta figure. The delta is an allowable difference between the input and parsed expression
      * output.
+     *
+     * @author: Michael Betterton (u6797866)
      */
     private class TestCase {
 
@@ -47,6 +49,8 @@ public class ExpressionParserTest {
      * case has an allowable margin of error in the delta attribute.
      * To add test cases to the test suite, add them to the array list by appending them in the
      * commented area.
+     *
+     * @author: Michael Betterton (u6797866)
      */
     @Test
     public void runTests() {

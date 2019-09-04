@@ -25,6 +25,11 @@ public class TokenizerTest {
     // Instantiate a tokenizer to use in the tests.
     private static Tokenizer tokenizer;
 
+    /**
+     * Simple unit tests to make sure basic addition works.
+     *
+     * @author: Michael Betterton (u6797866)
+     */
     @Test
     public void testAddition() {
         // Declare each of the test cases
@@ -46,6 +51,11 @@ public class TokenizerTest {
         }
     }
 
+    /**
+     * Simple unit tests to make sure basic subtraction works.
+     *
+     * @author: Michael Betterton (u6797866)
+     */
     @Test
     public void testSubtraction() {
         // Declare each of the test cases
@@ -67,6 +77,9 @@ public class TokenizerTest {
         }
     }
 
+    /**
+     * @author: Sam
+     */
     @Test
     public void testSimpleOperations()
     {

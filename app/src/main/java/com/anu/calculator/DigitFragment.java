@@ -1,5 +1,6 @@
 package com.anu.calculator;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import com.anu.calculator.expressionparser.Exp;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,10 +30,28 @@ public class DigitFragment extends Fragment {
         return new DigitFragment();
     }
 
+    private HistoryMessenger historyMessenger;
 
+
+    /**
+     * Called to have the fragment instantiate its user interface view. All buttons in the fragment
+     *      * have their OnClickListeners defined here as well.
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @author: Michael Betterton (u6797866)
+     * @return The fragments UI view.
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        Log.d(TAG,"onCreateView: starting");
 
         final EditText calculation_area = Objects.requireNonNull(getActivity()).findViewById(R.id.calculation_textarea);
         calculation_area.setCursorVisible(true);
@@ -210,6 +230,12 @@ public class DigitFragment extends Fragment {
             }
         });
 
+        // Equals is a little bit more complex as it evaluates the actual expression. The basic
+        // intent of the listener is:
+        // 1. Parse the expression, handling any errors
+        // 2. Change the Calculation Area (text) to be "=<Evaluated Expression>"
+        // 3. Reset the working space.
+        // 4. Add to the history fragment the latest expression.
         Button equals = rootView.findViewById(R.id.evaluate);
         equals.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,11 +250,35 @@ public class DigitFragment extends Fragment {
                 resetTextArea(calculation_area);
 
                 // Add the text to the screen
-                String calcAreaText = "=" + fmt(exp.evaluate());
-                calculation_area.setText(calcAreaText);
+                calculation_area.setText(fmt(evaluation));
+                calculation_area.setSelection(calculation_area.length());
+
+                // Pass the history to the history fragment
+                historyMessenger.sendHistory("\n"+expression);
+                historyMessenger.sendHistory("\n="+fmt(evaluation));
             }
         });
-
+        Log.d(TAG,"onCreateView: complete");
         return rootView;
+    }
+
+    /**
+     * Checks to see if the MainActivity implements the HistoryMessenger Interface. This is a
+     * requirement so that this fragment can append messages (historical expressions) to the history
+     * when expressions are evaluated. If the MainActivity doesn't implement the interface, a
+     * exception is thrown.
+     *
+     * @author: Michael Betterton (u6797866)
+     * @param context The applications working context
+     */
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            historyMessenger = (HistoryMessenger) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Error in retrieving data. Please try again");
+        }
     }
 }
