@@ -18,10 +18,40 @@ import java.util.function.DoubleToLongFunction;
  * The Function class which stores function that user inputs.
  *
  * @author  Howard Chao
- * @version 1.0
+ * @version 2.0
  * @since   2019-09-04
+ *
  */
 public class Function {
+    /**
+     * The default constructor for a test case.
+     *
+     * @param scopeParameters  All possible parameters.
+     * @param input  User input after space trimmed.
+     * @param subStrings  The function is separated as left-hand side string & right-hand side
+     *                    string. There are only two elements in subStrings. The first one is
+     *                    left-hand side string; the second one is right-hand side string. When
+     *                    users update the function instance, subStrings value will not be changed.
+     * @param assignedSubStrings The function is separated as left-hand side string & right-hand
+     *                           side string. There are only two elements in subStrings. The first
+     *                           one is left-hand side string; the second one is right-hand side
+     *                           string. When users update the function instance, subStrings value
+     *                           will be changed according to the assigned parameters
+     * @param twoExp   Run ExpressionParser with subStrings as input. There are only two elements
+     *                 in twoExp. The first one stored the result of first element of subStrings.
+     *                 And does the second one.
+     * @param assignedTwoExp    Run ExpressionParser with assignedSubStrings as input. Same process
+     *                          as twoExp.
+     * @param twoExpParameters  Store all scopeParameters parameters result. Each element is stored
+     *                          as Hashmap. The key is the parameters; the value is a tuple which
+     *                          stores 'whether parameter is defined' and 'the value of parameter'.
+     *                          If the parameter is in the function and has a value, then result
+     *                          would be (true, double); if the parameter is in the function and
+     *                          does not have a value, then result would be (true, null); if
+     *                          parameter is not in the function, the result would be (false, null).
+     * @param isValid  Whether the function is valid.
+     *
+     */
     //        w | x | y | z | a | β | ɣ | Δ
     private List<Character> scopeParameters = Arrays.asList('w', 'x', 'y', 'z', 'ɑ', 'β', 'ɣ', 'Δ');
     private String input = null;
@@ -50,14 +80,13 @@ public class Function {
          * First step: Remove spaces in the input string
          */
         input = input.replaceAll(" ", "");
+        this.input = input;
         if (input.equals("")) {
             this.isValid = false;
-            this.input = input;
             System.out.println("Equal ''");
             System.out.println("Input: " + this.input);
             System.out.println("isValid: " + this.isValid);
         } else {
-            this.input = input;
             /**
              * Second step: Split the function into sub_expression
              */
@@ -243,9 +272,9 @@ public class Function {
     public void functionSummary() {
         for (int i =0; i < 2; i++) {
             if (i == 0) {
-                System.out.println("Right-hand side: ");
-            } else if (i == 1) {
                 System.out.println("Left-hand side: ");
+            } else if (i == 1) {
+                System.out.println("Right-hand side: ");
             }
             System.out.println("    Origin input: " + subStrings.get(i));
             System.out.println("  Assigned input: " + assignedSubStrings.get(i));
