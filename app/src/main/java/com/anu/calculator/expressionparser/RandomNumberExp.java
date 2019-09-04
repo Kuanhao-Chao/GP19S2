@@ -16,7 +16,7 @@ public class RandomNumberExp extends Exp {
 
 	@Override
 	public String show() {
-		return "rand";
+		return "rand(" + randDouble + ")";
 	}
 
 	@Override

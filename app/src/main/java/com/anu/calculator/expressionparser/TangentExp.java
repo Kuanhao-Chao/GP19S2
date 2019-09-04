@@ -18,7 +18,7 @@ public class TangentExp extends Exp {
 
 	@Override
 	public double evaluate() {
-		return Math.tan(exp.evaluate());
+		return Math.tan(Math.toRadians(exp.evaluate()));
 	}
 
 }

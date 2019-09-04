@@ -16,7 +16,7 @@ public class PowerExp extends Exp {
 	@Override
 	public String show() {
 
-		return "power(" + base.show() + "," + pwr.show() + ")";
+		return "(" + base.show() + ")^(" + pwr.show() + ")";
 	}
 
 	@Override

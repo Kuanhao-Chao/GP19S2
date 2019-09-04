@@ -15,7 +15,7 @@ public class AddExp extends Exp {
 
 	@Override
 	public String show() {
-		return "(" + term.show() + " + " + exp.show() + ")";
+		return "(" + term.show() + "+" + exp.show() + ")";
 	}
 
 	@Override

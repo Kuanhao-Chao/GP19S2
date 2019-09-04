@@ -18,7 +18,7 @@ public class SineExp extends Exp {
 
 	@Override
 	public double evaluate() {
-		return Math.sin(exp.evaluate());
+		return Math.sin(Math.toRadians(exp.evaluate()));
 	}
 
 }

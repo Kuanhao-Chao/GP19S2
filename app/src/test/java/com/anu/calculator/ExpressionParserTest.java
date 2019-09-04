@@ -58,14 +58,38 @@ public class ExpressionParserTest {
         testCases.add(new TestCase("5", (double) 5, (double) 0));
         testCases.add(new TestCase("1.5", (double) 1.5, (double) 0));
         testCases.add(new TestCase("1.0+100", (double) 101, (double) 0));
-        testCases.add(new TestCase("1.1x2.2", 2.42, 0.0001));
+        testCases.add(new TestCase("1.1×2.2", 2.42, 0.0001));
         testCases.add(new TestCase("12÷6", (double) 2, (double) 0));
-        testCases.add(new TestCase("15.1-0.1", (double) 15, (double) 0));
-        testCases.add(new TestCase("100*17.5%", 17.5, (double) 0));
-        testCases.add(new TestCase("100*17.5%", 17.5, (double) 0));
-        testCases.add(new TestCase("-1-5", (double) -6, (double) 0));
+        testCases.add(new TestCase("15.1−0.1", (double) 15, (double) 0));
+        testCases.add(new TestCase("100×17.5%", 17.5, (double) 0));
+        testCases.add(new TestCase("100×17.5%", 17.5, (double) 0));
+        testCases.add(new TestCase("-1−5", (double) -6, (double) 0));
+
+        //This section tests the operators
+        testCases.add(new TestCase("sin45", 0.7071, 0.002));
+        testCases.add(new TestCase("cos5", 0.9961, 0.002));
+        testCases.add(new TestCase("tan12", 0.2125, 0.002));
+        testCases.add(new TestCase("cos⁻¹0.7071", 45d, 0.002));
+        testCases.add(new TestCase("sin⁻¹0.7071", 45d, 0.002));
+        testCases.add(new TestCase("tan⁻¹0.2", 11.3099, 0.002));
+        testCases.add(new TestCase("10nPr5", 30240d, 0d));
+        testCases.add(new TestCase("15nCr7", 6435d, 0d));
+        testCases.add(new TestCase("ln400", 5.99146, 0.0002));
+        testCases.add(new TestCase("log₁₀876", 2.9425, 0.002));
+        testCases.add(new TestCase("25^4", 390625d, 0d));
+        testCases.add(new TestCase("10!", 3628800d, 0d));
+        testCases.add(new TestCase("√26", 5.099, 0.002));
+        testCases.add(new TestCase("∛50", 3.684, 0.002));
+        testCases.add(new TestCase("15%", 0.15, 0d));
+        testCases.add(new TestCase("180×e−π", 486.1491365, 0.000002));
+
+
+
         // This section is for more complex test cases demonstrating BODMAS/BOMDAS function ordering
-        testCases.add(new TestCase("55.888x1000.0÷80.1", (double) 697.7278402, 0.00000002));
+        testCases.add(new TestCase("55.888×1000.0÷80.1", 697.7278402, 0.00000002));
+
+        //testCases.add(new TestCase( , , ));
+
         // End of test case area, do not modify the code below.
 
         for (TestCase testCase : testCases) {

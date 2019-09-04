@@ -43,8 +43,6 @@ public class Tokenizer {
             currentToken = new Token(")", Token.Type.RIGHT_PARENTHESIS);
         else if(_buffer.charAt(0) == '!')
             currentToken = new Token("!", Token.Type.FACTORIAL);
-        else if(_buffer.charAt(0) == ',')
-            currentToken = new Token(",", Token.Type.COMMA);
         else if(_buffer.charAt(0) == 'e')
             currentToken = new Token("e", Token.Type.E);
         else if(_buffer.charAt(0) == Scripts.Operators.MULTIPLY.getUnicode())
@@ -61,8 +59,8 @@ public class Tokenizer {
             currentToken = new Token("" + Scripts.Operators.NEGATIVE.getUnicode(), Token.Type.NEGATIVE);
         else if(_buffer.charAt(0) == 'r')
             currentToken = new Token("rand", Token.Type.RANDOM_NUMBER);
-        else if(_buffer.charAt(0) == 'p')
-            currentToken = new Token("power", Token.Type.POWER);
+        else if(_buffer.charAt(0) == '^')
+            currentToken = new Token("^", Token.Type.POWER);
         else if(_buffer.charAt(0) == Scripts.SuperScript.TWO.getUnicode())
             currentToken = new Token("" + Scripts.SuperScript.TWO.getUnicode(), Token.Type.SQUARE);
         else if(_buffer.charAt(0) == Scripts.SuperScript.THREE.getUnicode())

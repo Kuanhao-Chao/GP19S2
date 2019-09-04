@@ -2,12 +2,18 @@ package com.anu.calculator.expressionparser;
 
 /**
  * Grammar:
- * <exp> ::= <term> | <exp> + <term> | <exp> - <term>
- * <term> ::= <operation> | <term> × <operation> | <term> / <operation>
- * <operation> ::= sin(<exp>) | sin⁻¹(<exp>) | cos(<exp>) | cos⁻¹(<exp>) | tan(<exp>) |
- *      tan⁻¹(<exp>) | log₁₀(<exp>) | ln(<exp>) | !(<exp>) | √(<exp>) | ∛(<exp>) |
- *      nPr(<exp>,<exp>) | nCr(<exp>,<exp>) | power(<exp>,<exp>) | %() | π | e | rand |
- *      w | x | y | z | ɑ | β | ɣ | Δ | DOUBLE | (<exp>)
+ * <exp> ::= <term> | <exp> + <term> | <exp> − <term>
+ *
+ * <term> ::= <operation> | <term> × <operation> | <term> ÷ <operation>
+ *
+ * <operation> ::= sin<exp> | sin⁻¹<exp> | cos<exp> | cos⁻¹<exp> |
+ *      tan<exp> | tan⁻¹<exp> | log₁₀<exp> | ln<exp> | !<exp> | √<exp> |
+ *      ∛<exp> | <exp>nPr<exp> | <exp>nCr<exp> | <exp>^<exp> | <exp>² |
+ *      <exp>³ | -<exp> | <exp>% | (<exp>) | <literal>
+ *
+ * <literal> ::= π | e | rand | double | <unknown variable>
+ *
+ * <unknown variable> ::= w | x | y | z | ɑ | β | ɣ | Δ
  */
 
 public class ExpressionParser
@@ -19,155 +25,122 @@ public class ExpressionParser
         _tokenizer = tokenizer;
     }
 
-    public Exp parseExp()
-    {
-//        System.out.println("Inside parseExp");
+    public Exp parseExp() {
         Exp term = parseTerm();
-        if (_tokenizer.hasNext())
+        if(_tokenizer.hasNext() && _tokenizer.current().type() == Token.Type.ADD)
         {
-            if (_tokenizer.current().type() == Token.Type.SUBTRACT)
-            {
-                _tokenizer.next();
-                Exp exp = parseExp();
-                return new SubtractExp(term, exp);
-            }
-            if (_tokenizer.current().type() == Token.Type.ADD)
-            {
-                _tokenizer.next();
-                Exp exp = parseExp();
-                return new AddExp(term, exp);
-            }
+            _tokenizer.next();
+            Exp exp = parseExp();
+            return new AddExp(term, exp);
         }
-//        System.out.println("Finish!!");
-        return term;
+        else if(_tokenizer.hasNext() && _tokenizer.current().type() == Token.Type.SUBTRACT)
+        {
+            _tokenizer.next();
+            Exp exp = parseExp();
+            return new SubtractExp(term, exp);
+        }
+        else return term;
     }
 
-    public Exp parseTerm()
+    private Exp parseTerm()
     {
-//        System.out.println("Inside parseTerm");
-
-        Exp oper = parseOperation();
-        if (_tokenizer.hasNext())
+        Exp operation = parseOperation();
+        if(_tokenizer.hasNext() && _tokenizer.current().type() == Token.Type.DIVIDE)
         {
-            if (_tokenizer.current().type() == Token.Type.MULTIPLY)
-            {
-                _tokenizer.next();
-                Exp term = parseTerm();
-                return new MultiplyExp(oper, term);
-            }
-            if (_tokenizer.current().type() == Token.Type.DIVIDE)
-            {
-                _tokenizer.next();
-                Exp term = parseTerm();
-                return new DivideExp(oper, term);
-            }
+            _tokenizer.next();
+            Exp exp = parseTerm();
+            return new DivideExp(operation, exp);
         }
-        return oper;
+        else if(_tokenizer.hasNext() && _tokenizer.current().type() == Token.Type.MULTIPLY)
+        {
+            _tokenizer.next();
+            Exp exp = parseTerm();
+            return new MultiplyExp(operation, exp);
+        }
+        else return operation;
     }
 
-    public Exp parseOperation()
+    private Exp parseOperation()
     {
-//        System.out.println("\n\n_tokenizer.hasNext(): " + _tokenizer.hasNext());
-//        System.out.println("\n\n_tokenizer.current(): " + _tokenizer.current().type());
-//        System.out.println("_tokenizer.current(): " + _tokenizer.current().token());
-//        System.out.println("Inside parseOperation");
-//        System.out.println("current token: " + _tokenizer.current().token());
+        Exp literal;
+        Token holdToken;
 
-        if(_tokenizer.current().type() != Token.Type.DOUBLE)
+        //if it's a leading token - save the token, get the applicable exp and return
+        if(_tokenizer.current().type().isLeading())
         {
-            if(_tokenizer.hasNext())
+            holdToken = _tokenizer.current();
+            _tokenizer.next();
+            literal = parseLiteral();
+            switch(holdToken.type())
             {
-                switch(_tokenizer.current().type().args())
-                {
-                    case 0: return parseNoArgOperation(_tokenizer.current().token());
-                    case 1: return parseSingleArgOperation(_tokenizer.current().token());
-                    default: return parseDoubleArgOperation(_tokenizer.current().token());
-                }
+                case SINE: return new SineExp(literal);
+                case ARC_SINE: return new ArcSineExp(literal);
+                case COSINE: return new CosineExp(literal);
+                case ARC_COSINE: return new ArcCosineExp(literal);
+                case TANGENT: return new TangentExp(literal);
+                case ARC_TANGENT: return new ArcTangentExp(literal);
+                case LOG_NATURAL: return new LogNaturalExp(literal);
+                case LOG_TEN: return new LogTenExp(literal);
+                case SQUARE_ROOT: return new SquareRootExp(literal);
+                case CUBED_ROOT: return new CubedRootExp(literal);
+                case NEGATIVE: return new NegativeExp(literal);
             }
-        } else if (_tokenizer.current().type() == Token.Type.DOUBLE) {
-
         }
-        DoubleExp literal = new DoubleExp(Double.parseDouble(_tokenizer.current().token()));
-        _tokenizer.next();
+
+        //get the next exp
+        literal = parseLiteral();
+
+        //check if the current token is trailing or both
+        if(_tokenizer.hasNext() && _tokenizer.current().type().isTrailing())
+        {
+           holdToken = _tokenizer.current();
+           _tokenizer.next();
+           switch(holdToken.type())
+           {
+               case PERCENT: return new PercentExp(literal);
+               case FACTORIAL: return new FactorialExp(literal);
+               case SQUARE: return new PowerExp(literal, new DoubleExp(2));
+               case CUBE: return new PowerExp(literal, new DoubleExp(3));
+           }
+        }
+        else if(_tokenizer.hasNext() && _tokenizer.current().type().isLeadingAndTrailing())
+        {
+            holdToken = _tokenizer.current();
+            _tokenizer.next();
+            Exp exp = parseLiteral();
+            switch(holdToken.type())
+            {
+                case POWER: return new PowerExp(literal, exp);
+                case PERMUTATION: return new PermutationExp(literal, exp);
+                case COMBINATION: return new CombinationExp(literal, exp);
+            }
+        }
+
         return literal;
     }
 
-    public Exp parseNoArgOperation(String token)
+    private Exp parseLiteral()
     {
-//        System.out.println("Inside parseNoArgOperation");
-        _tokenizer.next();
-        switch(token)
-        {
-            case "#R": return new RandomNumberExp();
-            case "#PI": return new PiExp();
-            case "#E": return new EExp();
-        }
-        return null;
-    }
+        Exp literal = null;
 
-    public Exp parseSingleArgOperation(String token)
-    {
-        /**
-         * Modified time: 2019-09-04
-         * Change parsing condition for unknown variable
-         * Modifier: Howard Chao
-         */
-        if (_tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE) {
-            UnknownVariableExp unknownLiteral = new UnknownVariableExp(_tokenizer.current().token().charAt(0));
+        if(_tokenizer.current().type() == Token.Type.RANDOM_NUMBER)
+            literal = new RandomNumberExp();
+        else if(_tokenizer.current().type() == Token.Type.PI)
+            literal = new PiExp();
+        else if(_tokenizer.current().type() == Token.Type.E)
+            literal =  new EExp();
+        else if(_tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE)
+            literal = new UnknownVariableExp(_tokenizer.current().token().charAt(0));
+        else if(_tokenizer.current().type() == Token.Type.DOUBLE)
+            literal = new DoubleExp(Double.parseDouble(_tokenizer.current().token()));
+        else if(_tokenizer.current().type() == Token.Type.LEFT_PARENTHESIS)
+        {
             _tokenizer.next();
-            if (_tokenizer.hasNext() && _tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE) {
-//                System.out.println(_tokenizer.current().token());
-                _tokenizer.next();
-                if (_tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE) {
-                    Exp exp = parseExp();
-                    _tokenizer.next();
-                    switch(token)
-                    {
-                        case "sin": return new SineExp(exp);
-                        case "sin-1": return new ArcSineExp(exp);
-                        case "cos": return new CosineExp(exp);
-                        case "cos-1": return new ArcCosineExp(exp);
-                        case "tan": return new TangentExp(exp);
-                        case "tan-1": return new ArcTangentExp(exp);
-                        case "log": return new LogNaturalExp(exp);
-                        case "log10": return new LogTenExp(exp);
-                        case "fac": return new FactorialExp(exp);
-                        case "sqrt": return new SquareRootExp(exp);
-                        default:
-                            UnknownVariableExp unknow_literal_2 = new UnknownVariableExp(exp.show().charAt(0));
-                            return unknow_literal_2; //Unknown variable is returned as default as you can't guess which character will be used for the variable
-                    }
-                }
-            } else {
-                if (_tokenizer.hasNext() && _tokenizer.current().type() != Token.Type.UNKNOWN_VARIABLE) {
-                    return unknownLiteral; //Unknown variable is returned as default as you can't guess which character will be used for the variable
-                } else if (!_tokenizer.hasNext()){
-                    return unknownLiteral; //Unknown variable is returned as default as you can't guess which character will be used for the variable
-                }
-            }
+            literal = parseExp();
+            _tokenizer.next();
         }
-        /**
-         * End modification
-         */
-        return null;
-    }
-
-    public Exp parseDoubleArgOperation(String token)
-    {
-//        System.out.println("Inside parseDoubleArgOperation");
 
         _tokenizer.next();
-        _tokenizer.next();
-        Exp expOne = parseExp();
-        _tokenizer.next();
-        Exp expTwo = parseExp();
-        _tokenizer.next();
-        switch(token)
-        {
-            case "pwr": return new PowerExp(expOne, expTwo);
-            case "perm": return new PermutationExp(expOne, expTwo);
-            case "comb": return new CombinationExp(expOne, expTwo);
-        }
-        return null;
+        return literal;
     }
 }

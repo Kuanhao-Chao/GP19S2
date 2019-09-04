@@ -95,34 +95,34 @@ public class TokenizerTest {
                 Arrays.asList(Token.Type.LOG_TEN, Token.Type.LEFT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.RIGHT_PARENTHESIS)));
         testCases.add(new TestCase("(25.78)²",
                 Arrays.asList(Token.Type.LEFT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.RIGHT_PARENTHESIS, Token.Type.SQUARE)));
-        testCases.add(new TestCase("power(135.5, 4)",
-                Arrays.asList(Token.Type.POWER, Token.Type.LEFT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.COMMA, Token.Type.DOUBLE, Token.Type.RIGHT_PARENTHESIS)));
+        testCases.add(new TestCase("135.5^5.2",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.POWER, Token.Type.DOUBLE)));
         testCases.add(new TestCase("(57)³",
                 Arrays.asList(Token.Type.LEFT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.RIGHT_PARENTHESIS, Token.Type.CUBE)));
-        testCases.add(new TestCase("nPr(57,5)",
-                Arrays.asList(Token.Type.PERMUTATION, Token.Type.LEFT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.COMMA, Token.Type.DOUBLE, Token.Type.RIGHT_PARENTHESIS)));
-        testCases.add(new TestCase("nCr(100,4)",
-                Arrays.asList(Token.Type.COMBINATION, Token.Type.LEFT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.COMMA, Token.Type.DOUBLE, Token.Type.RIGHT_PARENTHESIS)));
+        testCases.add(new TestCase("57nPr5",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.PERMUTATION, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("100nCr4",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.COMBINATION, Token.Type.DOUBLE)));
         testCases.add(new TestCase("25.12×π",
                 Arrays.asList(Token.Type.DOUBLE, Token.Type.MULTIPLY, Token.Type.PI)));
         testCases.add(new TestCase("47×e",
                 Arrays.asList(Token.Type.DOUBLE, Token.Type.MULTIPLY, Token.Type.E)));
-        testCases.add(new TestCase("24+√(45)",
-                Arrays.asList(Token.Type.DOUBLE, Token.Type.ADD, Token.Type.SQUARE_ROOT, Token.Type.LEFT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.RIGHT_PARENTHESIS)));
-        testCases.add(new TestCase("sin⁻¹(97.4)",
-                Arrays.asList(Token.Type.ARC_SINE, Token.Type.LEFT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.RIGHT_PARENTHESIS)));
-        testCases.add(new TestCase("cos⁻¹(24)",
-                Arrays.asList(Token.Type.ARC_COSINE, Token.Type.LEFT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.RIGHT_PARENTHESIS)));
-        testCases.add(new TestCase("tan⁻¹(105.3)",
-                Arrays.asList(Token.Type.ARC_TANGENT, Token.Type.LEFT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.RIGHT_PARENTHESIS)));
-        testCases.add(new TestCase("24.5+∛(475)",
-                Arrays.asList(Token.Type.DOUBLE, Token.Type.ADD, Token.Type.CUBED_ROOT, Token.Type.LEFT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.RIGHT_PARENTHESIS)));
+        testCases.add(new TestCase("24+√45",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.ADD, Token.Type.SQUARE_ROOT, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("sin⁻¹97.4",
+                Arrays.asList(Token.Type.ARC_SINE, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("cos⁻¹24",
+                Arrays.asList(Token.Type.ARC_COSINE, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("tan⁻¹105.3",
+                Arrays.asList(Token.Type.ARC_TANGENT, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("24.5+∛475",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.ADD, Token.Type.CUBED_ROOT, Token.Type.DOUBLE)));
         testCases.add(new TestCase("24.5+rand×100",
                 Arrays.asList(Token.Type.DOUBLE, Token.Type.ADD, Token.Type.RANDOM_NUMBER, Token.Type.MULTIPLY, Token.Type.DOUBLE)));
-        testCases.add(new TestCase("24−!(72.45)",
-                Arrays.asList(Token.Type.DOUBLE, Token.Type.SUBTRACT, Token.Type.FACTORIAL, Token.Type.LEFT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.RIGHT_PARENTHESIS)));
-        testCases.add(new TestCase("(67.9)%",
-                Arrays.asList(Token.Type.LEFT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.RIGHT_PARENTHESIS, Token.Type.PERCENT)));
+        testCases.add(new TestCase("24−!72.45",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.SUBTRACT, Token.Type.FACTORIAL, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("67.9%",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.PERCENT)));
         testCases.add(new TestCase("-(45)−108.2",
                 Arrays.asList(Token.Type.NEGATIVE, Token.Type.LEFT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.RIGHT_PARENTHESIS, Token.Type.SUBTRACT, Token.Type.DOUBLE)));
         /*

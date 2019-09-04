@@ -18,7 +18,7 @@ public class CosineExp extends Exp {
 
 	@Override
 	public double evaluate() {
-		return Math.cos(exp.evaluate());
+		return Math.cos(Math.toRadians(exp.evaluate()));
 	}
 
 }

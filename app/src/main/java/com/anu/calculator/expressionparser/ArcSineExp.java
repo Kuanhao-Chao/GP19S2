@@ -21,7 +21,7 @@ public class ArcSineExp extends Exp {
 
 	@Override
 	public double evaluate() {
-		return Math.asin(exp.evaluate());
+		return Math.toDegrees(Math.asin(exp.evaluate()));
 	}
 
 }

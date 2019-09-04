@@ -21,7 +21,7 @@ public class ArcTangentExp extends Exp {
 
 	@Override
 	public double evaluate() {
-		return Math.atan(exp.evaluate());
+		return Math.toDegrees(Math.atan(exp.evaluate()));
 	}
 
 }

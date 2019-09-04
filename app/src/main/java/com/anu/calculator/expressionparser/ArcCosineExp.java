@@ -22,7 +22,7 @@ public class ArcCosineExp extends Exp {
 
 	@Override
 	public double evaluate() {
-		return Math.acos(exp.evaluate());
+		return Math.toDegrees(Math.acos(exp.evaluate()));
 	}
 
 }

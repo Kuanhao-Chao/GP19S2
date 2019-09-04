@@ -16,7 +16,7 @@ public class UnknownVariableExp extends Exp {
 
 	@Override
 	public String show() {
-		return " #" + variable;
+		return "" + variable;
 	}
 
 	@Override

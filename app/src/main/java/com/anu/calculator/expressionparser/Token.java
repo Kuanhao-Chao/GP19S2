@@ -10,48 +10,46 @@ package com.anu.calculator.expressionparser;
 public class Token {
 
     public enum Type {
-        ADD(2),
-        ARC_COSINE(1),
-        ARC_SINE(1),
-        ARC_TANGENT(1),
-        COMMA(0),
-        COSINE(1),
-        COMBINATION(2),
-        CUBE(1),
-        CUBED_ROOT(1),
-        DIVIDE(2),
-        DOUBLE(0),
-        E(0),
-        FACTORIAL(1),
-        LEFT_PARENTHESIS(0),
-        LOG_TEN(1),
-        LOG_NATURAL(1),
-        NEGATIVE(1),
-        MULTIPLY(2),
-        PERCENT(1),
-        PERMUTATION(2),
-        PI(0),
-        POWER(2),
-        RANDOM_NUMBER(0),
-        RIGHT_PARENTHESIS(0),
-        SINE(1),
-        SUBTRACT(2),
-        SQUARE(1),
-        SQUARE_ROOT(1),
-        TANGENT(1),
-        UNKNOWN_VARIABLE(1);
+        ADD('n'),
+        ARC_COSINE('l'),
+        ARC_SINE('l'),
+        ARC_TANGENT('l'),
+        COSINE('l'),
+        COMBINATION('b'),
+        CUBE('t'),
+        CUBED_ROOT('l'),
+        DIVIDE('n'),
+        DOUBLE('n'),
+        E('n'),
+        FACTORIAL('t'),
+        LEFT_PARENTHESIS('n'),
+        LOG_TEN('l'),
+        LOG_NATURAL('l'),
+        NEGATIVE('l'),
+        MULTIPLY('n'),
+        PERCENT('t'),
+        PERMUTATION('b'),
+        PI('n'),
+        POWER('b'),
+        RANDOM_NUMBER('n'),
+        RIGHT_PARENTHESIS('n'),
+        SINE('l'),
+        SUBTRACT('n'),
+        SQUARE('t'),
+        SQUARE_ROOT('l'),
+        TANGENT('l'),
+        UNKNOWN_VARIABLE('n');
 
-        private int numArgs;
+        private char position; //tokenType: l = leading, t = trailing, b = both, n = not applicable
 
-        Type(int numArgs)
+        Type(char position)
         {
-            this.numArgs = numArgs;
+            this.position = position;
         }
 
-        public int args()
-        {
-            return numArgs;
-        }
+        public boolean isLeading(){ return position == 'l'; }
+        public boolean isTrailing(){ return position == 't'; }
+        public boolean isLeadingAndTrailing() { return position == 'b'; }
     }
 
     private String _token;
