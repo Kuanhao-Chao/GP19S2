@@ -20,6 +20,8 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class DigitFragment extends Fragment {
@@ -29,6 +31,32 @@ public class DigitFragment extends Fragment {
     public static DigitFragment newInstance() {
         return new DigitFragment();
     }
+
+    Map<Integer, Integer> FONT_SIZES = new HashMap<Integer, Integer>() {{
+        put(-1, 18);
+        put(0, 36);
+        put(1, 30);
+        put(2, 30);
+        put(3, 30);
+        put(4, 24);
+        put(5, 24);
+        put(6, 24);
+    }};
+
+
+    /**
+     * Resets the provided EditText TextArea to its default properties. This method should be
+     * invoked whenever functions like clear and equals are executed.
+     *
+     * @param textArea The textArea to reset properties on.
+     */
+    private void resetTextArea(EditText textArea) {
+        // Set the font-size back to default
+        textArea.setTextSize(FONT_SIZES.get(0));
+        // Empty out all text
+        textArea.setText("");
+    }
+
 
     /**
      * Inserts the provided textToAdd into the selected region of an editText area. If the user has
@@ -42,6 +70,14 @@ public class DigitFragment extends Fragment {
         int end = Math.max(editText.getSelectionEnd(), 0);
         editText.getText().replace(Math.min(start, end), Math.max(start, end),
                 textToAdd, 0, textToAdd.length());
+
+        // Set the text size to a value based on the length of the current inputs. Default it to the
+        // -1 value when no font size is set for that length (exceptionally long strings
+        int length = editText.length() / 20;
+        if (FONT_SIZES.containsKey(length))
+            editText.setTextSize((int) FONT_SIZES.get(length));
+        else
+            editText.setTextSize((int) FONT_SIZES.get(-1));
     }
 
     /**
@@ -50,12 +86,11 @@ public class DigitFragment extends Fragment {
      * @param d The double to return nicely formatted
      * @return The nicely formatted double as a string.
      */
-    public static String fmt(double d)
-    {
-        if(d == (long) d)
-            return String.format("%d",(long)d);
+    public static String fmt(double d) {
+        if (d == (long) d)
+            return String.format("%d", (long) d);
         else
-            return String.format("%s",d);
+            return String.format("%s", d);
     }
 
     @Override
@@ -224,7 +259,7 @@ public class DigitFragment extends Fragment {
         all_clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                calculation_area.setText("");
+                resetTextArea(calculation_area);
             }
         });
 
@@ -248,6 +283,9 @@ public class DigitFragment extends Fragment {
                 Tokenizer tokenizer = new Tokenizer(expression);
                 Exp exp = new ExpressionParser(tokenizer).parseExp();
                 double evaluation = exp.evaluate();
+
+                // Reset the Text Area
+                resetTextArea(calculation_area);
 
                 // Add the text to the screen
                 String calcAreaText = "=" + fmt(exp.evaluate());
