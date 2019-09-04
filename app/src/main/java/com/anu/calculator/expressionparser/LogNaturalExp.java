@@ -1,19 +1,19 @@
 package com.anu.calculator.expressionparser;
 
 /**
- * LogNatExp: This class is used to represent the expression of natural logarithm (base e)
+ * LogNaturalExp: This class is used to represent the expression of natural logarithm (base e)
  */
 
-public class LogNatExp extends Exp {
+public class LogNaturalExp extends Exp {
 	private Exp exp;
 
-	public LogNatExp(Exp exp) {
+	public LogNaturalExp(Exp exp) {
 		this.exp = exp;
 	}
 
 	@Override
 	public String show() {
-		return "log(" + exp.show() + ")";
+		return "ln(" + exp.show() + ")";
 	}
 
 	@Override

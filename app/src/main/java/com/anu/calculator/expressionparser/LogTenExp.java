@@ -13,7 +13,8 @@ public class LogTenExp extends Exp {
 
 	@Override
 	public String show() {
-		return "log10(" + exp.show() + ")";
+		return "log" + Scripts.SubScript.ONE.getUnicode() +
+				Scripts.SubScript.ZERO.getUnicode() + "(" + exp.show() + ")";
 	}
 
 	@Override

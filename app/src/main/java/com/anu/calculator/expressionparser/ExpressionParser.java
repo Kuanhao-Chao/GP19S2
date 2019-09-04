@@ -3,12 +3,11 @@ package com.anu.calculator.expressionparser;
 /**
  * Grammar:
  * <exp> ::= <term> | <exp> + <term> | <exp> - <term>
- * <term> ::= <operation> | <term> * <operation> | <term> / <operation>
- * <operation> ::= <literal> | sin(<exp>) | sin-1(<exp>) | cos(<exp>) |
- *      cos-1(<exp>) | tan(<exp>) | tan-1(<exp>) | log10(<exp>) | log(<exp>) |
- *      fac(<exp>) | sqrt(<exp>) | rand(<exp>) | perm(<exp>,<exp>) | comb(<exp>,<exp>) |
- *      pwr(<exp>,<exp>)
- * <literal> ::= DOUBLE | #PI | #E | #[A-D,F-O,Q-Z] |(<exp>)
+ * <term> ::= <operation> | <term> × <operation> | <term> / <operation>
+ * <operation> ::= sin(<exp>) | sin⁻¹(<exp>) | cos(<exp>) | cos⁻¹(<exp>) | tan(<exp>) |
+ *      tan⁻¹(<exp>) | log₁₀(<exp>) | ln(<exp>) | !(<exp>) | √(<exp>) | ∛(<exp>) |
+ *      nPr(<exp>,<exp>) | nCr(<exp>,<exp>) | power(<exp>,<exp>) | %() | π | e | rand |
+ *      w | x | y | z | ɑ | β | ɣ | Δ | DOUBLE | (<exp>)
  */
 
 public class ExpressionParser
@@ -22,14 +21,15 @@ public class ExpressionParser
 
     public Exp parseExp()
     {
+//        System.out.println("Inside parseExp");
         Exp term = parseTerm();
         if (_tokenizer.hasNext())
         {
-            if (_tokenizer.current().type() == Token.Type.SUB)
+            if (_tokenizer.current().type() == Token.Type.SUBTRACT)
             {
                 _tokenizer.next();
                 Exp exp = parseExp();
-                return new SubExp(term, exp);
+                return new SubtractExp(term, exp);
             }
             if (_tokenizer.current().type() == Token.Type.ADD)
             {
@@ -38,25 +38,28 @@ public class ExpressionParser
                 return new AddExp(term, exp);
             }
         }
+//        System.out.println("Finish!!");
         return term;
     }
 
     public Exp parseTerm()
     {
+//        System.out.println("Inside parseTerm");
+
         Exp oper = parseOperation();
         if (_tokenizer.hasNext())
         {
-            if (_tokenizer.current().type() == Token.Type.MUL)
+            if (_tokenizer.current().type() == Token.Type.MULTIPLY)
             {
                 _tokenizer.next();
                 Exp term = parseTerm();
-                return new MultExp(oper, term);
+                return new MultiplyExp(oper, term);
             }
-            if (_tokenizer.current().type() == Token.Type.DIV)
+            if (_tokenizer.current().type() == Token.Type.DIVIDE)
             {
                 _tokenizer.next();
                 Exp term = parseTerm();
-                return new DivExp(oper, term);
+                return new DivideExp(oper, term);
             }
         }
         return oper;
@@ -64,6 +67,12 @@ public class ExpressionParser
 
     public Exp parseOperation()
     {
+//        System.out.println("\n\n_tokenizer.hasNext(): " + _tokenizer.hasNext());
+//        System.out.println("\n\n_tokenizer.current(): " + _tokenizer.current().type());
+//        System.out.println("_tokenizer.current(): " + _tokenizer.current().token());
+//        System.out.println("Inside parseOperation");
+//        System.out.println("current token: " + _tokenizer.current().token());
+
         if(_tokenizer.current().type() != Token.Type.DOUBLE)
         {
             if(_tokenizer.hasNext())
@@ -75,6 +84,8 @@ public class ExpressionParser
                     default: return parseDoubleArgOperation(_tokenizer.current().token());
                 }
             }
+        } else if (_tokenizer.current().type() == Token.Type.DOUBLE) {
+
         }
         DoubleExp literal = new DoubleExp(Double.parseDouble(_tokenizer.current().token()));
         _tokenizer.next();
@@ -83,10 +94,11 @@ public class ExpressionParser
 
     public Exp parseNoArgOperation(String token)
     {
+//        System.out.println("Inside parseNoArgOperation");
         _tokenizer.next();
         switch(token)
         {
-            case "#R": return new RandExp();
+            case "#R": return new RandomNumberExp();
             case "#PI": return new PiExp();
             case "#E": return new EExp();
         }
@@ -95,28 +107,55 @@ public class ExpressionParser
 
     public Exp parseSingleArgOperation(String token)
     {
-        _tokenizer.next();
-        _tokenizer.next();
-        Exp exp = parseExp();
-        _tokenizer.next();
-        switch(token)
-        {
-            case "sin": return new SineExp(exp);
-            case "sin-1": return new AsineExp(exp);
-            case "cos": return new CosExp(exp);
-            case "cos-1": return new AcosExp(exp);
-            case "tan": return new TanExp(exp);
-            case "tan-1": return new AtanExp(exp);
-            case "log": return new LogNatExp(exp);
-            case "log10": return new LogTenExp(exp);
-            case "fac": return new FacExp(exp);
-            case "sqrt": return new SqrtExp(exp);
-            default: return new UnkVarExp(exp.show().charAt(0)); //Unknown variable is returned as default as you can't guess which character will be used for the variable
+        /**
+         * Modified time: 2019-09-04
+         * Change parsing condition for unknown variable
+         * Modifier: Howard Chao
+         */
+        if (_tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE) {
+            UnknownVariableExp unknownLiteral = new UnknownVariableExp(_tokenizer.current().token().charAt(0));
+            _tokenizer.next();
+            if (_tokenizer.hasNext() && _tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE) {
+//                System.out.println(_tokenizer.current().token());
+                _tokenizer.next();
+                if (_tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE) {
+                    Exp exp = parseExp();
+                    _tokenizer.next();
+                    switch(token)
+                    {
+                        case "sin": return new SineExp(exp);
+                        case "sin-1": return new ArcSineExp(exp);
+                        case "cos": return new CosineExp(exp);
+                        case "cos-1": return new ArcCosineExp(exp);
+                        case "tan": return new TangentExp(exp);
+                        case "tan-1": return new ArcTangentExp(exp);
+                        case "log": return new LogNaturalExp(exp);
+                        case "log10": return new LogTenExp(exp);
+                        case "fac": return new FactorialExp(exp);
+                        case "sqrt": return new SquareRootExp(exp);
+                        default:
+                            UnknownVariableExp unknow_literal_2 = new UnknownVariableExp(exp.show().charAt(0));
+                            return unknow_literal_2; //Unknown variable is returned as default as you can't guess which character will be used for the variable
+                    }
+                }
+            } else {
+                if (_tokenizer.hasNext() && _tokenizer.current().type() != Token.Type.UNKNOWN_VARIABLE) {
+                    return unknownLiteral; //Unknown variable is returned as default as you can't guess which character will be used for the variable
+                } else if (!_tokenizer.hasNext()){
+                    return unknownLiteral; //Unknown variable is returned as default as you can't guess which character will be used for the variable
+                }
+            }
         }
+        /**
+         * End modification
+         */
+        return null;
     }
 
     public Exp parseDoubleArgOperation(String token)
     {
+//        System.out.println("Inside parseDoubleArgOperation");
+
         _tokenizer.next();
         _tokenizer.next();
         Exp expOne = parseExp();
@@ -126,8 +165,8 @@ public class ExpressionParser
         switch(token)
         {
             case "pwr": return new PowerExp(expOne, expTwo);
-            case "perm": return new PermExp(expOne, expTwo);
-            case "comb": return new CombExp(expOne, expTwo);
+            case "perm": return new PermutationExp(expOne, expTwo);
+            case "comb": return new CombinationExp(expOne, expTwo);
         }
         return null;
     }

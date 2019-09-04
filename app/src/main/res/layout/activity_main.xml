@@ -13,19 +13,20 @@
 
         <EditText
             android:id="@+id/calculation_textarea"
-            android:cursorVisible="true"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight=".35"
+            android:background="@null"
+            android:cursorVisible="true"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
             android:padding="10dp"
             android:singleLine="false"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/design_default_color_primary_dark"
             android:textCursorDrawable="@null"
-            android:background="@null"
-            android:importantForAutofill="no"
-            android:inputType="textMultiLine"
             android:textIsSelectable="true"
+            android:textSize="36sp"
             android:windowSoftInputMode="stateAlwaysHidden"
             tools:ignore="LabelFor" />
 
