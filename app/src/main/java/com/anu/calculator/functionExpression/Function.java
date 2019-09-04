@@ -2,6 +2,7 @@ package com.anu.calculator.functionExpression;
 
 import com.anu.calculator.expressionparser.Exp;
 import com.anu.calculator.expressionparser.ExpressionParser;
+import com.anu.calculator.expressionparser.Token;
 import com.anu.calculator.expressionparser.Tokenizer;
 
 import java.util.ArrayList;
@@ -92,13 +93,29 @@ public class Function {
              */
             if (subStrings.size() != 2) {
                 this.isValid = false;
+                System.out.println("There must be only two variables");
             }
             this.subStrings = subStrings;
             if ( this.isValid == false) {
                 this.subStrings = null;
             }
+
+
+            if (this.subStrings != null) {
+                Tokenizer tokenizer_1 = new Tokenizer(this.subStrings.get(0));
+//                s
+                Exp exp_1 = new ExpressionParser(tokenizer_1).parseExp();
+//
+//                Tokenizer tokenizer_2 = new Tokenizer(this.subStrings.get(1));
+//                Exp exp_2 = new ExpressionParser(tokenizer_2).parseExp();
+                System.out.println("Input: " +  this.subStrings.get(0));
+                System.out.println("exp_1" + exp_1.show());
+//                System.out.println("exp_2" + exp_2.show());
+            }
         }
     }
+
+
     public boolean checkValid () {
         return isValid;
     }
