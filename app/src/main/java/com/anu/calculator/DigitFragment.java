@@ -250,12 +250,12 @@ public class DigitFragment extends Fragment {
                 resetTextArea(calculation_area);
 
                 // Add the text to the screen
-                String calcAreaText = "=" + fmt(evaluation);
-                calculation_area.setText(calcAreaText);
+                calculation_area.setText(fmt(evaluation));
+                calculation_area.setSelection(calculation_area.length());
 
                 // Pass the history to the history fragment
                 historyMessenger.sendHistory("\n"+expression);
-                historyMessenger.sendHistory("\n"+calcAreaText);
+                historyMessenger.sendHistory("\n="+fmt(evaluation));
             }
         });
         Log.d(TAG,"onCreateView: complete");
