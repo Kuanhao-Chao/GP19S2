@@ -25,6 +25,22 @@ public class OperationsFragment extends Fragment {
         return new OperationsFragment();
     }
 
+
+    /**
+     * Called to have the fragment instantiate its user interface view. All buttons in the fragment
+     * have their OnClickListeners defined here as well.
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @author: Michael Betterton (u6797866)
+     * @return The fragments UI view.
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
