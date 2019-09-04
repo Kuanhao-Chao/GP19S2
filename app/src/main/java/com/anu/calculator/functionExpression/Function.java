@@ -39,7 +39,7 @@ public class Function {
      *                           will be changed according to the assigned parameters
      * @param twoExp   Run ExpressionParser with subStrings as input. There are only two elements
      *                 in twoExp. The first one stored the result of first element of subStrings.
-     *                 And does the second one.
+     *                 And the second one stored the result of second element of subStrings.
      * @param assignedTwoExp    Run ExpressionParser with assignedSubStrings as input. Same process
      *                          as twoExp.
      * @param twoExpParameters  Store all scopeParameters parameters result. Each element is stored
