@@ -64,34 +64,25 @@ public class FunctionParserTest {
         testCases.add(new FunctionParserTest.TestCase("a==", null,false));
         testCases.add(new FunctionParserTest.TestCase("=a", null,false));
         testCases.add(new FunctionParserTest.TestCase("==a", null,false));
+        testCases.add(new FunctionParserTest.TestCase("x=y=x", null,false));
+        testCases.add(new FunctionParserTest.TestCase("x========yz", null,false));
+        testCases.add(new FunctionParserTest.TestCase("x====y====z", null,false));
+        testCases.add(new FunctionParserTest.TestCase("x=y=z=w=ɑ=β", null,false));
+        testCases.add(new FunctionParserTest.TestCase("x==y", null,false));
+        testCases.add(new FunctionParserTest.TestCase("=x=y", null,false));
+        testCases.add(new FunctionParserTest.TestCase("x=y=", null,false));
+        testCases.add(new FunctionParserTest.TestCase("=x=y=", null,false));
+        //        w | x | y | z | ɑ | β | ɣ | Δ
         testCases.add(new FunctionParserTest.TestCase("2+1×2÷3×12 = 9124", Arrays.asList("2+1×2÷3×12", "9124"),true));
-        testCases.add(new FunctionParserTest.TestCase("2+1×2÷3×a = 9124", Arrays.asList("2+1×2÷3×a", "9124"),true));
-        testCases.add(new FunctionParserTest.TestCase("a+1×3÷3×12 = 9124", Arrays.asList("a+1×3÷3×12", "9124"),true));
-        testCases.add(new FunctionParserTest.TestCase("b+1×c÷3×a = 9124", Arrays.asList("b+1×c÷3×a", "9124"),true));
-        testCases.add(new FunctionParserTest.TestCase("b+d×2÷3×a = 9124", Arrays.asList("b+d×2÷3×a", "9124"),true));
-        testCases.add(new FunctionParserTest.TestCase("a+b×c÷d×e = 9124", Arrays.asList("a+b×c÷d×e", "9124"),true));
-        testCases.add(new FunctionParserTest.TestCase("a=b", Arrays.asList("a", "b"),true));
-        testCases.add(new FunctionParserTest.TestCase("a==b", null,false));
-        testCases.add(new FunctionParserTest.TestCase("=a=b", null,false));
-        testCases.add(new FunctionParserTest.TestCase("a=b=", null,false));
-        testCases.add(new FunctionParserTest.TestCase("=a=b=", null,false));
-        testCases.add(new FunctionParserTest.TestCase("a=b    ", Arrays.asList("a", "b"),true));
-        testCases.add(new FunctionParserTest.TestCase("    a=b", Arrays.asList("a", "b"),true));
-        testCases.add(new FunctionParserTest.TestCase("a    =b", Arrays.asList("a", "b"),true));
-        testCases.add(new FunctionParserTest.TestCase("a=     b", Arrays.asList("a", "b"),true));
-        testCases.add(new FunctionParserTest.TestCase("a=b=c", null,false));
-        testCases.add(new FunctionParserTest.TestCase("a========bc", null,false));
-        testCases.add(new FunctionParserTest.TestCase("a====b====c", null,false));
-        testCases.add(new FunctionParserTest.TestCase("a=b=c=d=e=f", null,false));
-        testCases.add(new FunctionParserTest.TestCase("aasdfaf=gsdggh", Arrays.asList("aasdfaf", "gsdggh"),true));
-        testCases.add(new FunctionParserTest.TestCase("a+1*2/3*12 = 9124", Arrays.asList("a+1*2/3*12", "9124"),true));
-        testCases.add(new FunctionParserTest.TestCase("y=x", Arrays.asList("y", "x"),true));
-        testCases.add(new FunctionParserTest.TestCase("y  =  x", Arrays.asList("y", "x"),true));
-        testCases.add(new FunctionParserTest.TestCase("y =   x", Arrays.asList("y", "x"),true));
-        testCases.add(new FunctionParserTest.TestCase("ax+by  +z=10s", Arrays.asList("ax+by+z", "10s"),true));
-        testCases.add(new FunctionParserTest.TestCase("ax +by+  z=10s", Arrays.asList("ax+by+z", "10s"),true));
-        testCases.add(new FunctionParserTest.TestCase("ax+ by+z    =10s", Arrays.asList("ax+by+z", "10s"),true));
-        testCases.add(new FunctionParserTest.TestCase("ax+by+ z= 10s", Arrays.asList("ax+by+z", "10s"),true));
+        testCases.add(new FunctionParserTest.TestCase("2+1×2÷3×w = 9124", Arrays.asList("2+1×2÷3×w", "9124"),true));
+        testCases.add(new FunctionParserTest.TestCase("w+1×3÷3×12 = 9124", Arrays.asList("w+1×3÷3×12", "9124"),true));
+        testCases.add(new FunctionParserTest.TestCase("w+x×y÷z×ɑ = 9124", Arrays.asList("w+x×y÷z×ɑ", "9124"),true));
+        testCases.add(new FunctionParserTest.TestCase("x=y", Arrays.asList("x", "y"),true));
+        testCases.add(new FunctionParserTest.TestCase("x=y    ", Arrays.asList("x", "y"),true));
+        testCases.add(new FunctionParserTest.TestCase("    x=y", Arrays.asList("x", "y"),true));
+        testCases.add(new FunctionParserTest.TestCase("x    =y", Arrays.asList("x", "y"),true));
+        testCases.add(new FunctionParserTest.TestCase("x=     y", Arrays.asList("x", "y"),true));
+
 
 
         // Run each test case programmatically by looping over the cases

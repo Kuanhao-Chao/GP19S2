@@ -19,6 +19,7 @@ import java.util.List;
 public class Function {
     private String input = null;
     private List<String> subStrings = null;
+    private List<Exp> twoExp = null;
     private boolean isValid = true;
 
     public Function (String input) {
@@ -103,14 +104,16 @@ public class Function {
 
             if (this.subStrings != null) {
                 Tokenizer tokenizer_1 = new Tokenizer(this.subStrings.get(0));
-//                s
+                Tokenizer tokenizer_2 = new Tokenizer(this.subStrings.get(1));
                 Exp exp_1 = new ExpressionParser(tokenizer_1).parseExp();
-//
-//                Tokenizer tokenizer_2 = new Tokenizer(this.subStrings.get(1));
-//                Exp exp_2 = new ExpressionParser(tokenizer_2).parseExp();
-                System.out.println("Input: " +  this.subStrings.get(0));
-                System.out.println("exp_1" + exp_1.show());
-//                System.out.println("exp_2" + exp_2.show());
+                Exp exp_2 = new ExpressionParser(tokenizer_2).parseExp();
+
+                List<Exp> twoExp = new ArrayList<>(0);
+                twoExp.add(exp_1);
+                twoExp.add(exp_2);
+                this.twoExp = twoExp;
+                System.out.println("exp_1: " + twoExp.get(0).evaluate());
+                System.out.println("exp_2: " + twoExp.get(1).evaluate());
             }
         }
     }
