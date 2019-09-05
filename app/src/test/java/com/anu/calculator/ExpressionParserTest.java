@@ -1,7 +1,6 @@
 package com.anu.calculator;
 
-import com.anu.calculator.expressionparser.Exp;
-import com.anu.calculator.expressionparser.ExpressionParser;
+import com.anu.calculator.expressionparser.Parser;
 import com.anu.calculator.expressionparser.Tokenizer;
 
 import org.junit.Test;
@@ -51,6 +50,7 @@ public class ExpressionParserTest {
      * commented area.
      *
      * @author: Michael Betterton (u6797866)
+     * @modified: Sam 04 SEP 19: Add operator tests
      */
     @Test
     public void runTests() {
@@ -87,8 +87,6 @@ public class ExpressionParserTest {
         testCases.add(new TestCase("15%", 0.15, 0d));
         testCases.add(new TestCase("180×e−π", 486.1491365, 0.000002));
 
-
-
         // This section is for more complex test cases demonstrating BODMAS/BOMDAS function ordering
         testCases.add(new TestCase("55.888×1000.0÷80.1", 697.7278402, 0.00000002));
 
@@ -97,13 +95,30 @@ public class ExpressionParserTest {
         // End of test case area, do not modify the code below.
 
         for (TestCase testCase : testCases) {
-            Tokenizer tokenizer = new Tokenizer(testCase.input);
-            Exp exp = new ExpressionParser(tokenizer).parseExp();
+            Expression exp = new Parser().parse(testCase.input);
             String assetString = String.format("Expression Parser Error, raw equation: %s; parsed equation: %s", testCase.input, exp.show());
             assertEquals(assetString, exp.evaluate(), testCase.expected, testCase.delta);
         }
     }
 
+    /**
+     * Generates an overflow by asking the factorial of a large number. Then squares that number.
+     * The parser should return a exception rather than crashing.
+     *
+     * @author: Michael Betterton (u6797866)
+     */
+    @Test
+    public void test_infinity() {
+        // First generate a obscenely large number
+        String inifity_expression = "625!";
+        Expression exp = new Parser().parse(inifity_expression);
+        double infinity = exp.evaluate();
+
+        // Concatenate that number with it to the power of 3.
+        String exception_expression = infinity+"^3";
+        exp = new Parser().parse(exception_expression);
+        double exception = exp.evaluate();
+    }
 }
 
 

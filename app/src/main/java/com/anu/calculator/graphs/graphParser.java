@@ -1,14 +1,14 @@
 package com.anu.calculator.graphs;
 
-import com.anu.calculator.expressionparser.Exp;
+import com.anu.calculator.Expression;
 
 public class graphParser {
-    Exp exp;
-    public void graphParser(Exp exp) {
-        this.exp = exp;
+    Expression expression;
+    public void graphParser(Expression expression) {
+        this.expression = expression;
     }
     public void graphParser() {
-        this.exp = exp;
+        this.expression = expression;
     }
 
     public float dummyfunction1(float x) {

@@ -1,18 +1,13 @@
 package com.anu.calculator.functionExpression;
 
-import com.anu.calculator.expressionparser.Exp;
-import com.anu.calculator.expressionparser.ExpressionParser;
-import com.anu.calculator.expressionparser.Token;
+import com.anu.calculator.Expression;
+import com.anu.calculator.expressionparser.Parser;
 import com.anu.calculator.expressionparser.Tokenizer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.DoubleToLongFunction;
 
 /**
  * The Function class which stores function that user inputs.
@@ -37,11 +32,11 @@ public class Function {
      *                           one is left-hand side string; the second one is right-hand side
      *                           string. When users update the function instance, subStrings value
      *                           will be changed according to the assigned parameters
-     * @param twoExp   Run ExpressionParser with subStrings as input. There are only two elements
-     *                 in twoExp. The first one stored the result of first element of subStrings.
+     * @param twoExpression   Run Parser with subStrings as input. There are only two elements
+     *                 in twoExpression. The first one stored the result of first element of subStrings.
      *                 And the second one stored the result of second element of subStrings.
-     * @param assignedTwoExp    Run ExpressionParser with assignedSubStrings as input. Same process
-     *                          as twoExp.
+     * @param assignedTwoExpression    Run Parser with assignedSubStrings as input. Same process
+     *                          as twoExpression.
      * @param twoExpParameters  Store all scopeParameters parameters result. Each element is stored
      *                          as Hashmap. The key is the parameters; the value is a tuple which
      *                          stores 'whether parameter is defined' and 'the value of parameter'.
@@ -57,8 +52,8 @@ public class Function {
     private String input = null;
     private List<String> subStrings = null;
     private List<String> assignedSubStrings = null;
-    private List<Exp> twoExp = new ArrayList<>(0);
-    private List<Exp> assignedTwoExp = new ArrayList<>(0);
+    private List<Expression> twoExpression = new ArrayList<>(0);
+    private List<Expression> assignedTwoExpression = new ArrayList<>(0);
     private List<HashMap<Character, Tuple<Boolean, Double>>> twoExpParameters= new ArrayList<>(0);
     private boolean isValid = true;
 
@@ -168,17 +163,15 @@ public class Function {
                  * Do parsing for both subString and assignedSubStrings
                  */
                 for (int i = 0; i < 2; i++) {
-                    Tokenizer tokenizer = new Tokenizer(this.subStrings.get(i));
-                    Exp exp = new ExpressionParser(tokenizer).parseExp();
-                    Tokenizer assignedTokenizer = new Tokenizer(this.assignedSubStrings.get(i));
-                    Exp assignedExp = new ExpressionParser(assignedTokenizer).parseExp();
-                    twoExp.add(exp);
-                    assignedTwoExp.add(assignedExp);
+                    Expression exp = new Parser().parse(this.subStrings.get(i));
+                    Expression assignedExp = new Parser().parse(this.assignedSubStrings.get(i));
+                    twoExpression.add(exp);
+                    assignedTwoExpression.add(assignedExp);
                 }
                 for (int i = 0; i < 2; i++) {
-                    for (int j = 0; j < this.twoExp.get(i).show().length(); j++) {
+                    for (int j = 0; j < this.twoExpression.get(i).show().length(); j++) {
                         for (Character parameter : scopeParameters) {
-                            if (this.twoExp.get(i).show().charAt(j) == parameter) {
+                            if (this.twoExpression.get(i).show().charAt(j) == parameter) {
                                 Tuple<Boolean, Double> new_parameter = new Tuple<Boolean, Double>(true, null);
                                 twoExpParameters.get(i).put(parameter, new_parameter);
                             }
@@ -221,12 +214,12 @@ public class Function {
         return assignedSubStrings;
     }
 
-    public List<Exp> getTwoExp() {
-        return twoExp;
+    public List<Expression> getTwoExpression() {
+        return twoExpression;
     }
 
-    public List<Exp> getAssignedTwoExp() {
-        return assignedTwoExp;
+    public List<Expression> getAssignedTwoExpression() {
+        return assignedTwoExpression;
     }
 
     public List<HashMap<Character, Tuple<Boolean, Double>>> getTwoExpParameters() {
@@ -278,8 +271,8 @@ public class Function {
             }
             System.out.println("    Origin input: " + subStrings.get(i));
             System.out.println("  Assigned input: " + assignedSubStrings.get(i));
-            System.out.println("    Parsed Origin input: " + twoExp.get(i).show());
-            System.out.println("  Parsed Assigned input: " +  assignedTwoExp.get(i).show());
+            System.out.println("    Parsed Origin input: " + twoExpression.get(i).show());
+            System.out.println("  Parsed Assigned input: " +  assignedTwoExpression.get(i).show());
             for (Character j : twoExpParameters.get(i).keySet()) {
                 System.out.println("    Variable: " + j + "; isParameter: " + twoExpParameters.get(i).get(j).isParameter + "; Value: " + twoExpParameters.get(i).get(j).value);
             }
@@ -315,9 +308,8 @@ public class Function {
 
     private void updateAssignedTwoExp() {
         for (int i = 0; i < 2; i++) {
-            Tokenizer assignedTokenizer = new Tokenizer(this.assignedSubStrings.get(i));
-            Exp assignedExp = new ExpressionParser(assignedTokenizer).parseExp();
-            assignedTwoExp.set(i, assignedExp);
+            Expression assignedExpression = new Parser().parse(this.assignedSubStrings.get(i));
+            assignedTwoExpression.set(i, assignedExpression);
         }
     }
 
