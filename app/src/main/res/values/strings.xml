@@ -35,11 +35,14 @@
     <string name="sin">sin</string>
     <string name="cos">cos</string>
     <string name="tan">tan</string>
-    <string name="squared">x²</string>
+    <string name="squared_display">x²</string>
+    <string name="squared">²</string>
     <string name="natural_log">ln</string>
     <string name="log10">log10</string>
-    <string name="power">power</string>
-    <string name="cubed">x³</string>
+    <string name="power_display">power</string>
+    <string name="power">^</string>
+    <string name="cubed_display">x³</string>
+    <string name="cubed">³</string>
     <string name="npr">nPr</string>
     <string name="ncr">nCr</string>
     <string name="pi">π</string>
@@ -52,8 +55,5 @@
     <string name="rbra">)</string>
     <string name="rand">rand</string>
     <string name="factorial">!</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="clear_history">Clear</string>
 </resources>

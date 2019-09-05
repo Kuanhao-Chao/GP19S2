@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/squared" />
+            android:text="@string/squared_display" />
     </LinearLayout>
 
     <LinearLayout
@@ -71,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/power" />
+            android:text="@string/power_display" />
 
         <Button
             android:id="@+id/cubed"
@@ -79,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/cubed" />
+            android:text="@string/cubed_display" />
     </LinearLayout>
 
     <LinearLayout
