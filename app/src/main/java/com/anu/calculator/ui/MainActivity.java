@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.EditText;
 
 import com.anu.calculator.R;
+import com.anu.calculator.functionExpression.Function;
 import com.google.android.material.tabs.TabLayout;
 
 
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements HistoryMessenger 
         mOperationsPageAdapter.addFragment(new OperationsFragment(), getString(R.string.tab_scientific));
         mOperationsPageAdapter.addFragment(new HistoryFragment(), getString(R.string.tab_history));
         mOperationsPageAdapter.addFragment(new GraphFragment(), getString(R.string.tab_graph));
+        mOperationsPageAdapter.addFragment(new FunctionFragment(), getString(R.string.tab_function));
         viewPager.setAdapter(mOperationsPageAdapter);
     }
 

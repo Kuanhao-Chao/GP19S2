@@ -28,10 +28,11 @@
     <string name="x">x</string>
     <string name="y">y</string>
     <string name="z">z</string>
-    <string name="tab_basic">Basic</string>
-    <string name="tab_scientific">Scientific</string>
+    <string name="tab_basic">Main</string>
+    <string name="tab_scientific">Func</string>
     <string name="tab_history">History</string>
     <string name="tab_graph">Graph</string>
+    <string name="tab_function">abc</string>
     <string name="sin">sin</string>
     <string name="cos">cos</string>
     <string name="tan">tan</string>
@@ -56,4 +57,15 @@
     <string name="rand">rand</string>
     <string name="factorial">!</string>
     <string name="clear_history">Clear</string>
+    <string name="lbra_square">[</string>
+    <string name="rbra_square">]</string>
+    <string name="lbra_squigly">{</string>
+    <string name="rbra_squigly">}</string>
+    <string name="set_function_label">Set Function</string>
+    <string name="func_f">f</string>
+    <string name="func_g">g</string>
+    <string name="func_h">h</string>
+    <string name="func_i">i</string>
+    <string name="call_function_label">Call Function</string>
+    <string name="variables_label">Variables</string>
 </resources>

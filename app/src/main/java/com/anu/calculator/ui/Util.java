@@ -46,7 +46,7 @@ class Util {
      * @author: Michael Betterton (u6797866)
      * @param editText The EditText textArea to update the font-size of.
      */
-    static void setFontSize(EditText editText) {
+    private static void setFontSize(EditText editText) {
         // Set the text size to a value based on the length of the current inputs. Default it to the
         // -1 value when no font size is set for that length (exceptionally long strings
         int length = editText.length() / 20;

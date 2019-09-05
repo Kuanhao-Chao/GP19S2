@@ -226,8 +226,37 @@ public class DigitFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 int length = calculation_area.length();
-                if (length > 0) {
-                    calculation_area.setText(calculation_area.getText().subSequence(0, length - 1));
+                int selection_point = calculation_area.getSelectionStart();
+                // If the text view calculation area has a non-zero length, enter the actual delete
+                // function, otherwise just ignore the action. Also only enter the actual delete
+                // function if the selection point isn't at the start. Deleting the start of the
+                // string is a non-action.
+                if (length > 0 && selection_point > 0) {
+                    // If the cursor is not at the end of the calculation area
+                    if (selection_point < length){
+                        // Calculate the left hand side and right hand side of the cursor
+                        String lhs = calculation_area.getText().subSequence(0,selection_point-1).toString();
+                        String rhs = calculation_area.getText().subSequence(selection_point,length).toString();
+                        String new_text = lhs + rhs;
+                        // Set the text area to the new value
+                        calculation_area.setText(new_text);
+                        // If the selection point is after the end of the length, set the cursor
+                        // to the end of the text view
+                        if (selection_point >= length-1){
+                            calculation_area.setSelection(length-2);
+                        }else{
+                            // If the selection point after modification is not at the end of the area,
+                            // set the selection point to the original position minus 2 places.
+                            calculation_area.setSelection(Math.max(selection_point-1,0));
+                        }
+                    // The calculation is at the end of the text area
+                    }else{
+                        // Drop the last character
+                        calculation_area.setText(calculation_area.getText().subSequence(0, calculation_area.getSelectionStart() - 1));
+                        // If the current length (original-1) is > 0, set the cursor back to the right spot
+                        if(length > 1)
+                            calculation_area.setSelection(calculation_area.length());
+                    }
                 }
             }
         });

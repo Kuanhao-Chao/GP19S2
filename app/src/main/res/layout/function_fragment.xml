@@ -1,0 +1,177 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.FunctionFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/variables_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/variables_label" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/alpha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@android:style/Widget.Material.Light.Button"
+                android:text="@string/alpha" />
+
+            <Button
+                android:id="@+id/beta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@android:style/Widget.Material.Light.Button"
+                android:text="@string/beta" />
+
+            <Button
+                android:id="@+id/gamma"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@android:style/Widget.Material.Light.Button"
+                android:text="@string/gamma" />
+
+            <Button
+                android:id="@+id/delta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@android:style/Widget.Material.Light.Button"
+                android:text="@string/delta" />
+
+            <Button
+                android:id="@+id/w"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@android:style/Widget.Material.Light.Button"
+                android:text="@string/w" />
+
+            <Button
+                android:id="@+id/x"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@android:style/Widget.Material.Light.Button"
+                android:text="@string/x" />
+
+            <Button
+                android:id="@+id/y"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@android:style/Widget.Material.Light.Button"
+                android:text="@string/y" />
+
+            <Button
+                android:id="@+id/z"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@android:style/Widget.Material.Light.Button"
+                android:text="@string/z" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/set_func_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/set_function_label" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/set_func_f"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@android:style/Widget.Material.Light.Button"
+                android:text="@string/func_f" />
+
+            <Button
+                android:id="@+id/set_func_g"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@android:style/Widget.Material.Light.Button"
+                android:text="@string/func_g" />
+
+            <Button
+                android:id="@+id/set_func_h"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@android:style/Widget.Material.Light.Button"
+                android:text="@string/func_h" />
+
+            <Button
+                android:id="@+id/set_func_i"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@android:style/Widget.Material.Light.Button"
+                android:text="@string/func_i" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/call_function_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/call_function_label" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/call_func_f"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@android:style/Widget.Material.Light.Button"
+                android:text="@string/func_f" />
+
+            <Button
+                android:id="@+id/call_func_g"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@android:style/Widget.Material.Light.Button"
+                android:text="@string/func_g" />
+
+            <Button
+                android:id="@+id/call_func_h"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@android:style/Widget.Material.Light.Button"
+                android:text="@string/func_h" />
+
+            <Button
+                android:id="@+id/call_func_i"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@android:style/Widget.Material.Light.Button"
+                android:text="@string/func_i" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
