@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * The Function class which stores function that user inputs.
  *
- * @author  Howard Chao
+ * @author  Howard Chao (u7022787)
  * @version 2.0
  * @since   2019-09-04
  *
@@ -141,7 +141,7 @@ public class Function {
              */
             if (subStrings.size() != 2) {
                 this.isValid = false;
-                System.out.println("There must be only two variables");
+                System.out.println("There must be only two expressions");
             }
             this.subStrings = subStrings;
             if ( this.isValid == false) {
@@ -180,7 +180,6 @@ public class Function {
                 }
 
                 functionSummary();
-
 
 //                HashMap<Character,Double> userAssigned = new HashMap<>();
 //                userAssigned.put('w', 10.0);
@@ -237,10 +236,14 @@ public class Function {
      */
     public List<Character> parametersInFunction() {
         List<Character> parameters = new ArrayList<>(0);
-        for (int i =0; i < 2; i++) {
-            for (Character parameter : scopeParameters) {
-                if (twoExpParameters.get(i).get(parameter).isParameter == true) {
-                    parameters.add(parameter);
+        if (subStrings != null && assignedSubStrings != null) {
+            for (int i =0; i < 2; i++) {
+                for (Character parameter : scopeParameters) {
+                    if (twoExpParameters.get(i).get(parameter).isParameter == true) {
+                        if (!parameters.contains(parameter)) {
+                            parameters.add(parameter);
+                        }
+                    }
                 }
             }
         }
@@ -248,12 +251,16 @@ public class Function {
     }
 
     public void assignParameters(HashMap<Character,Double> assignValue) {
-        for (Character i : assignValue.keySet()) {
-            for (Character parameter : scopeParameters) {
-                if (i == parameter) {
-                    for (int j = 0; j < 2; j++) {
-                        twoExpParameters.get(j).get(parameter).isParameter = true;
-                        twoExpParameters.get(j).get(parameter).value = assignValue.get(parameter);
+        if (subStrings != null && assignedSubStrings != null) {
+            for (Character i : assignValue.keySet()) {
+                for (Character parameter : scopeParameters) {
+                    if (i == parameter) {
+                        for (int j = 0; j < 2; j++) {
+                            if (twoExpParameters.get(j).get(i).isParameter) {
+                                twoExpParameters.get(j).get(parameter).isParameter = true;
+                                twoExpParameters.get(j).get(parameter).value = assignValue.get(parameter);
+                            }
+                        }
                     }
                 }
             }
@@ -262,22 +269,25 @@ public class Function {
         updateAssignedTwoExp();
     }
 
+
     public void functionSummary() {
-        for (int i =0; i < 2; i++) {
-            if (i == 0) {
-                System.out.println("Left-hand side: ");
-            } else if (i == 1) {
-                System.out.println("Right-hand side: ");
+        if (subStrings != null && assignedSubStrings != null) {
+            for (int i =0; i < 2; i++) {
+                if (i == 0) {
+                    System.out.println("Left-hand side: ");
+                } else if (i == 1) {
+                    System.out.println("Right-hand side: ");
+                }
+                System.out.println("    Origin input: " + subStrings.get(i));
+                System.out.println("  Assigned input: " + assignedSubStrings.get(i));
+                System.out.println("    Parsed Origin input: " + twoExpression.get(i).show());
+                System.out.println("  Parsed Assigned input: " +  assignedTwoExpression.get(i).show());
+                for (Character j : twoExpParameters.get(i).keySet()) {
+                    System.out.println("    Parameter: " + j + "; isParameter: " + twoExpParameters.get(i).get(j).isParameter + "; Value: " + twoExpParameters.get(i).get(j).value);
+                }
             }
-            System.out.println("    Origin input: " + subStrings.get(i));
-            System.out.println("  Assigned input: " + assignedSubStrings.get(i));
-            System.out.println("    Parsed Origin input: " + twoExpression.get(i).show());
-            System.out.println("  Parsed Assigned input: " +  assignedTwoExpression.get(i).show());
-            for (Character j : twoExpParameters.get(i).keySet()) {
-                System.out.println("    Variable: " + j + "; isParameter: " + twoExpParameters.get(i).get(j).isParameter + "; Value: " + twoExpParameters.get(i).get(j).value);
-            }
+            System.out.println("Parameters in function: " + parametersInFunction());
         }
-        System.out.println("Variables in function: " + parametersInFunction());
     }
 
 
@@ -290,15 +300,17 @@ public class Function {
      * @param assignValue
      */
     private void updateAssignedSubStrings(HashMap<Character,Double> assignValue) {
-        for (int i = 0; i < 2; i++) {
-            String oneExpString = this.subStrings.get(i);
-            for (int j = 0; j < oneExpString.length(); j++) {
-                for (Character parameter : scopeParameters) {
-                    if (oneExpString.charAt(j) == parameter) {
-                        if (assignValue.containsKey(parameter)) {
-                            String rep = Double.toString(assignValue.get(parameter));
-                            oneExpString = oneExpString.substring(0, j) + rep + oneExpString.substring(j + 1);
-                            assignedSubStrings.set(i, oneExpString);
+        if (subStrings != null && assignedSubStrings != null) {
+            for (int i = 0; i < 2; i++) {
+                String oneExpString = this.subStrings.get(i);
+                for (int j = 0; j < oneExpString.length(); j++) {
+                    for (Character parameter : scopeParameters) {
+                        if (oneExpString.charAt(j) == parameter) {
+                            if (assignValue.containsKey(parameter)) {
+                                String rep = Double.toString(assignValue.get(parameter));
+                                oneExpString = oneExpString.substring(0, j) + rep + oneExpString.substring(j + 1);
+                                assignedSubStrings.set(i, oneExpString);
+                            }
                         }
                     }
                 }
@@ -307,9 +319,12 @@ public class Function {
     }
 
     private void updateAssignedTwoExp() {
-        for (int i = 0; i < 2; i++) {
-            Expression assignedExpression = new Parser().parse(this.assignedSubStrings.get(i));
-            assignedTwoExpression.set(i, assignedExpression);
+        if (subStrings != null && assignedSubStrings != null) {
+            for (int i = 0; i < 2; i++) {
+                System.out.println("assignedSubStrings: " + assignedSubStrings.get(i));
+                Expression assignedExpression = new Parser().parse(this.assignedSubStrings.get(i));
+                assignedTwoExpression.set(i, assignedExpression);
+            }
         }
     }
 
