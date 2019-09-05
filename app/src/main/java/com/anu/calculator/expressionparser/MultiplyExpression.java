@@ -4,6 +4,10 @@ import com.anu.calculator.Expression;
 
 /**
  * MultiplyExpression: This class is used to represent the expression of multiplication
+ *
+ * @author: Michael Betterton (u6797866)
+ * @modified: Samuel Brookes (u5380100)
+ *  - Added the MULTIPLY unicode to the show() method
  */
 
 public class MultiplyExpression implements Expression {

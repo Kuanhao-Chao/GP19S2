@@ -1,5 +1,14 @@
 package com.anu.calculator.expressionparser;
 
+/**
+ * Tokenizer: This is the tokenizer that converts components of a mathematical expression in
+ * String form into tokens for the parser.
+ *
+ * @author: Michael Betterton (u6797866)
+ * @modified: Samuel Brookes (u5380100)
+ *  - Wrote the next() method
+ */
+
 public class Tokenizer {
 
     private String _buffer;        //save text

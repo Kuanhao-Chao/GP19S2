@@ -4,6 +4,10 @@ import com.anu.calculator.Expression;
 
 /**
  * DivideExpression: This class is used to represent the expression of division
+ *
+ * @author: Michael Betterton (u6797866)
+ * @modified: Samuel Brookes (u5380100)
+ *  - Added the DIVIDE unicode to the show() method
  */
 
 public class DivideExpression implements Expression {

@@ -4,6 +4,11 @@ import com.anu.calculator.Expression;
 
 /**
  * CombinationExpression: This class is used to represent an expression of a combination
+ *
+ * @author: Samuel Brookes (u5380100)
+ * @modified: Michael Betterton (u6797866)
+ * 	- 09/05/2019: Refactored class to implement Expression interface
+ * 	- 09/05/2019: Refactored name from Exp to Expression
  */
 
 public class CombinationExpression implements Expression {
@@ -17,7 +22,7 @@ public class CombinationExpression implements Expression {
 
 	@Override
 	public String show() {
-		return "(" + n.show() + ")nCr(" + r.show() + ")";
+		return "(" + n.show() + "nCr" + r.show() + ")";
 	}
 
 	@Override

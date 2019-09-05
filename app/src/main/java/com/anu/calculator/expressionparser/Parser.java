@@ -4,19 +4,23 @@ import com.anu.calculator.Expression;
 import com.anu.calculator.ExpressionParser;
 
 /**
- * Grammar:
+ * Parser: The primary parser for evaluating the mathematical statements entered by the user.
+ * The parser uses the following grammar.
+ *
  * <exp> ::= <term> | <exp> + <term> | <exp> − <term>
- *
  * <term> ::= <operation> | <term> × <operation> | <term> ÷ <operation>
- *
  * <operation> ::= sin<exp> | sin⁻¹<exp> | cos<exp> | cos⁻¹<exp> |
  *      tan<exp> | tan⁻¹<exp> | log₁₀<exp> | ln<exp> | !<exp> | √<exp> |
  *      ∛<exp> | <exp>nPr<exp> | <exp>nCr<exp> | <exp>^<exp> | <exp>² |
  *      <exp>³ | -<exp> | <exp>% | (<exp>) | <literal>
- *
  * <literal> ::= π | e | rand | double | <unknown variable>
- *
  * <unknown variable> ::= w | x | y | z | ɑ | β | ɣ | Δ
+ *
+ * @author: Samuel Brookes (u5380100)
+ * @modified: Michael Betterton (u6797866)
+ *  - 09/05/2019: Refactored class to implement ExpressionParser interface
+ * 	- 09/05/2019: Refactored name from ExpressionParser to Parser
+ * 	- 09/05/2019: Altered constructor
  */
 
 public class Parser implements ExpressionParser
@@ -30,7 +34,14 @@ public class Parser implements ExpressionParser
         return parseExp();
     }
 
-
+    /**
+     * parseExp: The top level parsing method, ensuring that addition and subtraction are done
+     * last (i.e. BODM[AS]).
+     *
+     * Uses grammar: <exp> ::= <term> | <exp> + <term> | <exp> − <term>
+     *
+     * @return type: Expression
+     */
     public Expression parseExp() {
         Expression term = parseTerm();
         if(_tokenizer.hasNext() && _tokenizer.current().type() == Token.Type.ADD)
@@ -48,6 +59,14 @@ public class Parser implements ExpressionParser
         else return term;
     }
 
+    /**
+     * parseTerm: The second level parsing method, ensuring that division and multiplication
+     * are done second last (i.e. BO[DM]AS).
+     *
+     * Uses grammar: <term> ::= <operation> | <term> × <operation> | <term> ÷ <operation>
+     *
+     * @return type: Expression
+     */
     private Expression parseTerm()
     {
         Expression operation = parseOperation();
@@ -66,6 +85,18 @@ public class Parser implements ExpressionParser
         else return operation;
     }
 
+    /**
+     * parseOperation: The third level parsing method, ensuring that defined operations are
+     * evaluated second (i.e. B[O]DMAS). This method handles operators differently depending
+     * upon whether they are leading, trailing, or both.
+     *
+     * Uses grammar: <operation> ::= sin<exp> | sin⁻¹<exp> | cos<exp> | cos⁻¹<exp> |
+     *                  tan<exp> | tan⁻¹<exp> | log₁₀<exp> | ln<exp> | !<exp> | √<exp> |
+     *                  ∛<exp> | <exp>nPr<exp> | <exp>nCr<exp> | <exp>^<exp> | <exp>² |
+     *                  <exp>³ | -<exp> | <exp>% | (<exp>) | <literal>
+     *
+     * @return type: Expression
+     */
     private Expression parseOperation()
     {
         Expression literal;
@@ -125,6 +156,15 @@ public class Parser implements ExpressionParser
         return literal;
     }
 
+    /**
+     * parseLiteral: The lowest level parsing method, returns literals and ensures that parentheses
+     * are evaluated first (i.e. [B]ODMAS).
+     *
+     * Uses grammar: <literal> ::= π | e | rand | double | <unknown variable>
+     *               <unknown variable> ::= w | x | y | z | ɑ | β | ɣ | Δ
+     *
+     * @return type: Expression
+     */
     private Expression parseLiteral()
     {
         Expression literal = null;
@@ -143,7 +183,6 @@ public class Parser implements ExpressionParser
         {
             _tokenizer.next();
             literal = parseExp();
-            _tokenizer.next();
         }
 
         _tokenizer.next();

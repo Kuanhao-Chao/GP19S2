@@ -4,6 +4,10 @@ import com.anu.calculator.Expression;
 
 /**
  * SubtractExpression: This class is used to represent the expression of subtraction
+ *
+ * @author: Michael Betterton (u6797866)
+ * @modified: Samuel Brookes (u5380100)
+ *  - Added the SUBTRACT unicode to the show() method
  */
 
 public class SubtractExpression implements Expression {

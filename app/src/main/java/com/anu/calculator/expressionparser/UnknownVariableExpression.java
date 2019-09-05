@@ -3,7 +3,13 @@ package com.anu.calculator.expressionparser;
 import com.anu.calculator.Expression;
 
 /**
- * UnknownVariableExpression: This class is used to represent a variable with an unknown value (for formulas)
+ * UnknownVariableExpression: This class is used to represent a variable with an unknown value,
+ * i.e. for formulas.
+ *
+ * @author: Samuel Brookes (u5380100)
+ * @modified: Michael Betterton (u6797866)
+ * 	- 09/05/2019: Refactored class to implement Expression interface
+ * 	- 09/05/2019: Refactored name from Exp to Expression
  */
 
 public class UnknownVariableExpression implements Expression {

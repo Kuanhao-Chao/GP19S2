@@ -86,9 +86,11 @@ public class ExpressionParserTest {
         testCases.add(new TestCase("∛50", 3.684, 0.002));
         testCases.add(new TestCase("15%", 0.15, 0d));
         testCases.add(new TestCase("180×e−π", 486.1491365, 0.000002));
+        testCases.add(new TestCase("25²+5³", 750d, 0d));
 
         // This section is for more complex test cases demonstrating BODMAS/BOMDAS function ordering
         testCases.add(new TestCase("55.888×1000.0÷80.1", 697.7278402, 0.00000002));
+        testCases.add(new TestCase( "((((4²)+2.5)÷0.2)×20)nPr2+2.4", 3420652.4, 0d));
 
         //testCases.add(new TestCase( , , ));
 
@@ -118,6 +120,37 @@ public class ExpressionParserTest {
         String exception_expression = infinity+"^3";
         exp = new Parser().parse(exception_expression);
         double exception = exp.evaluate();
+    }
+
+    /**
+     * Tests whether the RandomNumberExpression truly generates random numbers.
+     *
+     * @author Samuel Brookes (u5380100)
+     */
+    @Test
+    public void testRandomNumber()
+    {
+        /*
+         * Test whether random numbers are generated
+         */
+        ArrayList<Expression> randomNumbers = new ArrayList<>(0);
+        for(int i=0; i<1000; i++)
+        {
+            randomNumbers.add(new Parser().parse("rand"));
+        }
+
+        for(int i=0; i<1000; i++)
+        {
+            for(int j=i+1; j<1000; j++)
+            {
+                assertNotEquals(randomNumbers.get(i).evaluate(),
+                        randomNumbers.get(j).evaluate());
+            }
+        }
+
+
+
+
     }
 }
 

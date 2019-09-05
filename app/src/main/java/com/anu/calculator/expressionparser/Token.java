@@ -1,10 +1,16 @@
 package com.anu.calculator.expressionparser;
 
 /**
- * Token class to save extracted token from tokenizer.
- * Each token has its surface form saved in {@code _token}
- * and type saved in {@code _type} which is one of the predefined type in Type enum.
+ * Token: The class that defines the tokens used by the Tokenizer.
+ * Each token type is included in the Type enumeration.
+ * Each token has a 'position' relative to the parameters of its operation. These can be
+ *  l (leading), t (trailing), b (both), or n (not applicable). For example, the parameters
+ *  for the SINE operation come after the token, therefore SINE is considered 'leading'. Conversely,
+ *  the parameter for the PERCENT operation comes before the token, therefore PERCENT is considered
+ *  'trailing'.
+ * Each token has a String representation associated with it - these are defined in values.strings.xml
  *
+ * @author: Samuel Brookes (u5380100)
  */
 
 public class Token {

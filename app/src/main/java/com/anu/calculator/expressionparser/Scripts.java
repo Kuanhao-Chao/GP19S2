@@ -1,5 +1,12 @@
 package com.anu.calculator.expressionparser;
 
+/**
+ *  Scripts: contains three enumerations (SuperScript, SubScript and Operators)
+ *  that make it easier to retrieve the unicode characters used by the calculator
+ *
+ * @author: Samuel Brookes (u5380100)
+ */
+
 public class Scripts {
 
     public enum SuperScript

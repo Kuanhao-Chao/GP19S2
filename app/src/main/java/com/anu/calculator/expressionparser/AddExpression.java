@@ -4,6 +4,9 @@ import com.anu.calculator.Expression;
 
 /**
  * AddExpression: This class is used to represent the expression of addition
+ *
+ * @author: Michael Betterton (u6797866)
+ *
  */
 
 public class AddExpression implements Expression {
