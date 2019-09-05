@@ -34,6 +34,8 @@ public class FunctionParserTest {
          * @param input The input function as a string.
          * @param subStrings After the function is created, two expressions on each side of '='
          *                      will be stored in twoExpression.
+         * @param assignedSubStrings 
+         * @param parameters
          * @param expected Stored the expected answer whether function is valid.
          */
         TestCase(String input, List<String> subStrings, List<String> assignedSubStrings,
