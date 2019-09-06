@@ -16,10 +16,12 @@ public class UnknownVariableExpression implements Expression {
 
 	private char variable;
 	private double value;
+	private boolean assignedValue;
 
 	UnknownVariableExpression(char variable) {
 		this.variable = variable;
 		this.value = 0;
+		assignedValue = false;
 	}
 
 	@Override
@@ -34,6 +36,12 @@ public class UnknownVariableExpression implements Expression {
 
 	public void assignValue(double value)
 	{
+		assignedValue = true;
 		this.value = value;
+	}
+
+	public boolean hasValue()
+	{
+		return assignedValue;
 	}
 }
