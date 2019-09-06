@@ -1,6 +1,7 @@
 package com.anu.calculator;
 
 import com.anu.calculator.expressionparser.Parser;
+import com.anu.calculator.expressionparser.ReverseParser;
 import com.anu.calculator.expressionparser.Tokenizer;
 
 import org.junit.Test;
@@ -95,18 +96,28 @@ public class ExpressionParserTest {
         testCases.add(new TestCase("45%×0.587+15nPr3", 2730.26415, 0d));
         testCases.add(new TestCase("sin(25×2+14)+sin5÷cos4", 0.9861626145, 0.0000000002));
         testCases.add(new TestCase("ln45+5×100−12.0008+log₁₀56", 493.5540505, 0.0000002));
-        //testCases.add(new TestCase( , , ));
-        //testCases.add(new TestCase( , , ));
+        testCases.add(new TestCase("cos⁻¹0.2−sin⁻¹0.5+10nPr5−50", 30238.46304, 0.00002));
+        testCases.add(new TestCase("√10+∛27−67%×e", 4.341028835, 0.000000002));
+        testCases.add(new TestCase("4³×10²−(6!÷2)", 6040d, 0d));
+        testCases.add(new TestCase("ln57−100×4^10+5!", -104857476d, 0.1d));
 
         //testCases.add(new TestCase( , , ));
+
+        //Test reverse expression parser
+        for (TestCase testCase : testCases) {
+            Expression exp = new ReverseParser().parse(testCase.input);
+            String assetString = String.format("Reverse Expression Parser Error, raw equation: %s; parsed equation: %s", testCase.input, exp.show());
+            assertEquals(assetString, testCase.expected, exp.evaluate(), testCase.delta);
+        }
 
         // End of test case area, do not modify the code below.
-
+        /*
         for (TestCase testCase : testCases) {
             Expression exp = new Parser().parse(testCase.input);
             String assetString = String.format("Expression Parser Error, raw equation: %s; parsed equation: %s", testCase.input, exp.show());
             assertEquals(assetString, testCase.expected, exp.evaluate(), testCase.delta);
         }
+        */
     }
 
     /**
@@ -153,10 +164,6 @@ public class ExpressionParserTest {
                         randomNumbers.get(j).evaluate());
             }
         }
-
-
-
-
     }
 }
 

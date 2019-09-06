@@ -162,4 +162,98 @@ public class TokenizerTest {
             fail();
         }
     }
+
+    ReverseTokenizer _rTokenizer;
+
+    @Test
+    public void testReverseTokenizer()
+    {
+        ArrayList<TestCase> testCases = new ArrayList<>(0);
+        testCases.add(new TestCase("1+1",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.ADD, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("5+",
+                Arrays.asList(Token.Type.ADD, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("1000+1+1+",
+                Arrays.asList( Token.Type.ADD, Token.Type.DOUBLE, Token.Type.ADD, Token.Type.DOUBLE, Token.Type.ADD, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("8−1",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.SUBTRACT, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("5−−",
+                Arrays.asList(Token.Type.SUBTRACT, Token.Type.SUBTRACT, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("1124−124−1",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.SUBTRACT, Token.Type.DOUBLE, Token.Type.SUBTRACT, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("(0.5)%",
+                Arrays.asList(Token.Type.PERCENT, Token.Type.RIGHT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.LEFT_PARENTHESIS)));
+        testCases.add(new TestCase("10.859÷4",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.DIVIDE, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("2.45×5",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.MULTIPLY, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("ɑ+β+ɣ+Δ",
+                Arrays.asList(Token.Type.UNKNOWN_VARIABLE, Token.Type.ADD, Token.Type.UNKNOWN_VARIABLE, Token.Type.ADD,
+                        Token.Type.UNKNOWN_VARIABLE, Token.Type.ADD, Token.Type.UNKNOWN_VARIABLE)));
+        testCases.add(new TestCase("w−x−y−z",
+                Arrays.asList(Token.Type.UNKNOWN_VARIABLE, Token.Type.SUBTRACT, Token.Type.UNKNOWN_VARIABLE, Token.Type.SUBTRACT,
+                        Token.Type.UNKNOWN_VARIABLE, Token.Type.SUBTRACT, Token.Type.UNKNOWN_VARIABLE)));
+        testCases.add(new TestCase("sin(45)",
+                Arrays.asList(Token.Type.RIGHT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.LEFT_PARENTHESIS, Token.Type.SINE)));
+        testCases.add(new TestCase("cos(90)",
+                Arrays.asList(Token.Type.RIGHT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.LEFT_PARENTHESIS, Token.Type.COSINE)));
+        testCases.add(new TestCase("tan(18)",
+                Arrays.asList(Token.Type.RIGHT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.LEFT_PARENTHESIS, Token.Type.TANGENT)));
+        testCases.add(new TestCase("ln(45)",
+                Arrays.asList(Token.Type.RIGHT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.LEFT_PARENTHESIS, Token.Type.LOG_NATURAL)));
+        testCases.add(new TestCase("log₁₀(576)",
+                Arrays.asList(Token.Type.RIGHT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.LEFT_PARENTHESIS, Token.Type.LOG_TEN)));
+        testCases.add(new TestCase("(25.78)²",
+                Arrays.asList(Token.Type.SQUARE, Token.Type.RIGHT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.LEFT_PARENTHESIS)));
+        testCases.add(new TestCase("135.5^5.2",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.POWER, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("(57)³",
+                Arrays.asList(Token.Type.CUBE, Token.Type.RIGHT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.LEFT_PARENTHESIS)));
+        testCases.add(new TestCase("57nPr5",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.PERMUTATION, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("100nCr4",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.COMBINATION, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("25.12×π",
+                Arrays.asList(Token.Type.PI, Token.Type.MULTIPLY, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("47×e",
+                Arrays.asList(Token.Type.E, Token.Type.MULTIPLY, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("24+√45",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.SQUARE_ROOT, Token.Type.ADD, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("sin⁻¹97.4",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.ARC_SINE)));
+        testCases.add(new TestCase("cos⁻¹24",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.ARC_COSINE)));
+        testCases.add(new TestCase("tan⁻¹105.3",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.ARC_TANGENT)));
+        testCases.add(new TestCase("24.5+∛475",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.CUBED_ROOT, Token.Type.ADD, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("24.5+rand×100",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.MULTIPLY, Token.Type.RANDOM_NUMBER, Token.Type.ADD, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("24−!72.45",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.FACTORIAL, Token.Type.SUBTRACT, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("67.9%",
+                Arrays.asList(Token.Type.PERCENT, Token.Type.DOUBLE)));
+        testCases.add(new TestCase("-(45)−108.2",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.SUBTRACT, Token.Type.RIGHT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.LEFT_PARENTHESIS, Token.Type.NEGATIVE)));
+
+        int i = 0;
+        int tokenCount;
+        try
+        {
+            for (i = 0; i < testCases.size(); i++) {
+                _rTokenizer = new ReverseTokenizer(testCases.get(i).testcase);
+                tokenCount = 1;
+                for (Token.Type token : testCases.get(i).tokens) {
+                    assertEquals("Wrong type at token " + tokenCount + " in test case \"" + testCases.get(i).testcase + "\"", token, _rTokenizer.current().type());
+                    _rTokenizer.next();
+                    tokenCount++;
+                }
+            }
+        }
+        catch(NullPointerException e)
+        {
+            System.out.println("NullPointException @ test case \"" + testCases.get(i).testcase + "\"");
+            fail();
+        }
+    }
 }
