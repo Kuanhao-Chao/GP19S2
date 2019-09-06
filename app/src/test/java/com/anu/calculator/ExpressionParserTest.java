@@ -50,7 +50,9 @@ public class ExpressionParserTest {
      * commented area.
      *
      * @author: Michael Betterton (u6797866)
-     * @modified: Sam 04 SEP 19: Add operator tests
+     * @modified: Samuel Brookes (u5380100)
+     *  - 04/09/2019: Add operator tests
+     *  - 06/09/2019: Add operator tests
      */
     @Test
     public void runTests() {
@@ -90,7 +92,11 @@ public class ExpressionParserTest {
 
         // This section is for more complex test cases demonstrating BODMAS/BOMDAS function ordering
         testCases.add(new TestCase("55.888×1000.0÷80.1", 697.7278402, 0.00000002));
-        testCases.add(new TestCase( "((((4²)+2.5)÷0.2)×20)nPr2+2.4", 3420652.4, 0d));
+        testCases.add(new TestCase("45%×0.587+15nPr3", 2730.26415, 0d));
+        testCases.add(new TestCase("sin(25×2+14)+sin5÷cos4", 0.9861626145, 0.0000000002));
+        testCases.add(new TestCase("ln45+5×100−12.0008+log₁₀56", 493.5540505, 0.0000002));
+        //testCases.add(new TestCase( , , ));
+        //testCases.add(new TestCase( , , ));
 
         //testCases.add(new TestCase( , , ));
 
@@ -99,7 +105,7 @@ public class ExpressionParserTest {
         for (TestCase testCase : testCases) {
             Expression exp = new Parser().parse(testCase.input);
             String assetString = String.format("Expression Parser Error, raw equation: %s; parsed equation: %s", testCase.input, exp.show());
-            assertEquals(assetString, exp.evaluate(), testCase.expected, testCase.delta);
+            assertEquals(assetString, testCase.expected, exp.evaluate(), testCase.delta);
         }
     }
 

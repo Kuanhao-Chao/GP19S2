@@ -7,8 +7,8 @@ import com.anu.calculator.Expression;
  *
  * @author: Samuel Brookes (u5380100)
  * @modified: Michael Betterton (u6797866)
- * 	- 09/05/2019: Refactored class to implement Expression interface
- * 	- 09/05/2019: Refactored name from Exp to Expression
+ * 	- 05/09/2019: Refactored class to implement Expression interface
+ * 	- 05/09/2019: Refactored name from Exp to Expression
  */
 
 public class CubedRootExpression implements Expression {

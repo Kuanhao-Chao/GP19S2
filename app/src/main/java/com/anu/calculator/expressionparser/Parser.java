@@ -18,9 +18,9 @@ import com.anu.calculator.ExpressionParser;
  *
  * @author: Samuel Brookes (u5380100)
  * @modified: Michael Betterton (u6797866)
- *  - 09/05/2019: Refactored class to implement ExpressionParser interface
- * 	- 09/05/2019: Refactored name from ExpressionParser to Parser
- * 	- 09/05/2019: Altered constructor
+ *  - 05/09/2019: Refactored class to implement ExpressionParser interface
+ * 	- 05/09/2019: Refactored name from ExpressionParser to Parser
+ * 	- 05/09/2019: Altered constructor
  */
 
 public class Parser implements ExpressionParser
@@ -44,17 +44,15 @@ public class Parser implements ExpressionParser
      */
     public Expression parseExp() {
         Expression term = parseTerm();
-        if(_tokenizer.hasNext() && _tokenizer.current().type() == Token.Type.ADD)
+        if(_tokenizer.hasNext() && (_tokenizer.current().type() == Token.Type.ADD ||
+                _tokenizer.current().type() == Token.Type.SUBTRACT))
         {
+            Token holdToken = _tokenizer.current();
             _tokenizer.next();
             Expression expression = parseExp();
-            return new AddExpression(term, expression);
-        }
-        else if(_tokenizer.hasNext() && _tokenizer.current().type() == Token.Type.SUBTRACT)
-        {
-            _tokenizer.next();
-            Expression expression = parseExp();
-            return new SubtractExpression(term, expression);
+            return (holdToken.type() == Token.Type.ADD) ?
+                    new AddExpression(term, expression) :
+                    new SubtractExpression(term, expression);
         }
         else return term;
     }
@@ -70,17 +68,15 @@ public class Parser implements ExpressionParser
     private Expression parseTerm()
     {
         Expression operation = parseOperation();
-        if(_tokenizer.hasNext() && _tokenizer.current().type() == Token.Type.DIVIDE)
+        if(_tokenizer.hasNext() && (_tokenizer.current().type() == Token.Type.DIVIDE ||
+                _tokenizer.current().type() == Token.Type.MULTIPLY))
         {
+            Token holdToken = _tokenizer.current();
             _tokenizer.next();
             Expression expression = parseTerm();
-            return new DivideExpression(operation, expression);
-        }
-        else if(_tokenizer.hasNext() && _tokenizer.current().type() == Token.Type.MULTIPLY)
-        {
-            _tokenizer.next();
-            Expression expression = parseTerm();
-            return new MultiplyExpression(operation, expression);
+            return (holdToken.type() == Token.Type.DIVIDE) ?
+                    new DivideExpression(operation, expression) :
+                    new MultiplyExpression(operation, expression);
         }
         else return operation;
     }
