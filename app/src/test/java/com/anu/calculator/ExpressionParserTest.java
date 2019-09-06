@@ -114,12 +114,14 @@ public class ExpressionParserTest {
      * The parser should return a exception rather than crashing.
      *
      * @author: Michael Betterton (u6797866)
+     * @modified: Samuel Brookes (u5380100)
+     *  - 06/09/2019: added Exception expectation, corrected spelling
      */
-    @Test
+    @Test (expected = Exception.class)
     public void test_infinity() {
         // First generate a obscenely large number
-        String inifity_expression = "625!";
-        Expression exp = new Parser().parse(inifity_expression);
+        String infinity_expression = "625!";
+        Expression exp = new Parser().parse(infinity_expression);
         double infinity = exp.evaluate();
 
         // Concatenate that number with it to the power of 3.
