@@ -5,6 +5,8 @@ import com.anu.calculator.ExpressionParser;
 
 /**
  * Parser: The primary parser for evaluating the mathematical statements entered by the user.
+ * The parser parses mathematical expressions in reverse to ensure that equivalent operators
+ * (e.g. ADD and SUBTRACT, or MULTIPLY and DIVIDE) are evaluated left to right.
  * The parser uses the following grammar.
  *
  * <exp> ::= <term> | <exp> + <term> | <exp> − <term>
@@ -29,7 +31,8 @@ public class Parser implements ExpressionParser
     Tokenizer _tokenizer;
 
     @Override
-    public Expression parse(String expression) {
+    public Expression parse(String expression)
+    {
         _tokenizer = new Tokenizer(expression);
         return parseExp();
     }
@@ -51,8 +54,8 @@ public class Parser implements ExpressionParser
             _tokenizer.next();
             Expression expression = parseExp();
             return (holdToken.type() == Token.Type.ADD) ?
-                    new AddExpression(term, expression) :
-                    new SubtractExpression(term, expression);
+                    new AddExpression(expression, term) :
+                    new SubtractExpression(expression, term);
         }
         else return term;
     }
@@ -75,8 +78,8 @@ public class Parser implements ExpressionParser
             _tokenizer.next();
             Expression expression = parseTerm();
             return (holdToken.type() == Token.Type.DIVIDE) ?
-                    new DivideExpression(operation, expression) :
-                    new MultiplyExpression(operation, expression);
+                    new DivideExpression(expression, operation) :
+                    new MultiplyExpression(expression, operation);
         }
         else return operation;
     }
@@ -98,12 +101,29 @@ public class Parser implements ExpressionParser
         Expression literal;
         Token holdToken;
 
-        //if it's a leading token - save the token, get the applicable exp and return
-        if(_tokenizer.current().type().isLeading())
+        //if it's a trailing token - save the token, get the applicable exp and return
+        if(_tokenizer.current().type().isTrailing())
         {
             holdToken = _tokenizer.current();
             _tokenizer.next();
             literal = parseLiteral();
+            switch(holdToken.type())
+            {
+                case PERCENT: return new PercentExpression(literal);
+                case FACTORIAL: return new FactorialExpression(literal);
+                case SQUARE: return new PowerExpression(literal, new DoubleExpression(2));
+                case CUBE: return new PowerExpression(literal, new DoubleExpression(3));
+            }
+        }
+
+        //get the next exp
+        literal = parseLiteral();
+
+        //check if the current token is leading or both
+        if(_tokenizer.hasNext() && _tokenizer.current().type().isLeading())
+        {
+            holdToken = _tokenizer.current();
+            _tokenizer.next();
             switch(holdToken.type())
             {
                 case SINE: return new SineExpression(literal);
@@ -119,23 +139,6 @@ public class Parser implements ExpressionParser
                 case NEGATIVE: return new NegativeExpression(literal);
             }
         }
-
-        //get the next exp
-        literal = parseLiteral();
-
-        //check if the current token is trailing or both
-        if(_tokenizer.hasNext() && _tokenizer.current().type().isTrailing())
-        {
-           holdToken = _tokenizer.current();
-           _tokenizer.next();
-           switch(holdToken.type())
-           {
-               case PERCENT: return new PercentExpression(literal);
-               case FACTORIAL: return new FactorialExpression(literal);
-               case SQUARE: return new PowerExpression(literal, new DoubleExpression(2));
-               case CUBE: return new PowerExpression(literal, new DoubleExpression(3));
-           }
-        }
         else if(_tokenizer.hasNext() && _tokenizer.current().type().isLeadingAndTrailing())
         {
             holdToken = _tokenizer.current();
@@ -143,9 +146,9 @@ public class Parser implements ExpressionParser
             Expression expression = parseLiteral();
             switch(holdToken.type())
             {
-                case POWER: return new PowerExpression(literal, expression);
-                case PERMUTATION: return new PermutationExpression(literal, expression);
-                case COMBINATION: return new CombinationExpression(literal, expression);
+                case POWER: return new PowerExpression(expression, literal);
+                case PERMUTATION: return new PermutationExpression(expression, literal);
+                case COMBINATION: return new CombinationExpression(expression, literal);
             }
         }
 
@@ -175,7 +178,7 @@ public class Parser implements ExpressionParser
             literal = new UnknownVariableExpression(_tokenizer.current().token().charAt(0));
         else if(_tokenizer.current().type() == Token.Type.DOUBLE)
             literal = new DoubleExpression(Double.parseDouble(_tokenizer.current().token()));
-        else if(_tokenizer.current().type() == Token.Type.LEFT_PARENTHESIS)
+        else if(_tokenizer.current().type() == Token.Type.RIGHT_PARENTHESIS)
         {
             _tokenizer.next();
             literal = parseExp();
@@ -184,6 +187,4 @@ public class Parser implements ExpressionParser
         _tokenizer.next();
         return literal;
     }
-
-
 }

@@ -1,8 +1,6 @@
 package com.anu.calculator;
 
 import com.anu.calculator.expressionparser.Parser;
-import com.anu.calculator.expressionparser.ReverseParser;
-import com.anu.calculator.expressionparser.Tokenizer;
 
 import org.junit.Test;
 
@@ -103,21 +101,12 @@ public class ExpressionParserTest {
 
         //testCases.add(new TestCase( , , ));
 
-        //Test reverse expression parser
-        for (TestCase testCase : testCases) {
-            Expression exp = new ReverseParser().parse(testCase.input);
-            String assetString = String.format("Reverse Expression Parser Error, raw equation: %s; parsed equation: %s", testCase.input, exp.show());
-            assertEquals(assetString, testCase.expected, exp.evaluate(), testCase.delta);
-        }
-
         // End of test case area, do not modify the code below.
-        /*
         for (TestCase testCase : testCases) {
             Expression exp = new Parser().parse(testCase.input);
             String assetString = String.format("Expression Parser Error, raw equation: %s; parsed equation: %s", testCase.input, exp.show());
             assertEquals(assetString, testCase.expected, exp.evaluate(), testCase.delta);
         }
-        */
     }
 
     /**
