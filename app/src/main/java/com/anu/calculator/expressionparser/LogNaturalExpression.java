@@ -20,7 +20,7 @@ public class LogNaturalExpression implements Expression {
 
 	@Override
 	public String show() {
-		return "ln(" + expression.show() + ")";
+		return "(ln" + expression.show() + ")";
 	}
 
 	@Override

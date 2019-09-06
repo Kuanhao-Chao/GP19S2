@@ -20,8 +20,8 @@ public class LogTenExpression implements Expression {
 
 	@Override
 	public String show() {
-		return "log" + Scripts.SubScript.ONE.getUnicode() +
-				Scripts.SubScript.ZERO.getUnicode() + "(" + expression.show() + ")";
+		return "(log" + Scripts.SubScript.ONE.getUnicode() +
+				Scripts.SubScript.ZERO.getUnicode() + expression.show() + ")";
 	}
 
 	@Override
