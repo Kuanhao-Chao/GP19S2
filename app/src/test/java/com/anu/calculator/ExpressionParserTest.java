@@ -105,7 +105,14 @@ public class ExpressionParserTest {
         for (TestCase testCase : testCases) {
             Expression exp = new Parser().parse(testCase.input);
             String assetString = String.format("Expression Parser Error, raw equation: %s; parsed equation: %s", testCase.input, exp.show());
-            assertEquals(assetString, testCase.expected, exp.evaluate(), testCase.delta);
+            try
+            {
+                assertEquals(assetString, testCase.expected, exp.evaluate(), testCase.delta);
+            }
+            catch(ExpressionParserException e)
+            {
+                fail();
+            }
         }
     }
 
@@ -118,7 +125,7 @@ public class ExpressionParserTest {
      *  - 06/09/2019: added Exception expectation, corrected spelling
      */
     @Test (expected = Exception.class)
-    public void test_infinity() {
+    public void test_infinity() throws ExpressionParserException {
         // First generate a obscenely large number
         String infinity_expression = "625!";
         Expression exp = new Parser().parse(infinity_expression);
@@ -151,8 +158,15 @@ public class ExpressionParserTest {
         {
             for(int j=i+1; j<1000; j++)
             {
-                assertNotEquals(randomNumbers.get(i).evaluate(),
-                        randomNumbers.get(j).evaluate());
+                try
+                {
+                    assertNotEquals(randomNumbers.get(i).evaluate(),
+                            randomNumbers.get(j).evaluate());
+                }
+                catch(ExpressionParserException e)
+                {
+                    fail();
+                }
             }
         }
     }

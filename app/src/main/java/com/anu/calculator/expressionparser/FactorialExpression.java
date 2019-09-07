@@ -1,6 +1,7 @@
 package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
+import com.anu.calculator.ExpressionParserException;
 
 /**
  * FactorialExpression: This class is used to represent the expression of a factorial
@@ -24,7 +25,7 @@ public class FactorialExpression implements Expression {
 	}
 
 	@Override
-	public double evaluate() {
+	public double evaluate() throws ExpressionParserException {
 		return factorial(expression.evaluate());
 	}
 

@@ -1,6 +1,7 @@
 package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
+import com.anu.calculator.ExpressionParserException;
 
 /**
  * PowerExpression: This class is used to represent the expression of an exponent
@@ -27,7 +28,7 @@ public class PowerExpression implements Expression {
 	}
 
 	@Override
-	public double evaluate() {
+	public double evaluate() throws ExpressionParserException {
 		return Math.pow(base.evaluate(), pwr.evaluate());
 	}
 }

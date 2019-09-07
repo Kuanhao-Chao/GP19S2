@@ -1,6 +1,7 @@
 package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
+import com.anu.calculator.ExpressionParserException;
 
 /**
  * DoubleExpression: This class is used to represent a double literal
@@ -24,7 +25,7 @@ public class DoubleExpression implements Expression {
 	}
 
 	@Override
-	public double evaluate() {
+	public double evaluate() throws ExpressionParserException {
 		return value;
 	}
 

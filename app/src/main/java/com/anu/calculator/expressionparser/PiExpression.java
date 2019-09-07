@@ -1,6 +1,7 @@
 package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
+import com.anu.calculator.ExpressionParserException;
 
 /**
  * PiExpression: This class is used to represent PI
@@ -19,7 +20,7 @@ public class PiExpression implements Expression {
 	}
 
 	@Override
-	public double evaluate() {
+	public double evaluate() throws ExpressionParserException {
 		return Math.PI;
 	}
 

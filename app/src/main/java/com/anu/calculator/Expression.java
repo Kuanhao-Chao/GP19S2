@@ -18,5 +18,5 @@ public interface Expression {
 	 *
 	 * @return The expressions literal result as a double.
 	 */
-	double evaluate();
+	double evaluate() throws ExpressionParserException;
 }

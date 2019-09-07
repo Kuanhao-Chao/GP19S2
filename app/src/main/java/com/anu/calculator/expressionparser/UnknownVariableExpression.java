@@ -1,6 +1,8 @@
 package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
+import com.anu.calculator.ExpressionParserException;
+import com.anu.calculator.exceptions.UnassignedVariableException;
 
 /**
  * UnknownVariableExpression: This class is used to represent a variable with an unknown value,
@@ -15,13 +17,22 @@ import com.anu.calculator.Expression;
 public class UnknownVariableExpression implements Expression {
 
 	private char variable;
-	private double value;
-	private boolean assignedValue;
+	private Expression value;
 
-	UnknownVariableExpression(char variable) {
+	public UnknownVariableExpression(char variable) {
 		this.variable = variable;
-		this.value = 0;
-		assignedValue = false;
+		this.value = null;
+	}
+
+	/**
+	 * An alternative constructor in case the value of
+	 * the variable is known at the time of instantiation.
+	 */
+
+	public UnknownVariableExpression(char variable, Expression value)
+	{
+		this.variable = variable;
+		this.value = value;
 	}
 
 	@Override
@@ -30,18 +41,29 @@ public class UnknownVariableExpression implements Expression {
 	}
 
 	@Override
-	public double evaluate() {
-		return value; //placeholder method until we figure out how to handle unknown variables
+	public double evaluate() throws ExpressionParserException{
+		try
+		{
+			if(hasValue())
+			{
+				return value.evaluate();
+			}
+			else throw new UnassignedVariableException(this.getClass().getName(), "Variable " + variable + " has no value assigned to it.");
+		}
+		catch(ExpressionParserException e)
+		{
+			e.logMe();
+			throw e;
+		}
 	}
 
-	public void assignValue(double value)
+	public void assignValue(Expression value)
 	{
-		assignedValue = true;
 		this.value = value;
 	}
 
 	public boolean hasValue()
 	{
-		return assignedValue;
+		return value != null;
 	}
 }

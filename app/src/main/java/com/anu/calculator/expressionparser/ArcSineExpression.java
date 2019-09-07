@@ -1,6 +1,7 @@
 package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
+import com.anu.calculator.ExpressionParserException;
 
 /**
  * ArcSineExpression: This class is used to represent the expression of arcsine
@@ -27,7 +28,7 @@ public class ArcSineExpression implements Expression {
 	}
 
 	@Override
-	public double evaluate() {
+	public double evaluate()throws ExpressionParserException {
 		return Math.toDegrees(Math.asin(expression.evaluate()));
 	}
 

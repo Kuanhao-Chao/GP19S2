@@ -136,7 +136,6 @@ public class Parser implements ExpressionParser
                 case LOG_TEN: return new LogTenExpression(literal);
                 case SQUARE_ROOT: return new SquareRootExpression(literal);
                 case CUBED_ROOT: return new CubedRootExpression(literal);
-                case NEGATIVE: return new NegativeExpression(literal);
             }
         }
         else if(_tokenizer.hasNext() && _tokenizer.current().type().isLeadingAndTrailing())

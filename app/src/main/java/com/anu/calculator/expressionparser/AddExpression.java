@@ -1,6 +1,7 @@
 package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
+import com.anu.calculator.ExpressionParserException;
 
 /**
  * AddExpression: This class is used to represent the expression of addition
@@ -24,7 +25,7 @@ public class AddExpression implements Expression {
 	}
 
 	@Override
-	public double evaluate() {
+	public double evaluate() throws ExpressionParserException {
 		return (term.evaluate() + expression.evaluate());
 	}
 

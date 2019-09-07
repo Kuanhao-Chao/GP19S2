@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.anu.calculator.Expression;
 import com.anu.calculator.ExpressionParser;
+import com.anu.calculator.ExpressionParserException;
 import com.anu.calculator.R;
 import com.anu.calculator.expressionparser.Parser;
 import com.anu.calculator.expressionparser.Tokenizer;
@@ -49,6 +50,9 @@ public class DigitFragment extends Fragment {
      *
      * @author: Michael Betterton (u6797866)
      * @return The fragments UI view.
+     *
+     * @modified: Samuel Brookes (u5380100)
+     *  - 07/09/2019: added try catch block for evaluate() method.
      */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -275,18 +279,27 @@ public class DigitFragment extends Fragment {
                 String expression = calculation_area.getText().toString();
                 ExpressionParser parser = new Parser();
                 Expression exp = parser.parse(expression);
-                double evaluation = exp.evaluate();
+                try
+                {
+                    double evaluation = exp.evaluate();
+                    // Reset the Text Area
+                    resetTextArea(calculation_area);
 
-                // Reset the Text Area
-                resetTextArea(calculation_area);
+                    // Add the text to the screen
+                    calculation_area.setText(fmt(evaluation));
+                    calculation_area.setSelection(calculation_area.length());
 
-                // Add the text to the screen
-                calculation_area.setText(fmt(evaluation));
-                calculation_area.setSelection(calculation_area.length());
-
-                // Pass the history to the history fragment
-                historyMessenger.sendHistory("\n"+expression);
-                historyMessenger.sendHistory("\n="+fmt(evaluation));
+                    // Pass the history to the history fragment
+                    historyMessenger.sendHistory("\n"+expression);
+                    historyMessenger.sendHistory("\n="+fmt(evaluation));
+                }
+                catch(ExpressionParserException e)
+                {
+                    calculation_area.setText(e.getErrorMessage());
+                    calculation_area.setSelection(calculation_area.length());
+                    historyMessenger.sendHistory("\n"+expression);
+                    historyMessenger.sendHistory("\n"+e.getErrorMessage());
+                }
             }
         });
         Log.d(TAG,"onCreateView: complete");

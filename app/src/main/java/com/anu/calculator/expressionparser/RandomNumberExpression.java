@@ -1,5 +1,6 @@
 package com.anu.calculator.expressionparser;
 import com.anu.calculator.Expression;
+import com.anu.calculator.ExpressionParserException;
 
 import java.util.Random;
 
@@ -27,7 +28,7 @@ public class RandomNumberExpression implements Expression {
 	}
 
 	@Override
-	public double evaluate() {
+	public double evaluate() throws ExpressionParserException {
 		return randDouble;
 	}
 

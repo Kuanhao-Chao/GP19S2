@@ -1,6 +1,8 @@
 package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
+import com.anu.calculator.ExpressionParserException;
+import com.anu.calculator.exceptions.DivisionByZeroException;
 
 /**
  * DivideExpression: This class is used to represent the expression of division
@@ -16,7 +18,7 @@ public class DivideExpression implements Expression {
 
 	DivideExpression(Expression factor, Expression term) {
 		this.factor = factor;
-		this.term = term;		
+		this.term = term;
 	}
 
 	@Override
@@ -25,8 +27,17 @@ public class DivideExpression implements Expression {
 	}
 
 	@Override
-	public double evaluate() {
-		return (factor.evaluate() / term.evaluate());
+	public double evaluate() throws ExpressionParserException {
+		try
+		{
+			double checkForZero = term.evaluate();
+			if(checkForZero == 0) throw new DivisionByZeroException(this.getClass().getName(), "Cannot divide by zero");
+			else return (factor.evaluate() / term.evaluate());
+		}
+		catch(ExpressionParserException e)
+		{
+			throw e;
+		}
 	}
 
 
