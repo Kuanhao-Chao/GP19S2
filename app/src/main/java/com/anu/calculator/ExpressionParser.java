@@ -12,4 +12,15 @@ public interface ExpressionParser {
      * @return The string after the tokenizer has been applied and parsed into a Expression.
      */
     Expression parse(String expression);
+
+    /**
+     * Takes a string representation of an expression and returns it as an Expression. Not that the
+     * definition of expression is recursive.
+     *
+     * @param expression The expression represented as a string.
+     * @param degrees Bool if degrees should be used for the calculation
+     * @param precision The precision to use for the calculation as an int.
+     * @return The string after the tokenizer has been applied and parsed into a Expression.
+     */
+    Expression parse(String expression, Boolean degrees, Integer precision);
 }

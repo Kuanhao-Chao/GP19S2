@@ -1,5 +1,7 @@
 package com.anu.calculator.expressionparser;
 
+import android.util.Log;
+
 import com.anu.calculator.Expression;
 import com.anu.calculator.ExpressionParser;
 import com.anu.calculator.ParserException;
@@ -31,6 +33,8 @@ import com.anu.calculator.exceptions.MathematicalSyntaxException;
 public class Parser implements ExpressionParser
 {
 
+    private static final String TAG = "EXPRESSION_PARSER";
+
     Tokenizer _tokenizer;
 
     @Override
@@ -38,6 +42,13 @@ public class Parser implements ExpressionParser
     {
         _tokenizer = new Tokenizer(expression);
         return parseExp();
+    }
+
+    @Override
+    public Expression parse(String expression, Boolean degrees, Integer precision) {
+        Log.d(TAG,"Degrees: "+degrees);
+        Log.d(TAG,"Precision: "+precision);
+        return parse(expression);
     }
 
     /**

@@ -33,6 +33,7 @@
     <string name="tab_scientific">Func</string>
     <string name="tab_history">History</string>
     <string name="tab_graph">Graph</string>
+    <string name="tab_preferences">⚙</string>
     <string name="tab_function">abc</string>
     <string name="sin">sin</string>
     <string name="cos">cos</string>
@@ -89,4 +90,9 @@
     <string name="t">t</string>
     <string name="u">u</string>
     <string name="v">v</string>
+    <string name="preferences_lbl">The following preferences affect future calculations made with the calculator. \n\nEach preference is saved immediately when changed.</string>
+    <string name="degrees_switch">Use Degrees for Angle Calculations</string>
+    <string name="lbl_degrees">Setting degrees to off means the calculator will use Radians.</string>
+    <string name="lbl_precision">This precision will be used for calculation evaluations.</string>
+    <string name="precision">Precision (places)</string>
 </resources>

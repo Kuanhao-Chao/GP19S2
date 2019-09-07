@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements HistoryMessenger 
 
         // Set the shared preferences to the default values
         put("eval",false); // Set the evaluation state to false.
+        put("degrees",false); // Set the slider to use degrees as false
+        put("precision", 20); // Set the precision value to 20 places by default.
     }
 
     /**
@@ -82,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements HistoryMessenger 
         mOperationsPageAdapter.addFragment(new OperationsFragment(), getString(R.string.tab_scientific));
         mOperationsPageAdapter.addFragment(new HistoryFragment(), getString(R.string.tab_history));
         mOperationsPageAdapter.addFragment(new FunctionFragment(), getString(R.string.tab_function));
+        mOperationsPageAdapter.addFragment(new PreferencesFragment(), getString(R.string.tab_preferences));
         viewPager.setAdapter(mOperationsPageAdapter);
     }
 
