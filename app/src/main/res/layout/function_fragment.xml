@@ -2,18 +2,234 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.FunctionFragment">
+    tools:context=".ui.FunctionFragment"
+    tools:ignore="NestedWeights" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/variables_label"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/variables_label" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/btn_a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/a"
+                />
+
+            <Button
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/btn_b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/b" />
+
+            <Button
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/btn_c"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/c" />
+
+            <Button
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/btn_d"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/d" />
+
+            <Button
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/btn_f"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/f" />
+
+            <Button
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/btn_g"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/g" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/btn_h"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/h" />
+
+            <Button
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/btn_i"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/i" />
+
+            <Button
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/btn_j"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/j" />
+
+            <Button
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/btn_k"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/k" />
+
+            <Button
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/l"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/l" />
+
+            <Button
+                android:id="@+id/btn_m"
+                style="@android:style/Widget.Material.Light.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/m" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/btn_n"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/n" />
+
+            <Button
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/btn_p"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/p" />
+
+            <Button
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/btn_q"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/q" />
+
+            <Button
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/btn_r"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/r" />
+
+            <Button
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/btn_s"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/s" />
+
+            <Button
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/btn_t"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/t" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/btn_u"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/u" />
+
+            <Button
+                style="@android:style/Widget.Material.Light.Button"
+                android:id="@+id/btn_v"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/v" />
+
+            <Button
+                android:id="@+id/btn_w"
+                style="@android:style/Widget.Material.Light.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/w" />
+
+            <Button
+                android:id="@+id/btn_x"
+                style="@android:style/Widget.Material.Light.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/x" />
+
+            <Button
+                android:id="@+id/btn_y"
+                style="@android:style/Widget.Material.Light.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/y" />
+
+            <Button
+                android:id="@+id/btn_z"
+                style="@android:style/Widget.Material.Light.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/z" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,156 +238,45 @@
 
             <Button
                 android:id="@+id/alpha"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@android:style/Widget.Material.Light.Button"
                 android:text="@string/alpha" />
 
             <Button
                 android:id="@+id/beta"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@android:style/Widget.Material.Light.Button"
                 android:text="@string/beta" />
 
             <Button
                 android:id="@+id/gamma"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@android:style/Widget.Material.Light.Button"
                 android:text="@string/gamma" />
 
             <Button
                 android:id="@+id/delta"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="@android:style/Widget.Material.Light.Button"
                 android:text="@string/delta" />
 
             <Button
-                android:id="@+id/w"
-                android:layout_width="wrap_content"
+                android:id="@+id/equals"
+                android:layout_width="174dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
+                android:text="@string/equals"
                 style="@android:style/Widget.Material.Light.Button"
-                android:text="@string/w" />
-
-            <Button
-                android:id="@+id/x"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                style="@android:style/Widget.Material.Light.Button"
-                android:text="@string/x" />
-
-            <Button
-                android:id="@+id/y"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                style="@android:style/Widget.Material.Light.Button"
-                android:text="@string/y" />
-
-            <Button
-                android:id="@+id/z"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                style="@android:style/Widget.Material.Light.Button"
-                android:text="@string/z" />
-
+                android:textSize="16sp" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/set_func_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/set_function_label" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/set_func_f"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                style="@android:style/Widget.Material.Light.Button"
-                android:text="@string/func_f" />
-
-            <Button
-                android:id="@+id/set_func_g"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                style="@android:style/Widget.Material.Light.Button"
-                android:text="@string/func_g" />
-
-            <Button
-                android:id="@+id/set_func_h"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                style="@android:style/Widget.Material.Light.Button"
-                android:text="@string/func_h" />
-
-            <Button
-                android:id="@+id/set_func_i"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                style="@android:style/Widget.Material.Light.Button"
-                android:text="@string/func_i" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/call_function_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/call_function_label" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/call_func_f"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                style="@android:style/Widget.Material.Light.Button"
-                android:text="@string/func_f" />
-
-            <Button
-                android:id="@+id/call_func_g"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                style="@android:style/Widget.Material.Light.Button"
-                android:text="@string/func_g" />
-
-            <Button
-                android:id="@+id/call_func_h"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                style="@android:style/Widget.Material.Light.Button"
-                android:text="@string/func_h" />
-
-            <Button
-                android:id="@+id/call_func_i"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                style="@android:style/Widget.Material.Light.Button"
-                android:text="@string/func_i" />
-        </LinearLayout>
     </LinearLayout>
 </ScrollView>

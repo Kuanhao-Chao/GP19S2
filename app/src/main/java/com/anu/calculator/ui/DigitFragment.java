@@ -37,7 +37,7 @@ public class DigitFragment extends Fragment {
 
     /**
      * Called to have the fragment instantiate its user interface view. All buttons in the fragment
-     *      * have their OnClickListeners defined here as well.
+     * have their OnClickListeners defined here as well.
      *
      * @param inflater The LayoutInflater object that can be used to inflate
      * any views in the fragment,
@@ -62,13 +62,14 @@ public class DigitFragment extends Fragment {
         calculation_area.setCursorVisible(true);
 
         final View rootView = inflater.inflate(R.layout.digit_fragment, container, false);
+        final MainActivity main = (MainActivity) Objects.requireNonNull(getActivity());
 
         Button btn_dgt_0 = rootView.findViewById(R.id.dgt_0);
         btn_dgt_0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.dgt_0);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, true);
             }
         });
 
@@ -77,7 +78,7 @@ public class DigitFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.dgt_1);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, true);
             }
         });
 
@@ -86,7 +87,7 @@ public class DigitFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.dgt_2);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, true);
             }
         });
 
@@ -95,7 +96,7 @@ public class DigitFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.dgt_3);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, true);
             }
         });
 
@@ -104,7 +105,7 @@ public class DigitFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.dgt_4);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, true);
             }
         });
 
@@ -113,7 +114,7 @@ public class DigitFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.dgt_5);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, true);
             }
         });
 
@@ -122,7 +123,7 @@ public class DigitFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.dgt_6);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, true);
             }
         });
 
@@ -131,7 +132,7 @@ public class DigitFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.dgt_7);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, true);
             }
         });
 
@@ -140,7 +141,7 @@ public class DigitFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.dgt_8);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, true);
             }
         });
 
@@ -149,7 +150,7 @@ public class DigitFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.dgt_9);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, true);
             }
         });
 
@@ -158,7 +159,8 @@ public class DigitFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.answer);
-                addText(calculation_area, input);
+                if(main.contains("ans"))
+                    addText(calculation_area, fmt(main.getDouble("ans")), main, false);
             }
         });
 
@@ -167,7 +169,7 @@ public class DigitFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.decimal);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -176,7 +178,7 @@ public class DigitFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.addition);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -185,7 +187,7 @@ public class DigitFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.subtraction);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -194,7 +196,7 @@ public class DigitFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.multiply);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -203,7 +205,7 @@ public class DigitFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.divide);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -212,7 +214,7 @@ public class DigitFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.percentage);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -221,6 +223,8 @@ public class DigitFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 resetTextArea(calculation_area);
+                // Reset the eval to false as we've hit all clear.
+                main.put("eval",false);
             }
         });
 
@@ -289,8 +293,15 @@ public class DigitFragment extends Fragment {
                     calculation_area.setSelection(calculation_area.length());
 
                     // Pass the history to the history fragment
-                    historyMessenger.sendHistory("\n"+expression);
-                    historyMessenger.sendHistory("\n="+fmt(evaluation));
+                    historyMessenger.sendHistory("\n"+expression+fmt(evaluation));
+
+                    // Store the answer for future use.
+                    MainActivity main = (MainActivity) Objects.requireNonNull(getActivity());
+                    main.put("ans",evaluation);
+                    Log.d(TAG,"stored answer: '"+main.getDouble("ans")+"'");
+
+                    // Store that a evaluation has taken place
+                    main.put("eval", true);
                 }
                 catch(ParserException e)
                 {

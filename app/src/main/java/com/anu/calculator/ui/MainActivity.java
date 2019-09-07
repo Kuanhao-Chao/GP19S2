@@ -3,18 +3,22 @@ package com.anu.calculator.ui;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
 
 import com.anu.calculator.R;
-import com.anu.calculator.functionExpression.Function;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class MainActivity extends AppCompatActivity implements HistoryMessenger {
 
     private static final String TAG = "MainActivity";
+    public static final String PREFS_NAME = "PREFERENCES";
 
     OperationsPageAdapter mOperationsPageAdapter;
     ViewPager mViewPager;
@@ -39,6 +43,9 @@ public class MainActivity extends AppCompatActivity implements HistoryMessenger 
         // Focus on the Calculation Text Area
         final EditText calculation_area = findViewById(R.id.calculation_textarea);
         calculation_area.setShowSoftInputOnFocus(false);
+
+        // Set the shared preferences to the default values
+        put("eval",false); // Set the evaluation state to false.
     }
 
     /**
@@ -73,9 +80,220 @@ public class MainActivity extends AppCompatActivity implements HistoryMessenger 
         mOperationsPageAdapter.addFragment(new DigitFragment(), getString(R.string.tab_basic));
         mOperationsPageAdapter.addFragment(new OperationsFragment(), getString(R.string.tab_scientific));
         mOperationsPageAdapter.addFragment(new HistoryFragment(), getString(R.string.tab_history));
-        mOperationsPageAdapter.addFragment(new GraphFragment(), getString(R.string.tab_graph));
         mOperationsPageAdapter.addFragment(new FunctionFragment(), getString(R.string.tab_function));
         viewPager.setAdapter(mOperationsPageAdapter);
     }
 
+    /**
+     * Inserts into the private shared preferences the provided key and value. Note that this is a
+     * unencrypted form of storage and should only be used for generic preferences and not secrets.
+     *
+     * @param key The key to identify the preference by.
+     * @param value The primative value to store.
+     * @author: Michael Betterton (u6797866)
+     */
+    public void put(String key, Boolean value) {
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, 0);;
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(key, value);
+        editor.apply();
+    }
+
+    /**
+     * Inserts into the private shared preferences the provided key and value. Note that this is a
+     * unencrypted form of storage and should only be used for generic preferences and not secrets.
+     *
+     * @param key The key to identify the preference by.
+     * @param value The primative value to store.
+     * @author: Michael Betterton (u6797866)
+     */
+    public void put(String key, String value) {
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, 0);;
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
+
+    /**
+     * Inserts into the private shared preferences the provided key and value. Note that this is a
+     * unencrypted form of storage and should only be used for generic preferences and not secrets.
+     *
+     * @param key The key to identify the preference by.
+     * @param value The primative value to store.
+     * @author: Michael Betterton (u6797866)
+     */
+    public void put(String key, Set<String> value) {
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, 0);;
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putStringSet(key, value);
+        editor.apply();
+    }
+
+    /**
+     * Inserts into the private shared preferences the provided key and value. Note that this is a
+     * unencrypted form of storage and should only be used for generic preferences and not secrets.
+     *
+     * @param key The key to identify the preference by.
+     * @param value The primative value to store.
+     * @author: Michael Betterton (u6797866)
+     */
+    public void put(String key, Long value) {
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, 0);;
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putLong(key, value);
+        editor.apply();
+    }
+
+    /**
+     * Inserts into the private shared preferences the provided key and value. Note that this is a
+     * unencrypted form of storage and should only be used for generic preferences and not secrets.
+     *
+     * @param key The key to identify the preference by.
+     * @param value The primative value to store.
+     * @author: Michael Betterton (u6797866)
+     */
+    public void put(String key, Float value) {
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, 0);;
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putFloat(key, value);
+        editor.apply();
+    }
+
+    /**
+     * Inserts into the private shared preferences the provided key and value. Note that this is a
+     * unencrypted form of storage and should only be used for generic preferences and not secrets.
+     *
+     * As the shared preferences class has no concept of double storage (I know right?), we instead
+     * convert the double to a Long as the bits for the Double. This conversion will be undone on
+     * retrieval.
+     *
+     * @param key The key to identify the preference by.
+     * @param value The primative value to store.
+     * @author: Michael Betterton (u6797866)
+     */
+    public void put(String key, Double value) {
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, 0);;
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putLong(key, Double.doubleToLongBits(value));
+        editor.apply();
+    }
+
+    /**
+     * Inserts into the private shared preferences the provided key and value. Note that this is a
+     * unencrypted form of storage and should only be used for generic preferences and not secrets.
+     *
+     * @param key The key to identify the preference by.
+     * @param value The primative value to store.
+     * @author: Michael Betterton (u6797866)
+     */
+    public void put(String key, Integer value) {
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, 0);;
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(key, value);
+        editor.apply();
+    }
+
+    /**
+     * Returns the saved preferences from the preferences file for the given key. If no  matching
+     * key is found, a default value of false is returned.
+     *
+     * @param key The key to identify the preference by.
+     * @author: Michael Betterton (u6797866)
+     */
+    public Boolean getBoolean(String key) {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        return settings.getBoolean(key, false);
+    }
+
+    /**
+     * Returns the saved preferences from the preferences file for the given key. If no  matching
+     * key is found, a default value of 0 is returned.
+     *
+     * @param key The key to identify the preference by.
+     * @author: Michael Betterton (u6797866)
+     */
+    public Long getLong(String key) {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        return settings.getLong(key, 0);
+    }
+
+    /**
+     * Returns the saved preferences from the preferences file for the given key. If no  matching
+     * key is found, a default value of 0 is returned.
+     *
+     * As the shared preferences class has no concept of double storage (I know right?), the value
+     * is retrieved as a long and converted back to a double. This long to double conversion has no
+     * precision loss as we actually store the double as its bit representation.
+     *
+     * @param key The key to identify the preference by.
+     * @author: Michael Betterton (u6797866)
+     */
+    public Double getDouble(String key) {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        long doubleBits = settings.getLong(key, 0);
+        return Double.longBitsToDouble(doubleBits);
+    }
+
+    /**
+     * Returns the saved preferences from the preferences file for the given key. If no  matching
+     * key is found, a default value of 0 is returned.
+     *
+     * @param key The key to identify the preference by.
+     * @author: Michael Betterton (u6797866)
+     */
+    public Float getFloat(String key) {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        return settings.getFloat(key, 0);
+    }
+
+    /**
+     * Returns the saved preferences from the preferences file for the given key. If no  matching
+     * key is found, a default value of "" (empty string) is returned.
+     *
+     * @param key The key to identify the preference by.
+     * @author: Michael Betterton (u6797866)
+     */
+    public String getString(String key) {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        return settings.getString(key, "");
+    }
+
+    /**
+     * Returns the saved preferences from the preferences file for the given key. If no  matching
+     * key is found, a default value of a empty HashSet is returned.
+     *
+     * @param key The key to identify the preference by.
+     * @author: Michael Betterton (u6797866)
+     */
+    public Set<String> getStringSet(String key) {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        return settings.getStringSet(key, new HashSet<String>(0));
+    }
+
+    /**
+     * Returns the saved preferences from the preferences file for the given key. If no  matching
+     * key is found, a default value of 0 is returned.
+     *
+     * @param key The key to identify the preference by.
+     * @author: Michael Betterton (u6797866)
+     */
+    public Integer getInt(String key) {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        return settings.getInt(key, 0);
+    }
+
+
+    /**
+     * Returns true if the shared preferences file contains the provided key in its storage.
+     *
+     * @param key The key to check for in the shared preferences storage.
+     * @return Boolean True if it exists, otherwise False.
+     */
+    public Boolean contains(String key){
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        return settings.contains(key);
+    }
+
+    
+    
 }

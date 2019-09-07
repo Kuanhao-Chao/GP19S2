@@ -2,6 +2,8 @@ package com.anu.calculator.ui;
 
 import android.widget.EditText;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -78,8 +80,22 @@ class Util {
      * @author: Michael Betterton (u6797866)
      * @param editText  An Edit Text Area to add text to.
      * @param textToAdd A String to insert into the Edit Text Area.
+     * @param main The main activity that is the context for the activity.
+     * @param digit If the string being added is a digit character.
      */
-    static void addText(@org.jetbrains.annotations.NotNull EditText editText, String textToAdd) {
+    static void addText(@NotNull EditText editText, String textToAdd, MainActivity main, boolean digit) {
+        // If we've recently evaluated a calculation and the user has just typed a number, then
+        // set the text area to that value.
+        if(main.getBoolean("eval") && digit){
+            editText.setText(textToAdd);
+            editText.setSelection(editText.length());
+            main.put("eval",false);
+            return;
+        }
+        // Force the evaluation property to false regardless.
+        main.put("eval",false);
+
+        // Add the text.
         int start = Math.max(editText.getSelectionStart(), 0);
         int end = Math.max(editText.getSelectionEnd(), 0);
         editText.getText().replace(Math.min(start, end), Math.max(start, end),

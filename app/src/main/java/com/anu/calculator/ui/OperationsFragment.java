@@ -6,15 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
 
 import com.anu.calculator.R;
@@ -52,6 +48,7 @@ public class OperationsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         final EditText calculation_area = Objects.requireNonNull(getActivity()).findViewById(R.id.calculation_textarea);
+        final MainActivity main = (MainActivity) Objects.requireNonNull(getActivity());
 
         View rootView = inflater.inflate(R.layout.operations_fragment, container, false);
 
@@ -60,7 +57,7 @@ public class OperationsFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.sin);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -69,7 +66,7 @@ public class OperationsFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.cos);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -78,7 +75,7 @@ public class OperationsFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.tan);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -87,7 +84,7 @@ public class OperationsFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.squared);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -96,7 +93,7 @@ public class OperationsFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.natural_log);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -105,7 +102,7 @@ public class OperationsFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.log10);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -114,7 +111,7 @@ public class OperationsFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.power);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -123,7 +120,7 @@ public class OperationsFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.cubed);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -132,7 +129,7 @@ public class OperationsFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.npr);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -141,7 +138,7 @@ public class OperationsFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.ncr);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -150,7 +147,7 @@ public class OperationsFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.pi);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -159,7 +156,7 @@ public class OperationsFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.sqrt);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -168,7 +165,7 @@ public class OperationsFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.arc_sin);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -177,7 +174,7 @@ public class OperationsFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.arc_cos);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -186,7 +183,7 @@ public class OperationsFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.arc_tan) + getString(R.string.lbra) + getString(R.string.rbra);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -195,7 +192,7 @@ public class OperationsFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.cubed_root);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -204,7 +201,7 @@ public class OperationsFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.lbra);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -213,7 +210,7 @@ public class OperationsFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.rbra);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -222,7 +219,7 @@ public class OperationsFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.rand);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
@@ -231,7 +228,7 @@ public class OperationsFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 String input = getString(R.string.factorial);
-                addText(calculation_area, input);
+                addText(calculation_area, input, main, false);
             }
         });
 
