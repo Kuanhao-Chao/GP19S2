@@ -2,6 +2,7 @@ package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.MathematicalSyntaxException;
 
 /**
  * TangentExpression: This class is used to represent the expression of tangent
@@ -26,7 +27,14 @@ public class TangentExpression implements Expression {
 
 	@Override
 	public double evaluate() throws ParserException {
-		return Math.tan(Math.toRadians(expression.evaluate()));
+		try
+		{
+			return Math.tan(Math.toRadians(expression.evaluate()));
+		}
+		catch(NullPointerException e)
+		{
+			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+		}
 	}
 
 }

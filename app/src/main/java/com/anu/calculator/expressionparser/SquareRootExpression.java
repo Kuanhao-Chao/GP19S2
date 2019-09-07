@@ -2,6 +2,7 @@ package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.MathematicalSyntaxException;
 
 /**
  * SquareRootExpression: This class is used to represent the expression of a square root
@@ -26,6 +27,13 @@ public class SquareRootExpression implements Expression {
 
 	@Override
 	public double evaluate() throws ParserException {
-		return Math.sqrt(expression.evaluate());
+		try
+		{
+			return Math.sqrt(expression.evaluate());
+		}
+		catch(NullPointerException e)
+		{
+			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+		}
 	}
 }

@@ -2,6 +2,7 @@ package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.MathematicalSyntaxException;
 
 /**
  * FactorialExpression: This class is used to represent the expression of a factorial
@@ -26,7 +27,14 @@ public class FactorialExpression implements Expression {
 
 	@Override
 	public double evaluate() throws ParserException {
-		return factorial(expression.evaluate());
+		try
+		{
+			return factorial(expression.evaluate());
+		}
+		catch(NullPointerException e)
+		{
+			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+		}
 	}
 
 	private double factorial(double value)

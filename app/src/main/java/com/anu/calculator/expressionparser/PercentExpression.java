@@ -2,6 +2,7 @@ package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.MathematicalSyntaxException;
 
 /**
  * PercentExpression: This class is used to represent the expression of a percentage
@@ -27,6 +28,13 @@ public class PercentExpression implements Expression {
 
 	@Override
 	public double evaluate() throws ParserException {
-		return expression.evaluate()/100;
+		try
+		{
+			return expression.evaluate()/100;
+		}
+		catch(NullPointerException e)
+		{
+			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+		}
 	}
 }
