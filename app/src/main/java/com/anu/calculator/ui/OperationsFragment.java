@@ -59,7 +59,7 @@ public class OperationsFragment extends Fragment {
         sin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                String input = getString(R.string.sin) + getString(R.string.lbra) + getString(R.string.rbra);
+                String input = getString(R.string.sin);
                 addText(calculation_area, input);
             }
         });
@@ -68,7 +68,7 @@ public class OperationsFragment extends Fragment {
         cos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                String input = getString(R.string.cos) + getString(R.string.lbra) + getString(R.string.rbra);
+                String input = getString(R.string.cos);
                 addText(calculation_area, input);
             }
         });
@@ -77,7 +77,7 @@ public class OperationsFragment extends Fragment {
         tan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                String input = getString(R.string.tan) + getString(R.string.lbra) + getString(R.string.rbra);
+                String input = getString(R.string.tan);
                 addText(calculation_area, input);
             }
         });
@@ -158,7 +158,7 @@ public class OperationsFragment extends Fragment {
         sqrt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                String input = getString(R.string.sqrt) + getString(R.string.lbra) + getString(R.string.rbra);
+                String input = getString(R.string.sqrt);
                 addText(calculation_area, input);
             }
         });
@@ -167,7 +167,7 @@ public class OperationsFragment extends Fragment {
         arc_sin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                String input = getString(R.string.arc_sin) + getString(R.string.lbra) + getString(R.string.rbra);
+                String input = getString(R.string.arc_sin);
                 addText(calculation_area, input);
             }
         });
@@ -176,7 +176,7 @@ public class OperationsFragment extends Fragment {
         arc_cos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                String input = getString(R.string.arc_cos) + getString(R.string.lbra) + getString(R.string.rbra);
+                String input = getString(R.string.arc_cos);
                 addText(calculation_area, input);
             }
         });
@@ -194,7 +194,7 @@ public class OperationsFragment extends Fragment {
         cubed_root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                String input = getString(R.string.cubed_root) + getString(R.string.lbra) + getString(R.string.rbra);
+                String input = getString(R.string.cubed_root);
                 addText(calculation_area, input);
             }
         });
