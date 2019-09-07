@@ -293,7 +293,7 @@ public class DigitFragment extends Fragment {
                     calculation_area.setSelection(calculation_area.length());
 
                     // Pass the history to the history fragment
-                    historyMessenger.sendHistory("\n"+expression+fmt(evaluation));
+                    historyMessenger.sendHistory("\n"+expression+"="+fmt(evaluation));
 
                     // Store the answer for future use.
                     MainActivity main = (MainActivity) Objects.requireNonNull(getActivity());
