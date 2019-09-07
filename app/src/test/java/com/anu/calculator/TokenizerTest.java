@@ -64,11 +64,11 @@ public class TokenizerTest {
     public void testSubtraction() {
         // Declare each of the test cases
         ArrayList<TestCase> testCases = new ArrayList<>(0);
-        testCases.add(new TestCase("8−1",
+        testCases.add(new TestCase("8-1",
                 Arrays.asList(Token.Type.DOUBLE, Token.Type.SUBTRACT, Token.Type.DOUBLE)));
-        testCases.add(new TestCase("5−−",
+        testCases.add(new TestCase("5--",
                 Arrays.asList(Token.Type.SUBTRACT, Token.Type.SUBTRACT, Token.Type.DOUBLE)));
-        testCases.add(new TestCase("1124−124−1",
+        testCases.add(new TestCase("1124-124-1",
                 Arrays.asList(Token.Type.DOUBLE, Token.Type.SUBTRACT, Token.Type.DOUBLE, Token.Type.SUBTRACT, Token.Type.DOUBLE)));
 
         // Run each test case programmatically by looping over the cases
@@ -99,7 +99,7 @@ public class TokenizerTest {
         testCases.add(new TestCase("ɑ+β+ɣ+Δ",
                 Arrays.asList(Token.Type.UNKNOWN_VARIABLE, Token.Type.ADD, Token.Type.UNKNOWN_VARIABLE, Token.Type.ADD,
                         Token.Type.UNKNOWN_VARIABLE, Token.Type.ADD, Token.Type.UNKNOWN_VARIABLE)));
-        testCases.add(new TestCase("w−x−y−z",
+        testCases.add(new TestCase("w-x-y-z",
                 Arrays.asList(Token.Type.UNKNOWN_VARIABLE, Token.Type.SUBTRACT, Token.Type.UNKNOWN_VARIABLE, Token.Type.SUBTRACT,
                         Token.Type.UNKNOWN_VARIABLE, Token.Type.SUBTRACT, Token.Type.UNKNOWN_VARIABLE)));
         testCases.add(new TestCase("sin(45)",
@@ -138,12 +138,12 @@ public class TokenizerTest {
                 Arrays.asList(Token.Type.DOUBLE, Token.Type.CUBED_ROOT, Token.Type.ADD, Token.Type.DOUBLE)));
         testCases.add(new TestCase("24.5+rand×100",
                 Arrays.asList(Token.Type.DOUBLE, Token.Type.MULTIPLY, Token.Type.RANDOM_NUMBER, Token.Type.ADD, Token.Type.DOUBLE)));
-        testCases.add(new TestCase("24−!72.45",
+        testCases.add(new TestCase("24-!72.45",
                 Arrays.asList(Token.Type.DOUBLE, Token.Type.FACTORIAL, Token.Type.SUBTRACT, Token.Type.DOUBLE)));
         testCases.add(new TestCase("67.9%",
                 Arrays.asList(Token.Type.PERCENT, Token.Type.DOUBLE)));
-        testCases.add(new TestCase("-(45)−108.2",
-                Arrays.asList(Token.Type.DOUBLE, Token.Type.SUBTRACT, Token.Type.RIGHT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.LEFT_PARENTHESIS, Token.Type.NEGATIVE)));
+        testCases.add(new TestCase("-(45)-108.2",
+                Arrays.asList(Token.Type.DOUBLE, Token.Type.SUBTRACT, Token.Type.RIGHT_PARENTHESIS, Token.Type.DOUBLE, Token.Type.LEFT_PARENTHESIS, Token.Type.SUBTRACT)));
         /*
         testCases.add(new TestCase(,
                Arrays.asList()));
@@ -168,4 +168,30 @@ public class TokenizerTest {
             fail();
         }
     }
+
+    /**
+     * This is a quick test to make sure the .checkAhead() method in the Tokenizer
+     * is functioning correctly.
+     *
+     * @author: Samuel Brookes (u5380100)
+     */
+    @Test
+    public void testCheckAhead()
+    {
+        String testCase = "10.0×14.0-100÷π+e";
+        Token.Type tokens[] = {Token.Type.E, Token.Type.ADD, Token.Type.PI,
+                                    Token.Type.DIVIDE, Token.Type.DOUBLE, Token.Type.SUBTRACT,
+                                    Token.Type.DOUBLE, Token.Type.MULTIPLY, Token.Type.DOUBLE};
+
+        Tokenizer tokenizer = new Tokenizer(testCase);
+        int current = 0, next = 1, afterNext = 2;
+        while(tokenizer.hasNext() && tokenizer.checkAhead(2) != null)
+        {
+            assertEquals(tokenizer.current().type(), tokens[current++]);
+            assertEquals(tokenizer.checkAhead(1).type(), tokens[next++]);
+            assertEquals(tokenizer.checkAhead(2).type(), tokens[afterNext++]);
+            tokenizer.next();
+        }
+    }
+
 }

@@ -281,9 +281,9 @@ public class DigitFragment extends Fragment {
                 // Parse the expression and evaluate it
                 String expression = calculation_area.getText().toString();
                 ExpressionParser parser = new Parser();
-                Expression exp = parser.parse(expression);
                 try
                 {
+                    Expression exp = parser.parse(expression);
                     double evaluation = exp.evaluate();
                     // Reset the Text Area
                     resetTextArea(calculation_area);

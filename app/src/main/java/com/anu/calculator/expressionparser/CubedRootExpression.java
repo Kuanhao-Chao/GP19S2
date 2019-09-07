@@ -2,6 +2,7 @@ package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.MathematicalSyntaxException;
 
 /**
  * CubedRootExpression: This class is used to represent the expression of cubed root
@@ -30,7 +31,14 @@ public class CubedRootExpression implements Expression {
     @Override
     public double evaluate() throws ParserException
     {
-        return Math.cbrt(expression.evaluate());
+        try
+        {
+            return Math.cbrt(expression.evaluate());
+        }
+        catch(NullPointerException e)
+        {
+            throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+        }
     }
 
 }

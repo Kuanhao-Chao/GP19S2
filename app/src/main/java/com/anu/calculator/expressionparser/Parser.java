@@ -2,6 +2,9 @@ package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
 import com.anu.calculator.ExpressionParser;
+import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.MathematicalSyntaxException;
+
 
 /**
  * Parser: The primary parser for evaluating the mathematical statements entered by the user.
@@ -45,7 +48,8 @@ public class Parser implements ExpressionParser
      *
      * @return type: Expression
      */
-    public Expression parseExp() {
+    private Expression parseExp()
+    {
         Expression term = parseTerm();
         if(_tokenizer.hasNext() && (_tokenizer.current().type() == Token.Type.ADD ||
                 _tokenizer.current().type() == Token.Type.SUBTRACT))
@@ -158,7 +162,7 @@ public class Parser implements ExpressionParser
      * parseLiteral: The lowest level parsing method, returns literals and ensures that parentheses
      * are evaluated first (i.e. [B]ODMAS).
      *
-     * Uses grammar: <literal> ::= π | e | rand | double | <unknown variable>
+     * Uses grammar: <literal> ::= π | e | rand | double | -double | <unknown variable>
      *               <unknown variable> ::= w | x | y | z | ɑ | β | ɣ | Δ
      *
      * @return type: Expression
@@ -176,8 +180,39 @@ public class Parser implements ExpressionParser
         else if(_tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE)
             literal = new UnknownVariableExpression(_tokenizer.current().token().charAt(0));
         else if(_tokenizer.current().type() == Token.Type.DOUBLE)
-            literal = new DoubleExpression(Double.parseDouble(_tokenizer.current().token()));
+        { //returns either a 'negative double' or double
+            boolean negative = false;
+            Token next = _tokenizer.checkAhead(1);
+            Token afterNext = _tokenizer.checkAhead(2);
+            if(next != null && next.type() == Token.Type.SUBTRACT)
+            {
+                if( afterNext == null ||
+                    afterNext.type() == Token.Type.SUBTRACT ||
+                    afterNext.type() == Token.Type.ADD ||
+                    afterNext.type() == Token.Type.MULTIPLY ||
+                    afterNext.type() == Token.Type.DIVIDE ||
+                    afterNext.type() == Token.Type.LEFT_PARENTHESIS)
+                {
+                    literal = new SubtractExpression(new DoubleExpression(0d),
+                            new DoubleExpression(Double.parseDouble(_tokenizer.current().token())));
+                    negative = true;
+                    _tokenizer.next();
+                }
+            }
+            if(!negative)
+                literal = new DoubleExpression(Double.parseDouble(_tokenizer.current().token()));
+        }
         else if(_tokenizer.current().type() == Token.Type.RIGHT_PARENTHESIS)
+        {
+            _tokenizer.next();
+            literal = parseExp();
+        }
+        else if(_tokenizer.current().type() == Token.Type.RIGHT_BRACE)
+        {
+            _tokenizer.next();
+            literal = parseExp();
+        }
+        else if(_tokenizer.current().type() == Token.Type.RIGHT_BRACKET)
         {
             _tokenizer.next();
             literal = parseExp();

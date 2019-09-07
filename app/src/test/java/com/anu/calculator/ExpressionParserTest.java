@@ -65,10 +65,10 @@ public class ExpressionParserTest {
         testCases.add(new TestCase("1.0+100", (double) 101, (double) 0));
         testCases.add(new TestCase("1.1×2.2", 2.42, 0.0001));
         testCases.add(new TestCase("12÷6", (double) 2, (double) 0));
-        testCases.add(new TestCase("15.1−0.1", (double) 15, (double) 0));
+        testCases.add(new TestCase("15.1-0.1", (double) 15, (double) 0));
         testCases.add(new TestCase("100×17.5%", 17.5, (double) 0));
         testCases.add(new TestCase("100×17.5%", 17.5, (double) 0));
-        testCases.add(new TestCase("-1−5", (double) -6, (double) 0));
+        testCases.add(new TestCase("-1-5", (double) -6, (double) 0));
 
         //This section tests the operators
         testCases.add(new TestCase("sin45", 0.7071, 0.002));
@@ -86,27 +86,27 @@ public class ExpressionParserTest {
         testCases.add(new TestCase("√26", 5.099, 0.002));
         testCases.add(new TestCase("∛50", 3.684, 0.002));
         testCases.add(new TestCase("15%", 0.15, 0d));
-        testCases.add(new TestCase("180×e−π", 486.1491365, 0.000002));
+        testCases.add(new TestCase("180×e-π", 486.1491365, 0.000002));
         testCases.add(new TestCase("25²+5³", 750d, 0d));
 
         // This section is for more complex test cases demonstrating BODMAS/BOMDAS function ordering
         testCases.add(new TestCase("55.888×1000.0÷80.1", 697.7278402, 0.00000002));
         testCases.add(new TestCase("45%×0.587+15nPr3", 2730.26415, 0d));
         testCases.add(new TestCase("sin(25×2+14)+sin5÷cos4", 0.9861626145, 0.0000000002));
-        testCases.add(new TestCase("ln45+5×100−12.0008+log₁₀56", 493.5540505, 0.0000002));
-        testCases.add(new TestCase("cos⁻¹0.2−sin⁻¹0.5+10nPr5−50", 30238.46304, 0.00002));
-        testCases.add(new TestCase("√10+∛27−67%×e", 4.341028835, 0.000000002));
-        testCases.add(new TestCase("4³×10²−(6!÷2)", 6040d, 0d));
-        testCases.add(new TestCase("ln57−100×4^10+5!", -104857476d, 0.1d));
+        testCases.add(new TestCase("ln45+5×100-12.0008+log₁₀56", 493.5540505, 0.0000002));
+        testCases.add(new TestCase("cos⁻¹0.2-sin⁻¹0.5+10nPr5-50", 30238.46304, 0.00002));
+        testCases.add(new TestCase("√10+∛27-67%×e", 4.341028835, 0.000000002));
+        testCases.add(new TestCase("4³×10²-(6!÷2)", 6040d, 0d));
+        testCases.add(new TestCase("ln57-100×4^10+5!", -104857476d, 0.1d));
 
         //testCases.add(new TestCase( , , ));
 
         // End of test case area, do not modify the code below.
         for (TestCase testCase : testCases) {
-            Expression exp = new Parser().parse(testCase.input);
-            String assetString = String.format("Expression Parser Error, raw equation: %s; parsed equation: %s", testCase.input, exp.show());
             try
             {
+                Expression exp = new Parser().parse(testCase.input);
+                String assetString = String.format("Expression Parser Error, raw equation: %s; parsed equation: %s", testCase.input, exp.show());
                 assertEquals(assetString, testCase.expected, exp.evaluate(), testCase.delta);
             }
             catch(ParserException e)
@@ -145,29 +145,30 @@ public class ExpressionParserTest {
     @Test
     public void testRandomNumber()
     {
-        /*
-         * Test whether random numbers are generated
-         */
-        ArrayList<Expression> randomNumbers = new ArrayList<>(0);
-        for(int i=0; i<1000; i++)
+        try
         {
-            randomNumbers.add(new Parser().parse("rand"));
-        }
-
-        for(int i=0; i<1000; i++)
-        {
-            for(int j=i+1; j<1000; j++)
+            /*
+             * Test whether random numbers are generated
+             */
+            ArrayList<Expression> randomNumbers = new ArrayList<>(0);
+            for(int i=0; i<1000; i++)
             {
-                try
+                randomNumbers.add(new Parser().parse("rand"));
+            }
+
+            for(int i=0; i<1000; i++)
+            {
+                for(int j=i+1; j<1000; j++)
                 {
-                    assertNotEquals(randomNumbers.get(i).evaluate(),
-                            randomNumbers.get(j).evaluate());
-                }
-                catch(ParserException e)
-                {
-                    fail();
+                        assertNotEquals(randomNumbers.get(i).evaluate(),
+                                randomNumbers.get(j).evaluate());
+
                 }
             }
+        }
+        catch(ParserException e)
+        {
+            fail();
         }
     }
 }

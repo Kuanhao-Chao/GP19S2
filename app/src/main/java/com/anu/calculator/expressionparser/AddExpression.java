@@ -2,6 +2,7 @@ package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.MathematicalSyntaxException;
 
 /**
  * AddExpression: This class is used to represent the expression of addition
@@ -26,7 +27,14 @@ public class AddExpression implements Expression {
 
 	@Override
 	public double evaluate() throws ParserException {
-		return (term.evaluate() + expression.evaluate());
+		try
+		{
+			return (term.evaluate() + expression.evaluate());
+		}
+		catch(NullPointerException e1)
+		{
+			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+		}
 	}
 
 }

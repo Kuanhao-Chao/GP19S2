@@ -3,6 +3,7 @@ package com.anu.calculator.expressionparser;
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
 import com.anu.calculator.exceptions.DivisionByZeroException;
+import com.anu.calculator.exceptions.MathematicalSyntaxException;
 
 /**
  * DivideExpression: This class is used to represent the expression of division
@@ -33,6 +34,10 @@ public class DivideExpression implements Expression {
 			double checkForZero = term.evaluate();
 			if(checkForZero == 0) throw new DivisionByZeroException(this.getClass().getName(), "Cannot divide by zero");
 			else return (factor.evaluate() / term.evaluate());
+		}
+		catch(NullPointerException e)
+		{
+			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
 		}
 		catch(ParserException e)
 		{

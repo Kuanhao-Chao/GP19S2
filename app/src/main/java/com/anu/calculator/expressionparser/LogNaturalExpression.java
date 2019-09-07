@@ -2,6 +2,7 @@ package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.MathematicalSyntaxException;
 
 /**
  * LogNaturalExpression: This class is used to represent the expression of natural logarithm (base e)
@@ -26,7 +27,14 @@ public class LogNaturalExpression implements Expression {
 
 	@Override
 	public double evaluate() throws ParserException {
-		return Math.log(expression.evaluate());
+		try
+		{
+			return Math.log(expression.evaluate());
+		}
+		catch(NullPointerException e)
+		{
+			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+		}
 	}
 
 }
