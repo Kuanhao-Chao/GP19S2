@@ -12,6 +12,8 @@ import com.anu.calculator.exceptions.MathematicalSyntaxException;
  */
 
 public class AddExpression implements Expression {
+
+	private static final String TAG = "ADD_EXPRESSION";
 	private Expression expression;
 	private Expression term;
 
@@ -33,7 +35,7 @@ public class AddExpression implements Expression {
 		}
 		catch(NullPointerException e1)
 		{
-			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+			throw new MathematicalSyntaxException(TAG, "Syntax error");
 		}
 	}
 

@@ -14,6 +14,8 @@ import com.anu.calculator.exceptions.MathematicalSyntaxException;
  */
 
 public class DivideExpression implements Expression {
+
+	private static final String TAG = "DIVIDE_EXPRESSION";
 	private Expression factor;
 	private Expression term;
 
@@ -32,12 +34,12 @@ public class DivideExpression implements Expression {
 		try
 		{
 			double checkForZero = term.evaluate();
-			if(checkForZero == 0) throw new DivisionByZeroException(this.getClass().getName(), "Cannot divide by zero");
+			if(checkForZero == 0) throw new DivisionByZeroException(TAG, "Cannot divide by zero");
 			else return (factor.evaluate() / term.evaluate());
 		}
 		catch(NullPointerException e)
 		{
-			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+			throw new MathematicalSyntaxException(TAG, "Syntax error");
 		}
 		catch(ParserException e)
 		{

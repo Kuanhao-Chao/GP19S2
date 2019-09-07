@@ -13,6 +13,8 @@ import com.anu.calculator.exceptions.MathematicalSyntaxException;
  */
 
 public class MultiplyExpression implements Expression {
+
+	private static final String TAG = "MULTIPLY_EXPRESSION";
 	private Expression term;
 	private Expression factor;
 
@@ -35,7 +37,7 @@ public class MultiplyExpression implements Expression {
 		}
 		catch(NullPointerException e)
 		{
-			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+			throw new MathematicalSyntaxException(TAG, "Syntax error");
 		}
 	}
 

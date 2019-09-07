@@ -14,7 +14,7 @@ import com.anu.calculator.exceptions.MathematicalSyntaxException;
  */
 
 public class CubedRootExpression implements Expression {
-
+    private static final String TAG = "CUBED_ROOT_EXPRESSION";
     private Expression expression;
 
     CubedRootExpression(Expression expression)
@@ -37,7 +37,7 @@ public class CubedRootExpression implements Expression {
         }
         catch(NullPointerException e)
         {
-            throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+            throw new MathematicalSyntaxException(TAG, "Syntax error");
         }
     }
 

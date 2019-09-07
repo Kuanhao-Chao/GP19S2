@@ -14,6 +14,8 @@ import com.anu.calculator.exceptions.MathematicalSyntaxException;
  */
 
 public class LogNaturalExpression implements Expression {
+
+	private static final String TAG = "LOG_NATURAL_EXPRESSION";
 	private Expression expression;
 
 	LogNaturalExpression(Expression expression) {
@@ -33,7 +35,7 @@ public class LogNaturalExpression implements Expression {
 		}
 		catch(NullPointerException e)
 		{
-			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+			throw new MathematicalSyntaxException(TAG, "Syntax error");
 		}
 	}
 

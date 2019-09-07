@@ -14,6 +14,8 @@ import com.anu.calculator.exceptions.MathematicalSyntaxException;
  */
 
 public class SquareRootExpression implements Expression {
+
+	private final String TAG = "SQUARE_ROOT_EXPRESSION";
 	private Expression expression;
 
 	SquareRootExpression(Expression expression) {
@@ -33,7 +35,7 @@ public class SquareRootExpression implements Expression {
 		}
 		catch(NullPointerException e)
 		{
-			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+			throw new MathematicalSyntaxException(TAG, "Syntax error");
 		}
 	}
 }

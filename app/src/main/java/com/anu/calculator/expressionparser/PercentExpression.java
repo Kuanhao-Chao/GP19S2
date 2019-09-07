@@ -14,6 +14,8 @@ import com.anu.calculator.exceptions.MathematicalSyntaxException;
  */
 
 public class PercentExpression implements Expression {
+
+	private static final String TAG = "PERCENT_EXPRESSION";
 	private Expression expression;
 
 	PercentExpression(Expression expression) {
@@ -34,7 +36,7 @@ public class PercentExpression implements Expression {
 		}
 		catch(NullPointerException e)
 		{
-			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+			throw new MathematicalSyntaxException(TAG, "Syntax error");
 		}
 	}
 }

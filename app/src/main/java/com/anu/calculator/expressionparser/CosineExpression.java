@@ -14,6 +14,8 @@ import com.anu.calculator.exceptions.MathematicalSyntaxException;
  */
 
 public class CosineExpression implements Expression {
+
+	private static final String TAG = "COSINE_EXPRESSION";
 	private Expression expression;
 
 	CosineExpression(Expression expression) {
@@ -33,7 +35,7 @@ public class CosineExpression implements Expression {
 		}
 		catch(NullPointerException e)
 		{
-			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+			throw new MathematicalSyntaxException(TAG, "Syntax error");
 		}
 	}
 

@@ -85,27 +85,52 @@ public class Tokenizer {
             currentToken = new Token("" + Scripts.Operators.SQRT.getUnicode(), Token.Type.SQUARE_ROOT);
         else if(lastChar == Scripts.Operators.CUBE_ROOT.getUnicode())
             currentToken = new Token("" + Scripts.Operators.CUBE_ROOT.getUnicode(), Token.Type.CUBED_ROOT);
-        else if(lastChar == 'd')
-            currentToken = new Token("rand", Token.Type.RANDOM_NUMBER);
         else if(lastChar == '^')
             currentToken = new Token("^", Token.Type.POWER);
         else if(lastChar == Scripts.SuperScript.TWO.getUnicode())
             currentToken = new Token("" + Scripts.SuperScript.TWO.getUnicode(), Token.Type.SQUARE);
         else if(lastChar == Scripts.SuperScript.THREE.getUnicode())
             currentToken = new Token("" + Scripts.SuperScript.THREE.getUnicode(), Token.Type.CUBE);
-        else if(lastChar == 's')
-            currentToken = new Token("cos", Token.Type.COSINE);
+        else if(lastChar == 'S')
+            currentToken = new Token("ANS", Token.Type.PREVIOUS_ANSWER);
         else if(lastChar == Scripts.SubScript.ZERO.getUnicode())
             currentToken = new Token("log" +
                     Scripts.SubScript.ONE.getUnicode() +
                     Scripts.SubScript.ZERO.getUnicode(), Token.Type.LOG_TEN);
+        else if(lastChar == 'd')
+        {
+            switch(_buffer.charAt(_buffer.length() - 2))
+            {
+                case 'n': currentToken = new Token("rand", Token.Type.RANDOM_NUMBER); break;
+                default : currentToken = new Token("d", Token.Type.UNKNOWN_VARIABLE);
+            }
+        }
+        else if(lastChar == 's')
+        {
+            switch(_buffer.charAt(_buffer.length() - 2))
+            {
+                case 'o': currentToken = new Token("cos", Token.Type.COSINE); break;
+                default : currentToken = new Token("s", Token.Type.UNKNOWN_VARIABLE);
+            }
+
+        }
         else if(lastChar == 'n')
         {
             switch(_buffer.charAt(_buffer.length() - 2))
             {
                 case 'i': currentToken = new Token("sin", Token.Type.SINE); break;
                 case 'a': currentToken = new Token("tan", Token.Type.TANGENT); break;
-                case 'l': currentToken = new Token("ln", Token.Type.LOG_NATURAL);
+                case 'l': currentToken = new Token("ln", Token.Type.LOG_NATURAL); break;
+                default : currentToken = new Token("n", Token.Type.UNKNOWN_VARIABLE);
+            }
+        }
+        else if(lastChar == 'r')
+        {
+            switch(_buffer.charAt(_buffer.length() - 2))
+            {
+                case 'P': currentToken = new Token("nPr", Token.Type.PERMUTATION); break;
+                case 'C': currentToken = new Token("nCr", Token.Type.COMBINATION); break;
+                default : currentToken = new Token("r", Token.Type.UNKNOWN_VARIABLE);
             }
         }
         else if(lastChar == Scripts.SuperScript.ONE.getUnicode())
@@ -118,14 +143,6 @@ public class Tokenizer {
                         Scripts.SuperScript.ONE.getUnicode(), Token.Type.ARC_COSINE); break;
                 case 'a': currentToken = new Token("tan" + Scripts.SuperScript.MINUS.getUnicode() +
                         Scripts.SuperScript.ONE.getUnicode(), Token.Type.ARC_TANGENT);
-            }
-        }
-        else if(lastChar == 'r')
-        {
-            switch(_buffer.charAt(_buffer.length() - 2))
-            {
-                case 'P': currentToken = new Token("nPr", Token.Type.PERMUTATION); break;
-                case 'C': currentToken = new Token("nCr", Token.Type.COMBINATION);
             }
         }
         else if(Character.isDigit(lastChar))

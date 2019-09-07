@@ -2,6 +2,7 @@ package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.MathematicalSyntaxException;
 
 /**
  * PowerExpression: This class is used to represent the expression of an exponent
@@ -13,6 +14,8 @@ import com.anu.calculator.ParserException;
  */
 
 public class PowerExpression implements Expression {
+
+	private static final String TAG = "POWER_EXPRESSION";
 	private Expression base;
 	private Expression pwr;
 
@@ -29,6 +32,13 @@ public class PowerExpression implements Expression {
 
 	@Override
 	public double evaluate() throws ParserException {
-		return Math.pow(base.evaluate(), pwr.evaluate());
+		try
+		{
+			return Math.pow(base.evaluate(), pwr.evaluate());
+		}
+		catch(NullPointerException e)
+		{
+			throw new MathematicalSyntaxException(TAG, "Syntax error");
+		}
 	}
 }

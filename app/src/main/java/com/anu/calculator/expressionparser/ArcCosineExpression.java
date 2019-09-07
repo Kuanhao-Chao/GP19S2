@@ -15,6 +15,8 @@ import com.anu.calculator.exceptions.MathematicalSyntaxException;
  */
 
 public class ArcCosineExpression implements Expression {
+
+	private static final String TAG = "ARCCOSINE_EXPRESSION";
 	private Expression expression;
 
 	ArcCosineExpression(Expression expression) {
@@ -37,7 +39,7 @@ public class ArcCosineExpression implements Expression {
 		}
 		catch(NullPointerException e)
 		{
-			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+			throw new MathematicalSyntaxException(TAG, "Syntax error");
 		}
 	}
 

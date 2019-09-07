@@ -16,6 +16,7 @@ import com.anu.calculator.exceptions.UnassignedVariableException;
 
 public class UnknownVariableExpression implements Expression {
 
+	private final String TAG = "UNKNOWN_VARIABLE_EXPRESSION";
 	private char variable;
 	private Expression value;
 
@@ -48,7 +49,7 @@ public class UnknownVariableExpression implements Expression {
 			{
 				return value.evaluate();
 			}
-			else throw new UnassignedVariableException(this.getClass().getName(), "Variable " + variable + " has no value assigned to it.");
+			else throw new UnassignedVariableException(TAG, "Variable " + variable + " has no value assigned to it.");
 		}
 		catch(ParserException e)
 		{

@@ -13,6 +13,8 @@ import com.anu.calculator.exceptions.MathematicalSyntaxException;
  */
 
 public class SubtractExpression implements Expression {
+
+	private final String TAG = "SUBTRACT_EXPRESSION";
 	private Expression expression;
 	private Expression term;
 	private boolean negative;
@@ -50,7 +52,7 @@ public class SubtractExpression implements Expression {
 		}
 		catch(NullPointerException e)
 		{
-			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+			throw new MathematicalSyntaxException(TAG, "Syntax error");
 		}
 	}
 

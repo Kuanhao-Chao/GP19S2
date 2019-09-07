@@ -14,6 +14,8 @@ import com.anu.calculator.exceptions.MathematicalSyntaxException;
  */
 
 public class TangentExpression implements Expression {
+
+	private final String TAG = "TANGENT_EXPRESSION";
 	private Expression expression;
 
 	TangentExpression(Expression expression) {
@@ -33,7 +35,7 @@ public class TangentExpression implements Expression {
 		}
 		catch(NullPointerException e)
 		{
-			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+			throw new MathematicalSyntaxException(TAG, "Syntax error");
 		}
 	}
 

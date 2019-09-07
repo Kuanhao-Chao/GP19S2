@@ -14,6 +14,8 @@ import com.anu.calculator.exceptions.MathematicalSyntaxException;
  */
 
 public class FactorialExpression implements Expression {
+
+	private static final String TAG = "FACTORIAL_EXPRESSION";
 	private Expression expression;
 
 	FactorialExpression(Expression expression) {
@@ -33,7 +35,7 @@ public class FactorialExpression implements Expression {
 		}
 		catch(NullPointerException e)
 		{
-			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+			throw new MathematicalSyntaxException(TAG, "Syntax error");
 		}
 	}
 

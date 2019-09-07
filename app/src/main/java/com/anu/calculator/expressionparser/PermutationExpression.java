@@ -14,6 +14,8 @@ import com.anu.calculator.exceptions.MathematicalSyntaxException;
  */
 
 public class PermutationExpression implements Expression {
+
+	private static final String TAG = "PERMUTATION_EXPRESSION";
 	private Expression n;
 	private Expression r;
 
@@ -37,7 +39,7 @@ public class PermutationExpression implements Expression {
 		}
 		catch(NullPointerException e)
 		{
-			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+			throw new MathematicalSyntaxException(TAG, "Syntax error");
 		}
 	}
 }
