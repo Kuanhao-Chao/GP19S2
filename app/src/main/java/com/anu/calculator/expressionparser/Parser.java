@@ -2,6 +2,8 @@ package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
 import com.anu.calculator.ExpressionParser;
+import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.MathematicalSyntaxException;
 
 
 /**
@@ -46,7 +48,8 @@ public class Parser implements ExpressionParser
      *
      * @return type: Expression
      */
-    public Expression parseExp() {
+    private Expression parseExp()
+    {
         Expression term = parseTerm();
         if(_tokenizer.hasNext() && (_tokenizer.current().type() == Token.Type.ADD ||
                 _tokenizer.current().type() == Token.Type.SUBTRACT))
@@ -177,7 +180,7 @@ public class Parser implements ExpressionParser
         else if(_tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE)
             literal = new UnknownVariableExpression(_tokenizer.current().token().charAt(0));
         else if(_tokenizer.current().type() == Token.Type.DOUBLE)
-        {
+        { //returns either a 'negative double' or double
             boolean negative = false;
             Token next = _tokenizer.checkAhead(1);
             Token afterNext = _tokenizer.checkAhead(2);
@@ -199,8 +202,17 @@ public class Parser implements ExpressionParser
             if(!negative)
                 literal = new DoubleExpression(Double.parseDouble(_tokenizer.current().token()));
         }
-
         else if(_tokenizer.current().type() == Token.Type.RIGHT_PARENTHESIS)
+        {
+            _tokenizer.next();
+            literal = parseExp();
+        }
+        else if(_tokenizer.current().type() == Token.Type.RIGHT_BRACE)
+        {
+            _tokenizer.next();
+            literal = parseExp();
+        }
+        else if(_tokenizer.current().type() == Token.Type.RIGHT_BRACKET)
         {
             _tokenizer.next();
             literal = parseExp();

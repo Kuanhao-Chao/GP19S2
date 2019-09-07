@@ -103,10 +103,10 @@ public class ExpressionParserTest {
 
         // End of test case area, do not modify the code below.
         for (TestCase testCase : testCases) {
-            Expression exp = new Parser().parse(testCase.input);
-            String assetString = String.format("Expression Parser Error, raw equation: %s; parsed equation: %s", testCase.input, exp.show());
             try
             {
+                Expression exp = new Parser().parse(testCase.input);
+                String assetString = String.format("Expression Parser Error, raw equation: %s; parsed equation: %s", testCase.input, exp.show());
                 assertEquals(assetString, testCase.expected, exp.evaluate(), testCase.delta);
             }
             catch(ParserException e)
@@ -145,29 +145,30 @@ public class ExpressionParserTest {
     @Test
     public void testRandomNumber()
     {
-        /*
-         * Test whether random numbers are generated
-         */
-        ArrayList<Expression> randomNumbers = new ArrayList<>(0);
-        for(int i=0; i<1000; i++)
+        try
         {
-            randomNumbers.add(new Parser().parse("rand"));
-        }
-
-        for(int i=0; i<1000; i++)
-        {
-            for(int j=i+1; j<1000; j++)
+            /*
+             * Test whether random numbers are generated
+             */
+            ArrayList<Expression> randomNumbers = new ArrayList<>(0);
+            for(int i=0; i<1000; i++)
             {
-                try
+                randomNumbers.add(new Parser().parse("rand"));
+            }
+
+            for(int i=0; i<1000; i++)
+            {
+                for(int j=i+1; j<1000; j++)
                 {
-                    assertNotEquals(randomNumbers.get(i).evaluate(),
-                            randomNumbers.get(j).evaluate());
-                }
-                catch(ParserException e)
-                {
-                    fail();
+                        assertNotEquals(randomNumbers.get(i).evaluate(),
+                                randomNumbers.get(j).evaluate());
+
                 }
             }
+        }
+        catch(ParserException e)
+        {
+            fail();
         }
     }
 }

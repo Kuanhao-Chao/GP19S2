@@ -61,8 +61,16 @@ public class Tokenizer {
             currentToken = new Token("" + Scripts.Operators.DIVIDE.getUnicode(), Token.Type.DIVIDE);
         else if(lastChar == '(')
             currentToken = new Token("(", Token.Type.LEFT_PARENTHESIS);
+        else if(lastChar == '{')
+            currentToken = new Token("{", Token.Type.LEFT_BRACE);
+        else if(lastChar == '[')
+            currentToken = new Token("[", Token.Type.LEFT_BRACKET);
         else if(lastChar == ')')
             currentToken = new Token(")", Token.Type.RIGHT_PARENTHESIS);
+        else if(lastChar == '}')
+            currentToken = new Token("}", Token.Type.RIGHT_BRACE);
+        else if(lastChar == ']')
+            currentToken = new Token("]", Token.Type.RIGHT_BRACKET);
         else if(lastChar == '!')
             currentToken = new Token("!", Token.Type.FACTORIAL);
         else if(lastChar == 'e')
