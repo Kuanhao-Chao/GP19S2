@@ -25,7 +25,7 @@ public class FunctionParserTest {
         Expression exp = fp.evaluate(test, history);
 
         // Assert the first return as the literal evaluation of the input
-        assertEquals(exp.evaluate(),5);
+        assertEquals(exp.evaluate(),5.0);
 
         // Push the expression we just parsed onto a stack to use as history
         history.push(exp);
@@ -33,7 +33,7 @@ public class FunctionParserTest {
         // Create a new test case to use as the recall.
         test = "x";
         exp = fp.evaluate(test, history);
-        assertEquals(exp.evaluate(),5);
+        assertEquals(exp.evaluate(),5.0);
     }
 
     /**
@@ -51,7 +51,7 @@ public class FunctionParserTest {
         Expression exp = fp.evaluate(test, history);
 
         // Assert the first return as the literal evaluation of the input
-        assertEquals(exp.evaluate(),4);
+        assertEquals(exp.evaluate(),4.0);
 
         // Push the expression we just parsed onto a stack to use as history
         history.push(exp);
@@ -59,7 +59,7 @@ public class FunctionParserTest {
         // Create a new test case that updates the value of the variable
         test = "x=5+1";
         exp = fp.evaluate(test, history);
-        assertEquals(exp.evaluate(),6);
+        assertEquals(exp.evaluate(),6.0);
 
         // Push the expression we just parsed onto a stack to use as history
         history.push(exp);
@@ -67,7 +67,7 @@ public class FunctionParserTest {
         // Create a new test case to use as the recall.
         test = "x";
         exp = fp.evaluate(test, history);
-        assertEquals(exp.evaluate(),6);
+        assertEquals(exp.evaluate(),6.0);
     }
 
     /**
@@ -78,8 +78,8 @@ public class FunctionParserTest {
     public void testVariableReferencing() throws ParserException {
         // Declare the test case and an empty history stack
         String test1 = "x=5";
-        String test2 = "y=2x";
-        String test3 = "z=3y";
+        String test2 = "y=2×x";
+        String test3 = "z=3×y";
         Stack<Expression> history = new Stack<>();
 
         // Instantiate a parser, evaluate each test cash, pushing the parsed expression onto the
@@ -90,7 +90,7 @@ public class FunctionParserTest {
         exp = fp.evaluate(test2, history);
         history.push(exp);
         exp = fp.evaluate(test3, history);
-        assertEquals(exp.evaluate(),30);
+        assertEquals(exp.evaluate(),30.0);
     }
 
     /**

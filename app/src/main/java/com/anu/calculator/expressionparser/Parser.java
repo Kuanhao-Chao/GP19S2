@@ -7,6 +7,8 @@ import com.anu.calculator.ExpressionParser;
 import com.anu.calculator.ParserException;
 import com.anu.calculator.exceptions.MathematicalSyntaxException;
 
+import java.util.Stack;
+
 
 /**
  * Parser: The primary parser for evaluating the mathematical statements entered by the user.
@@ -38,17 +40,17 @@ public class Parser implements ExpressionParser
     Tokenizer _tokenizer;
 
     @Override
-    public Expression parse(String expression)
+    public Expression parse(String expression, Stack<Expression> history)
     {
         _tokenizer = new Tokenizer(expression);
-        return parseExp();
+        return parseExp(history);
     }
 
     @Override
-    public Expression parse(String expression, Boolean degrees, Integer precision) {
+    public Expression parse(String expression, Boolean degrees, Integer precision, Stack<Expression> history) {
         Log.d(TAG,"Degrees: "+degrees);
         Log.d(TAG,"Precision: "+precision);
-        return parse(expression);
+        return parse(expression, history);
     }
 
     /**
@@ -59,15 +61,15 @@ public class Parser implements ExpressionParser
      *
      * @return type: Expression
      */
-    private Expression parseExp()
+    private Expression parseExp(Stack<Expression> history)
     {
-        Expression term = parseTerm();
+        Expression term = parseTerm(history);
         if(_tokenizer.hasNext() && (_tokenizer.current().type() == Token.Type.ADD ||
                 _tokenizer.current().type() == Token.Type.SUBTRACT))
         {
             Token holdToken = _tokenizer.current();
             _tokenizer.next();
-            Expression expression = parseExp();
+            Expression expression = parseExp( history);
             return (holdToken.type() == Token.Type.ADD) ?
                     new AddExpression(expression, term) :
                     new SubtractExpression(expression, term);
@@ -83,15 +85,15 @@ public class Parser implements ExpressionParser
      *
      * @return type: Expression
      */
-    private Expression parseTerm()
+    private Expression parseTerm(Stack<Expression> history)
     {
-        Expression operation = parseOperation();
+        Expression operation = parseOperation( history);
         if(_tokenizer.hasNext() && (_tokenizer.current().type() == Token.Type.DIVIDE ||
                 _tokenizer.current().type() == Token.Type.MULTIPLY))
         {
             Token holdToken = _tokenizer.current();
             _tokenizer.next();
-            Expression expression = parseTerm();
+            Expression expression = parseTerm( history);
             return (holdToken.type() == Token.Type.DIVIDE) ?
                     new DivideExpression(expression, operation) :
                     new MultiplyExpression(expression, operation);
@@ -111,7 +113,7 @@ public class Parser implements ExpressionParser
      *
      * @return type: Expression
      */
-    private Expression parseOperation()
+    private Expression parseOperation(Stack<Expression> history)
     {
         Expression literal;
         Token holdToken;
@@ -121,7 +123,7 @@ public class Parser implements ExpressionParser
         {
             holdToken = _tokenizer.current();
             _tokenizer.next();
-            literal = parseLiteral();
+            literal = parseLiteral(history);
             switch(holdToken.type())
             {
                 case PERCENT: return new PercentExpression(literal);
@@ -132,7 +134,7 @@ public class Parser implements ExpressionParser
         }
 
         //get the next exp
-        literal = parseLiteral();
+        literal = parseLiteral(history);
 
         //check if the current token is leading or both
         if(_tokenizer.hasNext() && _tokenizer.current().type().isLeading())
@@ -157,7 +159,7 @@ public class Parser implements ExpressionParser
         {
             holdToken = _tokenizer.current();
             _tokenizer.next();
-            Expression expression = parseLiteral();
+            Expression expression = parseLiteral( history);
             switch(holdToken.type())
             {
                 case POWER: return new PowerExpression(expression, literal);
@@ -178,7 +180,7 @@ public class Parser implements ExpressionParser
      *
      * @return type: Expression
      */
-    private Expression parseLiteral()
+    private Expression parseLiteral(Stack<Expression> history)
     {
         Expression literal = null;
 
@@ -188,8 +190,31 @@ public class Parser implements ExpressionParser
             literal = new PiExpression();
         else if(_tokenizer.current().type() == Token.Type.E)
             literal =  new EExpression();
-        else if(_tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE)
+        else if(_tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE) {
             literal = new UnknownVariableExpression(_tokenizer.current().token().charAt(0));
+
+
+
+
+
+
+
+
+
+
+            for (int i = 0; i < history.size(); i++) {
+                String outputString = history.elementAt(i).show();
+                if (outputString.contains(_tokenizer.current().token().charAt(0) + "=")) {
+                    System.out.println("Inside =, " + outputString);
+                    literal = new UnknownVariableExpression(_tokenizer.current().token().charAt(0), history.elementAt(i));
+                    try {
+                        System.out.println("literal.show(): " + literal.show() + " literal.evaluate(): " + literal.evaluate());
+                    } catch (ParserException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
         else if(_tokenizer.current().type() == Token.Type.DOUBLE)
         { //returns either a 'negative double' or double
             boolean negative = false;
@@ -198,11 +223,11 @@ public class Parser implements ExpressionParser
             if(next != null && next.type() == Token.Type.SUBTRACT)
             {
                 if( afterNext == null ||
-                    afterNext.type() == Token.Type.SUBTRACT ||
-                    afterNext.type() == Token.Type.ADD ||
-                    afterNext.type() == Token.Type.MULTIPLY ||
-                    afterNext.type() == Token.Type.DIVIDE ||
-                    afterNext.type() == Token.Type.LEFT_PARENTHESIS)
+                        afterNext.type() == Token.Type.SUBTRACT ||
+                        afterNext.type() == Token.Type.ADD ||
+                        afterNext.type() == Token.Type.MULTIPLY ||
+                        afterNext.type() == Token.Type.DIVIDE ||
+                        afterNext.type() == Token.Type.LEFT_PARENTHESIS)
                 {
                     literal = new SubtractExpression(new DoubleExpression(0d),
                             new DoubleExpression(Double.parseDouble(_tokenizer.current().token())));
@@ -216,17 +241,17 @@ public class Parser implements ExpressionParser
         else if(_tokenizer.current().type() == Token.Type.RIGHT_PARENTHESIS)
         {
             _tokenizer.next();
-            literal = parseExp();
+            literal = parseExp( history);
         }
         else if(_tokenizer.current().type() == Token.Type.RIGHT_BRACE)
         {
             _tokenizer.next();
-            literal = parseExp();
+            literal = parseExp( history);
         }
         else if(_tokenizer.current().type() == Token.Type.RIGHT_BRACKET)
         {
             _tokenizer.next();
-            literal = parseExp();
+            literal = parseExp( history);
         }
 
         _tokenizer.next();
