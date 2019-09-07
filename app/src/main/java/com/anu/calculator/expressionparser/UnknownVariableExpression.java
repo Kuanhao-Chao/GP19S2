@@ -1,7 +1,7 @@
 package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
-import com.anu.calculator.ExpressionParserException;
+import com.anu.calculator.ParserException;
 import com.anu.calculator.exceptions.UnassignedVariableException;
 
 /**
@@ -41,7 +41,7 @@ public class UnknownVariableExpression implements Expression {
 	}
 
 	@Override
-	public double evaluate() throws ExpressionParserException{
+	public double evaluate() throws ParserException {
 		try
 		{
 			if(hasValue())
@@ -50,7 +50,7 @@ public class UnknownVariableExpression implements Expression {
 			}
 			else throw new UnassignedVariableException(this.getClass().getName(), "Variable " + variable + " has no value assigned to it.");
 		}
-		catch(ExpressionParserException e)
+		catch(ParserException e)
 		{
 			e.logMe();
 			throw e;

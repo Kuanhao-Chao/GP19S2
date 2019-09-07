@@ -1,7 +1,7 @@
 package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
-import com.anu.calculator.ExpressionParserException;
+import com.anu.calculator.ParserException;
 import com.anu.calculator.exceptions.DivisionByZeroException;
 
 /**
@@ -27,14 +27,14 @@ public class DivideExpression implements Expression {
 	}
 
 	@Override
-	public double evaluate() throws ExpressionParserException {
+	public double evaluate() throws ParserException {
 		try
 		{
 			double checkForZero = term.evaluate();
 			if(checkForZero == 0) throw new DivisionByZeroException(this.getClass().getName(), "Cannot divide by zero");
 			else return (factor.evaluate() / term.evaluate());
 		}
-		catch(ExpressionParserException e)
+		catch(ParserException e)
 		{
 			throw e;
 		}

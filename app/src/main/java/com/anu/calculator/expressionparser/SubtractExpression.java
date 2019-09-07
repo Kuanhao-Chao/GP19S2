@@ -1,7 +1,7 @@
 package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
-import com.anu.calculator.ExpressionParserException;
+import com.anu.calculator.ParserException;
 
 /**
  * SubtractExpression: This class is used to represent the expression of subtraction
@@ -26,7 +26,7 @@ public class SubtractExpression implements Expression {
 				negative = true;
 			}
 		}
-		catch(ExpressionParserException e)
+		catch(ParserException e)
 		{
 			negative = false;
 		}
@@ -42,7 +42,7 @@ public class SubtractExpression implements Expression {
 	}
 
 	@Override
-	public double evaluate() throws ExpressionParserException{
+	public double evaluate() throws ParserException {
 		return (term.evaluate() - expression.evaluate());
 	}
 

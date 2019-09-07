@@ -1,7 +1,7 @@
 package com.anu.calculator;
 
+import com.anu.calculator.exceptions.UnassignedVariableException;
 import com.anu.calculator.functionparser.Parser;
-import com.anu.calculator.functionparser.UnknownVariableException;
 
 import org.junit.Test;
 
@@ -96,7 +96,7 @@ public class FunctionParserTest {
     /**
      * Confirms that when a unknown variable is referenced, a exception is returned.
      */
-    @Test(expected = UnknownVariableException.class)
+    @Test(expected = UnassignedVariableException.class)
     public void testExceptionSimple() throws ParserException {
         // Declare the test case and an empty history stack
         String test1 = "x=y";

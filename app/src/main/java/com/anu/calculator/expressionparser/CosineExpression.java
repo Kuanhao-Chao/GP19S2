@@ -1,7 +1,7 @@
 package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
-import com.anu.calculator.ExpressionParserException;
+import com.anu.calculator.ParserException;
 
 /**
  * CosineExpression: This class is used to represent the expression of cosine
@@ -25,7 +25,7 @@ public class CosineExpression implements Expression {
 	}
 
 	@Override
-	public double evaluate() throws ExpressionParserException {
+	public double evaluate() throws ParserException {
 		return Math.cos(Math.toRadians(expression.evaluate()));
 	}
 

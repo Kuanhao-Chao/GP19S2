@@ -1,7 +1,7 @@
 package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
-import com.anu.calculator.ExpressionParserException;
+import com.anu.calculator.ParserException;
 
 /**
  * PermutationExpression: This class is used to represent an expression of a permutation
@@ -27,7 +27,7 @@ public class PermutationExpression implements Expression {
 	}
 
 	@Override
-	public double evaluate() throws ExpressionParserException {
+	public double evaluate() throws ParserException {
 		FactorialExpression numerator = new FactorialExpression(n);
 		FactorialExpression denominator = new FactorialExpression(new SubtractExpression(n, r));
 		return numerator.evaluate() / denominator.evaluate();

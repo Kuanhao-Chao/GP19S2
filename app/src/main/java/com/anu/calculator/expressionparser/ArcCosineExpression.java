@@ -2,7 +2,7 @@ package com.anu.calculator.expressionparser;
 
 
 import com.anu.calculator.Expression;
-import com.anu.calculator.ExpressionParserException;
+import com.anu.calculator.ParserException;
 
 /**
  * ArcCosineExpression: This class is used to represent the expression of arccosine
@@ -29,7 +29,7 @@ public class ArcCosineExpression implements Expression {
 	}
 
 	@Override
-	public double evaluate() throws ExpressionParserException {
+	public double evaluate() throws ParserException {
 		return Math.toDegrees(Math.acos(expression.evaluate()));
 	}
 

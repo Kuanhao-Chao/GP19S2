@@ -1,7 +1,7 @@
 package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
-import com.anu.calculator.ExpressionParserException;
+import com.anu.calculator.ParserException;
 
 /**
  * CubedRootExpression: This class is used to represent the expression of cubed root
@@ -28,7 +28,7 @@ public class CubedRootExpression implements Expression {
     }
 
     @Override
-    public double evaluate() throws ExpressionParserException
+    public double evaluate() throws ParserException
     {
         return Math.cbrt(expression.evaluate());
     }

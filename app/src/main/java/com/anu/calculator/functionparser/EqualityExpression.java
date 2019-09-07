@@ -1,12 +1,16 @@
 package com.anu.calculator.functionparser;
 
 import com.anu.calculator.Expression;
+import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.UnassignedVariableException;
 import com.anu.calculator.expressionparser.UnknownVariableExpression;
 
 /**
  * EqualityExpression: This class is used to represent equality and variable/function assignment
  *
  * @author: Michael Betterton (u6797866)
+ * @modified: Samuel Brookes (u5380100)
+ *  - 07/09/2019: added throw clause
  *
  */
 
@@ -26,7 +30,7 @@ public class EqualityExpression implements Expression {
     }
 
     @Override
-    public double evaluate() {
+    public double evaluate() throws ParserException {
         return (expression.evaluate());
     }
 

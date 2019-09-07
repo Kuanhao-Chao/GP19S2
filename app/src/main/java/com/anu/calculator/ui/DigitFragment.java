@@ -5,10 +5,9 @@ import android.os.Bundle;
 
 import com.anu.calculator.Expression;
 import com.anu.calculator.ExpressionParser;
-import com.anu.calculator.ExpressionParserException;
+import com.anu.calculator.ParserException;
 import com.anu.calculator.R;
 import com.anu.calculator.expressionparser.Parser;
-import com.anu.calculator.expressionparser.Tokenizer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -293,7 +292,7 @@ public class DigitFragment extends Fragment {
                     historyMessenger.sendHistory("\n"+expression);
                     historyMessenger.sendHistory("\n="+fmt(evaluation));
                 }
-                catch(ExpressionParserException e)
+                catch(ParserException e)
                 {
                     calculation_area.setText(e.getErrorMessage());
                     calculation_area.setSelection(calculation_area.length());

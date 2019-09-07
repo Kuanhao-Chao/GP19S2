@@ -1,7 +1,7 @@
 package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
-import com.anu.calculator.ExpressionParserException;
+import com.anu.calculator.ParserException;
 
 /**
  * LogNaturalExpression: This class is used to represent the expression of natural logarithm (base e)
@@ -25,7 +25,7 @@ public class LogNaturalExpression implements Expression {
 	}
 
 	@Override
-	public double evaluate() throws ExpressionParserException {
+	public double evaluate() throws ParserException {
 		return Math.log(expression.evaluate());
 	}
 
