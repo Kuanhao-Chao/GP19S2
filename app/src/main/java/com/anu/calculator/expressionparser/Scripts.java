@@ -71,8 +71,6 @@ public class Scripts {
         SQRT('\u221a'),
         CUBE_ROOT('\u221b'),
         PI('\u03c0'),
-        MINUS('\u2212'),
-        NEGATIVE('\u002d'),
         MULTIPLY('\u00d7'),
         DIVIDE('\u00f7');
 

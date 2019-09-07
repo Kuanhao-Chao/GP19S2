@@ -2,6 +2,7 @@ package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.MathematicalSyntaxException;
 
 /**
  * MultiplyExpression: This class is used to represent the expression of multiplication
@@ -28,7 +29,14 @@ public class MultiplyExpression implements Expression {
 
 	@Override
 	public double evaluate() throws ParserException {
-		return (factor.evaluate() * term.evaluate());
+		try
+		{
+			return (factor.evaluate() * term.evaluate());
+		}
+		catch(NullPointerException e)
+		{
+			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+		}
 	}
 
 }

@@ -30,6 +30,17 @@ public class Tokenizer {
         return currentToken != null;
     }
 
+    public Token checkAhead(int numTokens)
+    {
+        Tokenizer checker = new Tokenizer(_buffer);
+        while(numTokens > 1 && checker.current() != null)
+        {
+            checker.next();
+            numTokens--;
+        }
+        return checker.current();
+    }
+
     public void next()
     {
         _buffer = _buffer.trim();
@@ -44,8 +55,8 @@ public class Tokenizer {
 
         if(lastChar == '+')
             currentToken = new Token("+", Token.Type.ADD);
-        else if(lastChar == Scripts.Operators.MINUS.getUnicode())
-            currentToken = new Token("" + Scripts.Operators.MINUS.getUnicode(), Token.Type.SUBTRACT);
+        else if(lastChar == '-')
+            currentToken = new Token("-", Token.Type.SUBTRACT);
         else if(lastChar == Scripts.Operators.DIVIDE.getUnicode())
             currentToken = new Token("" + Scripts.Operators.DIVIDE.getUnicode(), Token.Type.DIVIDE);
         else if(lastChar == '(')
@@ -66,8 +77,6 @@ public class Tokenizer {
             currentToken = new Token("" + Scripts.Operators.SQRT.getUnicode(), Token.Type.SQUARE_ROOT);
         else if(lastChar == Scripts.Operators.CUBE_ROOT.getUnicode())
             currentToken = new Token("" + Scripts.Operators.CUBE_ROOT.getUnicode(), Token.Type.CUBED_ROOT);
-        else if(lastChar == Scripts.Operators.NEGATIVE.getUnicode())
-            currentToken = new Token("" + Scripts.Operators.NEGATIVE.getUnicode(), Token.Type.NEGATIVE);
         else if(lastChar == 'd')
             currentToken = new Token("rand", Token.Type.RANDOM_NUMBER);
         else if(lastChar == '^')

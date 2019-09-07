@@ -2,6 +2,7 @@ package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.MathematicalSyntaxException;
 
 /**
  * SubtractExpression: This class is used to represent the expression of subtraction
@@ -43,7 +44,14 @@ public class SubtractExpression implements Expression {
 
 	@Override
 	public double evaluate() throws ParserException {
-		return (term.evaluate() - expression.evaluate());
+		try
+		{
+			return (term.evaluate() - expression.evaluate());
+		}
+		catch(NullPointerException e)
+		{
+			throw new MathematicalSyntaxException(this.getClass().getName(), "Syntax error");
+		}
 	}
 
 }
