@@ -51,7 +51,7 @@ public class FunctionParserTest {
         Expression exp = fp.parse(test, history);
 
         // Assert the first return as the literal evaluation of the input
-        assertEquals(exp.evaluate(),4.0);
+        assertEquals(exp.evaluate(),4d);
 
         // Push the expression we just parsed onto a stack to use as history
         history.push(exp);
@@ -91,6 +91,42 @@ public class FunctionParserTest {
         history.push(exp);
         exp = fp.parse(test3, history);
         assertEquals(exp.evaluate(),30.0);
+    }
+
+
+    /**
+     * This test checks whether a variable can be assigned, then referenced by another expression
+     * alongside another variable. This is the more complex use case of the parser.
+     */
+    @Test
+    public void testComplexReferencing() throws ParserException {
+        // Declare the test case and an empty history stack
+        String test1 = "x=5"; //5
+        String test2 = "y=2x"; //10
+        String test3 = "z=3y+y"; //40
+        String test4 = "w=z+y-x"; //40+10-5= 45
+        String test5 = "z=2y-x"; // 10-5=5. w is now 5+10-5=10
+        String test6 = "w"; // recall test with updated history
+        Stack<Expression> history = new Stack<>();
+
+        // Instantiate a parser, evaluate each test cash, pushing the parsed expression onto the
+        // stack as we go.
+        ExpressionParser fp = new Parser();
+        Expression exp = fp.parse(test1, history);
+        history.push(exp);
+        exp = fp.parse(test2, history);
+        history.push(exp);
+        exp = fp.parse(test3, history);
+        history.push(exp);
+        exp = fp.parse(test4, history);
+        history.push(exp);
+        assertEquals(exp.evaluate(),45d);
+        exp = fp.parse(test5, history);
+        history.push(exp);
+        assertEquals(exp.evaluate(),5d);
+        exp = fp.parse(test6, history);
+        history.push(exp);
+        assertEquals(exp.evaluate(),10d);
     }
 
     /**
