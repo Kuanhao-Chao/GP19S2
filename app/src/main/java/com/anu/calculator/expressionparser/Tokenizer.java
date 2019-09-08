@@ -57,6 +57,8 @@ public class Tokenizer {
             currentToken = new Token("+", Token.Type.ADD);
         else if(lastChar == '-')
             currentToken = new Token("-", Token.Type.SUBTRACT);
+        else if (lastChar == '=')
+            currentToken = new Token("=", Token.Type.EQUAL);
         else if(lastChar == Scripts.Operators.DIVIDE.getUnicode())
             currentToken = new Token("" + Scripts.Operators.DIVIDE.getUnicode(), Token.Type.DIVIDE);
         else if(lastChar == '(')

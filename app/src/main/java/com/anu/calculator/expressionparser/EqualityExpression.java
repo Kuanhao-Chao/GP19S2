@@ -1,4 +1,4 @@
-package com.anu.calculator.functionparser;
+package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
@@ -10,6 +10,7 @@ import com.anu.calculator.expressionparser.UnknownVariableExpression;
  *
  * @author: Michael Betterton (u6797866)
  * @modified: Samuel Brookes (u5380100)
+ * @modified: Howard Chao (u7022787)
  *  - 07/09/2019: added throw clause
  *
  */

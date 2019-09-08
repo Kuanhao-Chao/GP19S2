@@ -5,8 +5,9 @@ import android.util.Log;
 import com.anu.calculator.Expression;
 import com.anu.calculator.ExpressionParser;
 import com.anu.calculator.ParserException;
-import com.anu.calculator.exceptions.MathematicalSyntaxException;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Stack;
 
 
@@ -27,6 +28,7 @@ import java.util.Stack;
  *
  * @author: Samuel Brookes (u5380100)
  * @modified: Michael Betterton (u6797866)
+ * @modofoed: Howard Chao (u7022787)
  *  - 05/09/2019: Refactored class to implement ExpressionParser interface
  * 	- 05/09/2019: Refactored name from ExpressionParser to Parser
  * 	- 05/09/2019: Altered constructor
@@ -36,6 +38,7 @@ public class Parser implements ExpressionParser
 {
 
     private static final String TAG = "EXPRESSION_PARSER";
+    List<Character> definedParameter = Arrays.asList('w', 'x', 'y', 'z', 'ɑ', 'β', 'ɣ', 'Δ');
 
     Tokenizer _tokenizer;
 
@@ -43,7 +46,7 @@ public class Parser implements ExpressionParser
     public Expression parse(String expression, Stack<Expression> history)
     {
         _tokenizer = new Tokenizer(expression);
-        return parseExp(history);
+        return parseFun(expression, history);
     }
 
     @Override
@@ -54,7 +57,74 @@ public class Parser implements ExpressionParser
     }
 
     /**
-     * parseExp: The top level parsing method, ensuring that addition and subtraction are done
+     * parseFunc: The top level parsing method. There are three cases.
+     *
+     * Uses grammar: <func> ::= <unknown variable> | <unknown variable> = <exp> | <exp>
+     *
+     * @return type: Expression
+     */
+    private Expression parseFun(String expression, Stack<Expression> history) {
+        Character firstChar = _tokenizer.current().token().charAt(0);
+        if ( definedParameter.contains(firstChar)) {
+            _tokenizer.next();
+            if (!_tokenizer.hasNext()) {
+                /**
+                 * <unknown variable> case !
+                 */
+                UnknownVariableExpression unknownVariableExpression = new UnknownVariableExpression(firstChar);
+                for (int i = 0; i < history.size(); i++) {
+                    String outputString = history.elementAt(i).show();
+                    if (outputString.contains(firstChar + "=")) {
+                        unknownVariableExpression.assignValue(history.elementAt(i));
+                    }
+                }
+                return unknownVariableExpression;
+            } else {
+                /**
+                 * <unknown variable> = <exp> or <exp> case & the last element is an
+                 * unknown variable.
+                 * Restart the _tokenizer
+                 */
+                _tokenizer = new Tokenizer(expression);
+            }
+        }
+        Expression exp = parseExp(history);
+        /**
+         * Evaluate expression to make sure that it has all variables assigned. Here, the expression
+         * must be assigned.
+         */
+        try {
+            exp.evaluate();
+        } catch (ParserException e) {
+            e.printStackTrace();
+        }
+        if (_tokenizer.hasNext() && _tokenizer.current().type() == Token.Type.EQUAL) {
+            /**
+             * <unknown variable> = <exp>  case
+             */
+            _tokenizer.next();
+            UnknownVariableExpression unknownVariableExpressionEqua = new UnknownVariableExpression(_tokenizer.current().token().charAt(0), exp);
+            /**
+             * Check the history to update the unknown variable's value in the history stack.
+             */
+            for (int i = 0; i < history.size(); i++) {
+                String outputString = history.elementAt(i).show();
+                if (outputString.contains(_tokenizer.current().token().charAt(0) + "=")) {
+                    history.set(i, exp);
+                }
+            }
+            EqualityExpression equalityExpression = new EqualityExpression(unknownVariableExpressionEqua, exp);
+            return equalityExpression;
+        }
+        /**
+         * <exp>  case
+         */
+        return exp;
+    }
+
+
+    /**
+     * parseExp: The second level parsing method, ensuring that addition and subtraction are done
      * last (i.e. BODM[AS]).
      *
      * Uses grammar: <exp> ::= <term> | <exp> + <term> | <exp> − <term>
@@ -205,10 +275,9 @@ public class Parser implements ExpressionParser
             for (int i = 0; i < history.size(); i++) {
                 String outputString = history.elementAt(i).show();
                 if (outputString.contains(_tokenizer.current().token().charAt(0) + "=")) {
-                    System.out.println("Inside =, " + outputString);
                     literal = new UnknownVariableExpression(_tokenizer.current().token().charAt(0), history.elementAt(i));
                     try {
-                        System.out.println("literal.show(): " + literal.show() + " literal.evaluate(): " + literal.evaluate());
+                        literal.evaluate();
                     } catch (ParserException e) {
                         e.printStackTrace();
                     }

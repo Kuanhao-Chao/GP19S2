@@ -1,7 +1,7 @@
 package com.anu.calculator;
 
 import com.anu.calculator.exceptions.UnassignedVariableException;
-import com.anu.calculator.functionparser.Parser;
+import com.anu.calculator.expressionparser.Parser;
 
 import org.junit.Test;
 
@@ -21,8 +21,8 @@ public class FunctionParserTest {
         Stack<Expression> history = new Stack<>();
 
         // Instantiate a parser
-        FunctionParser fp = new Parser();
-        Expression exp = fp.evaluate(test, history);
+        ExpressionParser fp = new Parser();
+        Expression exp = fp.parse(test, history);
 
         // Assert the first return as the literal evaluation of the input
         assertEquals(exp.evaluate(),5.0);
@@ -32,7 +32,7 @@ public class FunctionParserTest {
 
         // Create a new test case to use as the recall.
         test = "x";
-        exp = fp.evaluate(test, history);
+        exp = fp.parse(test, history);
         assertEquals(exp.evaluate(),5.0);
     }
 
@@ -47,8 +47,8 @@ public class FunctionParserTest {
         Stack<Expression> history = new Stack<>();
 
         // Instantiate a parser
-        FunctionParser fp = new Parser();
-        Expression exp = fp.evaluate(test, history);
+        ExpressionParser fp = new Parser();
+        Expression exp = fp.parse(test, history);
 
         // Assert the first return as the literal evaluation of the input
         assertEquals(exp.evaluate(),4.0);
@@ -58,7 +58,7 @@ public class FunctionParserTest {
 
         // Create a new test case that updates the value of the variable
         test = "x=5+1";
-        exp = fp.evaluate(test, history);
+        exp = fp.parse(test, history);
         assertEquals(exp.evaluate(),6.0);
 
         // Push the expression we just parsed onto a stack to use as history
@@ -66,7 +66,7 @@ public class FunctionParserTest {
 
         // Create a new test case to use as the recall.
         test = "x";
-        exp = fp.evaluate(test, history);
+        exp = fp.parse(test, history);
         assertEquals(exp.evaluate(),6.0);
     }
 
@@ -84,12 +84,12 @@ public class FunctionParserTest {
 
         // Instantiate a parser, evaluate each test cash, pushing the parsed expression onto the
         // stack as we go.
-        FunctionParser fp = new Parser();
-        Expression exp = fp.evaluate(test1, history);
+        ExpressionParser fp = new Parser();
+        Expression exp = fp.parse(test1, history);
         history.push(exp);
-        exp = fp.evaluate(test2, history);
+        exp = fp.parse(test2, history);
         history.push(exp);
-        exp = fp.evaluate(test3, history);
+        exp = fp.parse(test3, history);
         assertEquals(exp.evaluate(),30.0);
     }
 
@@ -103,7 +103,7 @@ public class FunctionParserTest {
         Stack<Expression> history = new Stack<>();
 
         // Instantiate a parser, and try and generate an exception.
-        FunctionParser fp = new Parser();
-        fp.evaluate(test1, history);
+        ExpressionParser fp = new Parser();
+        fp.parse(test1, history);
     }
 }
