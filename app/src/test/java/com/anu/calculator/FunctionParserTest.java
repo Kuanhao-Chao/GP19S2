@@ -51,7 +51,7 @@ public class FunctionParserTest {
         Expression exp = fp.evaluate(test, history);
 
         // Assert the first return as the literal evaluation of the input
-        assertEquals(exp.evaluate(),4.0);
+        assertEquals(exp.evaluate(),4d);
 
         // Push the expression we just parsed onto a stack to use as history
         history.push(exp);
@@ -59,7 +59,7 @@ public class FunctionParserTest {
         // Create a new test case that updates the value of the variable
         test = "x=5+1";
         exp = fp.evaluate(test, history);
-        assertEquals(exp.evaluate(),6.0);
+        assertEquals(exp.evaluate(),6d);
 
         // Push the expression we just parsed onto a stack to use as history
         history.push(exp);
@@ -67,7 +67,7 @@ public class FunctionParserTest {
         // Create a new test case to use as the recall.
         test = "x";
         exp = fp.evaluate(test, history);
-        assertEquals(exp.evaluate(),6.0);
+        assertEquals(exp.evaluate(),6d);
     }
 
     /**
@@ -90,7 +90,43 @@ public class FunctionParserTest {
         exp = fp.evaluate(test2, history);
         history.push(exp);
         exp = fp.evaluate(test3, history);
-        assertEquals(exp.evaluate(),30.0);
+        assertEquals(exp.evaluate(),30d);
+    }
+
+
+    /**
+     * This test checks whether a variable can be assigned, then referenced by another expression
+     * alongside another variable. This is the more complex use case of the parser.
+     */
+    @Test
+    public void testComplexReferencing() throws ParserException {
+        // Declare the test case and an empty history stack
+        String test1 = "x=5"; //5
+        String test2 = "y=2x"; //10
+        String test3 = "z=3y+y"; //40
+        String test4 = "w=z+y-x"; //40+10-5= 45
+        String test5 = "z=2y-x"; // 10-5=5. w is now 5+10-5=10
+        String test6 = "w"; // recall test with updated history
+        Stack<Expression> history = new Stack<>();
+
+        // Instantiate a parser, evaluate each test cash, pushing the parsed expression onto the
+        // stack as we go.
+        FunctionParser fp = new Parser();
+        Expression exp = fp.evaluate(test1, history);
+        history.push(exp);
+        exp = fp.evaluate(test2, history);
+        history.push(exp);
+        exp = fp.evaluate(test3, history);
+        history.push(exp);
+        exp = fp.evaluate(test4, history);
+        history.push(exp);
+        assertEquals(exp.evaluate(),45d);
+        exp = fp.evaluate(test5, history);
+        history.push(exp);
+        assertEquals(exp.evaluate(),5d);
+        exp = fp.evaluate(test6, history);
+        history.push(exp);
+        assertEquals(exp.evaluate(),10d);
     }
 
     /**
