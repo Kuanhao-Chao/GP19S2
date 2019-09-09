@@ -56,8 +56,9 @@ public class Parser implements ExpressionParser
     @Override
     public Expression parse(String expression, Boolean degrees, Integer precision) throws ParserException {
 
-        Log.d(TAG,"Degrees: "+degrees);
-        Log.d(TAG,"Precision: "+precision);
+        //Interferes with JUnit tests - uncomment if you need to (Sam)
+        //Log.d(TAG,"Degrees: "+degrees);
+        //Log.d(TAG,"Precision: "+precision);
 
         _tokenizer = new Tokenizer(expression);
         this.degrees = degrees;
