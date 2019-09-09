@@ -46,7 +46,7 @@ public class Parser implements ExpressionParser
     public Expression parse(String expression, Stack<Expression> history)
     {
         _tokenizer = new Tokenizer(expression);
-        return parseFun(expression, history);
+        return parseFun(history);
     }
 
     @Override
@@ -59,67 +59,93 @@ public class Parser implements ExpressionParser
     /**
      * parseFunc: The top level parsing method. There are three cases.
      *
-     * Uses grammar: <func> ::= <unknown variable> | <unknown variable> = <exp> | <exp>
+     * Uses grammar: <func> ::= <unknown variable> = <exp> | <exp> (unknown variable or normal expression)
      *
      * @return type: Expression
      */
-    private Expression parseFun(String expression, Stack<Expression> history) {
-        Character firstChar = _tokenizer.current().token().charAt(0);
-        if ( definedParameter.contains(firstChar)) {
-            _tokenizer.next();
-            if (!_tokenizer.hasNext()) {
-                /**
-                 * <unknown variable> case !
-                 */
-                UnknownVariableExpression unknownVariableExpression = new UnknownVariableExpression(firstChar);
-                for (int i = 0; i < history.size(); i++) {
-                    String outputString = history.elementAt(i).show();
-                    if (outputString.contains(firstChar + "=")) {
-                        unknownVariableExpression.assignValue(history.elementAt(i));
-                    }
-                }
-                return unknownVariableExpression;
-            } else {
-                /**
-                 * <unknown variable> = <exp> or <exp> case & the last element is an
-                 * unknown variable.
-                 * Restart the _tokenizer
-                 */
-                _tokenizer = new Tokenizer(expression);
-            }
-        }
+    private Expression parseFun(Stack<Expression> history) {
         Expression exp = parseExp(history);
-        /**
-         * Evaluate expression to make sure that it has all variables assigned. Here, the expression
-         * must be assigned.
-         */
-        try {
-            exp.evaluate();
-        } catch (ParserException e) {
-            e.printStackTrace();
-        }
-        if (_tokenizer.hasNext() && _tokenizer.current().type() == Token.Type.EQUAL) {
+        String expShowResult = exp.show();
+        if (expShowResult.length() == 1 && definedParameter.contains(expShowResult)) {
             /**
-             * <unknown variable> = <exp>  case
+             * <unknown variable> case !
              */
-            _tokenizer.next();
-            UnknownVariableExpression unknownVariableExpressionEqua = new UnknownVariableExpression(_tokenizer.current().token().charAt(0), exp);
             /**
-             * Check the history to update the unknown variable's value in the history stack.
+             * Check history stack and assign value into it. Otherwise, error would occur.
              */
+            UnknownVariableExpression unknownVariableExpression = new UnknownVariableExpression(expShowResult.charAt(0));
             for (int i = 0; i < history.size(); i++) {
                 String outputString = history.elementAt(i).show();
-                if (outputString.contains(_tokenizer.current().token().charAt(0) + "=")) {
-                    history.set(i, exp);
+                if (outputString.contains(expShowResult.charAt(0) + "=")) {
+                    unknownVariableExpression.assignValue(history.elementAt(i));
                 }
             }
-            EqualityExpression equalityExpression = new EqualityExpression(unknownVariableExpressionEqua, exp);
-            return equalityExpression;
+            try {
+                unknownVariableExpression.evaluate();
+            } catch (ParserException e) {
+                e.printStackTrace();
+            }
+            return unknownVariableExpression;
+        } else {
+            /**
+             * <unknown variable> = <exp> or <exp> case & the last element is an
+             */
+            /**
+             * Evaluate expression to make sure that it has all variables assigned. Here, the expression
+             * must be assigned.
+             */
+            if (_tokenizer.hasNext() && _tokenizer.current().type() == Token.Type.EQUAL) {
+                /**
+                 * <unknown variable> = <exp>  case
+                 */
+                _tokenizer.next();
+                Character unknownChar = _tokenizer.current().token().charAt(0);
+                UnknownVariableExpression unknownVariableExpressionEqua = new UnknownVariableExpression(unknownChar, exp);
+                /**
+                 * Check the history to update the unknown variable's value in the history stack.
+                 */
+                for (int i = 0; i < history.size(); i++) {
+                    /**
+                     * Reparse again the expression.
+                     */
+                    String reParseString = history.get(i).show();
+                    Stack<Expression> subStack = new Stack<Expression>();
+                    subStack.addAll(history.subList(0,i));
+                    ExpressionParser reParser = new Parser();
+                    Expression reParsFunResult = reParser.parse(reParseString, subStack);
+                    try {
+                        reParsFunResult.evaluate();
+                    } catch (ParserException e) {
+                        e.printStackTrace();
+                    }
+                    history.set(i, reParsFunResult);
+                    /**
+                     * Set the changed variable history.
+                     */
+                    String outputString = history.elementAt(i).show();
+                    if (outputString.contains(unknownChar + "=")) {
+                        UnknownVariableExpression unknownVariableExpressionIns = new UnknownVariableExpression(unknownChar, exp);
+                        history.set(i, new EqualityExpression(unknownVariableExpressionIns, exp));
+                        try {
+                            exp.evaluate();
+                        } catch (ParserException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                EqualityExpression equalityExpression = new EqualityExpression(unknownVariableExpressionEqua, exp);
+                try {
+                    equalityExpression.evaluate();
+                } catch (ParserException e) {
+                    e.printStackTrace();
+                }
+                return equalityExpression;
+            }
+            /**
+             * <exp>  case
+             */
+            return exp;
         }
-        /**
-         * <exp>  case
-         */
-        return exp;
     }
 
 
@@ -262,7 +288,6 @@ public class Parser implements ExpressionParser
             literal =  new EExpression();
         else if(_tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE) {
             literal = new UnknownVariableExpression(_tokenizer.current().token().charAt(0));
-
 
 
 

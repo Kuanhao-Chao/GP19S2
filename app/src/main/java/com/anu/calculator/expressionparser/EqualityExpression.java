@@ -27,7 +27,7 @@ public class EqualityExpression implements Expression {
 
     @Override
     public String show() {
-        return variable.show() + "=" + expression.show() + ")";
+        return  variable.show() + "=" + expression.show();
     }
 
     @Override
