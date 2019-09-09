@@ -17,21 +17,38 @@ public class SineExpression implements Expression {
 
 	private final String TAG = "SINE_EXPRESSION";
 	private Expression expression;
+	private Boolean degrees;
+	private Integer precision;
 
-	SineExpression(Expression expression) {
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
+
+	SineExpression(Expression expression, Boolean degrees)
+	{
 		this.expression = expression;
+		this.degrees = degrees;
 	}
 
 	@Override
 	public String show() {
-		return "sin(" + expression.show() + ")";
+		return "sin(" + expression.show() +
+				((degrees)?Scripts.Operators.DEGREES.getUnicode():
+						Scripts.Operators.RADIANS.getUnicode()) + ")";
 	}
 
 	@Override
 	public double evaluate() throws ParserException {
 		try
 		{
-			return Math.sin(Math.toRadians(expression.evaluate()));
+			double evaluation;
+			if(degrees) evaluation = Math.sin(Math.toRadians(expression.evaluate()));
+			else evaluation = Math.sin(expression.evaluate());
+
+			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
+			else return evaluation;
 		}
 		catch(NullPointerException e)
 		{

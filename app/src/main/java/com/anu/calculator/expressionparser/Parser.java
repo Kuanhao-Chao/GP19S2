@@ -6,6 +6,7 @@ import com.anu.calculator.Expression;
 import com.anu.calculator.ExpressionParser;
 import com.anu.calculator.ParserException;
 import com.anu.calculator.exceptions.MathematicalSyntaxException;
+import com.anu.calculator.exceptions.NothingEnteredException;
 
 
 /**
@@ -35,20 +36,66 @@ public class Parser implements ExpressionParser
 
     private static final String TAG = "EXPRESSION_PARSER";
 
-    Tokenizer _tokenizer;
+    private Tokenizer _tokenizer;
+    private Boolean degrees;
+    private Integer precision;
 
     @Override
-    public Expression parse(String expression)
+    public Expression parse(String expression) throws ParserException
     {
-        _tokenizer = new Tokenizer(expression);
-        return parseExp();
+        if(checkRawExpression(expression))
+        {
+            _tokenizer = new Tokenizer(expression);
+            Expression parsedExpression = parseExp();
+            if(precision != null) parsedExpression.updatePrecision(precision);
+            return parsedExpression;
+        }
+        else throw new MathematicalSyntaxException(TAG, "Syntax error");
     }
 
     @Override
-    public Expression parse(String expression, Boolean degrees, Integer precision) {
+    public Expression parse(String expression, Boolean degrees, Integer precision) throws ParserException {
+
         Log.d(TAG,"Degrees: "+degrees);
         Log.d(TAG,"Precision: "+precision);
+
+        _tokenizer = new Tokenizer(expression);
+        this.degrees = degrees;
+        this.precision = precision;
         return parse(expression);
+    }
+
+    /**
+     * checkRawExpression: conducts a preliminary check of the expression string entered by the user
+     * prior to being passed to Parser.parse(). This is to catch any easy-to-detect errors to save
+     * time.
+     *
+     * @param expression
+     * @return type: boolean
+     */
+    private boolean checkRawExpression(String expression) throws ParserException
+    {
+        //check whether the user has entered something
+        if(expression.equals("")) throw new NothingEnteredException(TAG, "");
+
+        //simple check for whether there are matching numbers of brackets, braces and parentheses
+        //it DOES NOT check whether they are nested correctly
+        int braceCnt, parenCnt, brackCnt;
+        braceCnt = parenCnt = brackCnt = 0;
+        for(int i = 0; i<expression.length(); i++)
+        {
+            if(expression.charAt(i) == '(') parenCnt++;
+            else if(expression.charAt(i) == '{') braceCnt++;
+            else if(expression.charAt(i) == '[') brackCnt++;
+            else if(expression.charAt(i) == ')') parenCnt--;
+            else if(expression.charAt(i) == '}') braceCnt--;
+            else if(expression.charAt(i) == ']') brackCnt--;
+        }
+        if(braceCnt != 0 || parenCnt != 0 || brackCnt != 0) return false;
+
+        //more tests here
+
+        return true;
     }
 
     /**
@@ -141,12 +188,12 @@ public class Parser implements ExpressionParser
             _tokenizer.next();
             switch(holdToken.type())
             {
-                case SINE: return new SineExpression(literal);
-                case ARC_SINE: return new ArcSineExpression(literal);
-                case COSINE: return new CosineExpression(literal);
-                case ARC_COSINE: return new ArcCosineExpression(literal);
-                case TANGENT: return new TangentExpression(literal);
-                case ARC_TANGENT: return new ArcTangentExpression(literal);
+                case SINE: return new SineExpression(literal, degrees);
+                case ARC_SINE: return new ArcSineExpression(literal, degrees);
+                case COSINE: return new CosineExpression(literal, degrees);
+                case ARC_COSINE: return new ArcCosineExpression(literal, degrees);
+                case TANGENT: return new TangentExpression(literal, degrees);
+                case ARC_TANGENT: return new ArcTangentExpression(literal, degrees);
                 case LOG_NATURAL: return new LogNaturalExpression(literal);
                 case LOG_TEN: return new LogTenExpression(literal);
                 case SQUARE_ROOT: return new SquareRootExpression(literal);
@@ -192,6 +239,7 @@ public class Parser implements ExpressionParser
             literal = new UnknownVariableExpression(_tokenizer.current().token().charAt(0));
         else if(_tokenizer.current().type() == Token.Type.DOUBLE)
         { //returns either a 'negative double' or double
+            DoubleExpression doubleValue = new DoubleExpression(Double.parseDouble(_tokenizer.current().token()));
             boolean negative = false;
             Token next = _tokenizer.checkAhead(1);
             Token afterNext = _tokenizer.checkAhead(2);
@@ -204,14 +252,13 @@ public class Parser implements ExpressionParser
                     afterNext.type() == Token.Type.DIVIDE ||
                     afterNext.type() == Token.Type.LEFT_PARENTHESIS)
                 {
-                    literal = new SubtractExpression(new DoubleExpression(0d),
-                            new DoubleExpression(Double.parseDouble(_tokenizer.current().token())));
+                    literal = new SubtractExpression(new DoubleExpression(0d), doubleValue);
                     negative = true;
                     _tokenizer.next();
                 }
             }
             if(!negative)
-                literal = new DoubleExpression(Double.parseDouble(_tokenizer.current().token()));
+                literal = doubleValue;
         }
         else if(_tokenizer.current().type() == Token.Type.RIGHT_PARENTHESIS)
         {

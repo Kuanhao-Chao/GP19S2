@@ -18,6 +18,13 @@ public class PowerExpression implements Expression {
 	private static final String TAG = "POWER_EXPRESSION";
 	private Expression base;
 	private Expression pwr;
+	private Integer precision;
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
 
 	PowerExpression(Expression base, Expression pwr) {
 		this.base = base;
@@ -34,7 +41,9 @@ public class PowerExpression implements Expression {
 	public double evaluate() throws ParserException {
 		try
 		{
-			return Math.pow(base.evaluate(), pwr.evaluate());
+			double evaluation = Math.pow(base.evaluate(), pwr.evaluate());
+			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
+			else return evaluation;
 		}
 		catch(NullPointerException e)
 		{

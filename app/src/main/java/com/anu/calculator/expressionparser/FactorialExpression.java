@@ -17,6 +17,13 @@ public class FactorialExpression implements Expression {
 
 	private static final String TAG = "FACTORIAL_EXPRESSION";
 	private Expression expression;
+	private Integer precision;
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
 
 	FactorialExpression(Expression expression) {
 		this.expression = expression;
@@ -31,7 +38,9 @@ public class FactorialExpression implements Expression {
 	public double evaluate() throws ParserException {
 		try
 		{
-			return factorial(expression.evaluate());
+			double evaluation = factorial(expression.evaluate());
+			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
+			else return evaluation;
 		}
 		catch(NullPointerException e)
 		{

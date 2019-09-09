@@ -14,6 +14,14 @@ import com.anu.calculator.ParserException;
 
 public class PiExpression implements Expression {
 
+	private Integer precision;
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
+
 	@Override
 	public String show() {
 		return "" + Scripts.Operators.PI.getUnicode();
@@ -21,7 +29,9 @@ public class PiExpression implements Expression {
 
 	@Override
 	public double evaluate() throws ParserException {
-		return Math.PI;
+
+		if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", Math.PI));
+		else return Math.PI;
 	}
 
 }

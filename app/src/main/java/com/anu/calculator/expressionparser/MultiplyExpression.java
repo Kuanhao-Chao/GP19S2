@@ -17,6 +17,13 @@ public class MultiplyExpression implements Expression {
 	private static final String TAG = "MULTIPLY_EXPRESSION";
 	private Expression term;
 	private Expression factor;
+	private Integer precision;
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
 
 
 	MultiplyExpression(Expression factor, Expression term) {
@@ -33,7 +40,9 @@ public class MultiplyExpression implements Expression {
 	public double evaluate() throws ParserException {
 		try
 		{
-			return (factor.evaluate() * term.evaluate());
+			double evaluation = factor.evaluate() * term.evaluate();
+			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
+			else return evaluation;
 		}
 		catch(NullPointerException e)
 		{

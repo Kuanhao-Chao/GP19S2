@@ -19,4 +19,11 @@ public interface Expression {
 	 * @return The expressions literal result as a double.
 	 */
 	double evaluate() throws ParserException;
+
+	/**
+	 * Enter a precision value into the Expression so that the top-level
+	 * Expression returns an evaluation with the required precision
+	 * @param precision
+	 */
+	void updatePrecision(Integer precision);
 }

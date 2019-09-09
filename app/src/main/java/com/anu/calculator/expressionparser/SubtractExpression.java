@@ -18,6 +18,13 @@ public class SubtractExpression implements Expression {
 	private Expression expression;
 	private Expression term;
 	private boolean negative;
+	private Integer precision;
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
 
 	SubtractExpression(Expression term, Expression expression) {
 		this.term = term;
@@ -48,7 +55,9 @@ public class SubtractExpression implements Expression {
 	public double evaluate() throws ParserException {
 		try
 		{
-			return (term.evaluate() - expression.evaluate());
+			double evaluation = term.evaluate() - expression.evaluate();
+			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
+			else return evaluation;
 		}
 		catch(NullPointerException e)
 		{

@@ -17,6 +17,13 @@ public class LogTenExpression implements Expression {
 
 	private static final String TAG = "LOG_TEN_EXPRESSION";
 	private Expression expression;
+	private Integer precision;
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
 
 	LogTenExpression(Expression expression) {
 		this.expression = expression;
@@ -32,7 +39,9 @@ public class LogTenExpression implements Expression {
 	public double evaluate() throws ParserException {
 		try
 		{
-			return Math.log10(expression.evaluate());
+			double evaluation = Math.log10(expression.evaluate());
+			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
+			else return evaluation;
 		}
 		catch(NullPointerException e)
 		{

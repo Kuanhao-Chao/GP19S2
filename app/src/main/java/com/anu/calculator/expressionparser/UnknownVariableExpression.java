@@ -19,6 +19,13 @@ public class UnknownVariableExpression implements Expression {
 	private final String TAG = "UNKNOWN_VARIABLE_EXPRESSION";
 	private char variable;
 	private Expression value;
+	private Integer precision;
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
 
 	public UnknownVariableExpression(char variable) {
 		this.variable = variable;
@@ -43,19 +50,12 @@ public class UnknownVariableExpression implements Expression {
 
 	@Override
 	public double evaluate() throws ParserException {
-		try
+		if(hasValue())
 		{
-			if(hasValue())
-			{
-				return value.evaluate();
-			}
-			else throw new UnassignedVariableException(TAG, "Variable " + variable + " has no value assigned to it.");
+			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", value.evaluate()));
+			else return value.evaluate();
 		}
-		catch(ParserException e)
-		{
-			e.logMe();
-			throw e;
-		}
+		else throw new UnassignedVariableException(TAG, "Variable " + variable + " has no value assigned to it.");
 	}
 
 	public void assignValue(Expression value)

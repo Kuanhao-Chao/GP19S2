@@ -17,9 +17,19 @@ public class ArcTangentExpression implements Expression {
 
 	private static final String TAG = "ARCTANGENT_EXPRESSION";
 	private Expression expression;
+	private Boolean degrees;
+	private Integer precision;
 
-	ArcTangentExpression(Expression expression) {
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
+
+	ArcTangentExpression(Expression expression, Boolean degrees)
+	{
 		this.expression = expression;
+		this.degrees = degrees;
 	}
 
 	@Override
@@ -27,19 +37,25 @@ public class ArcTangentExpression implements Expression {
 		return "tan" +
 				Scripts.SuperScript.MINUS.getUnicode() +
 				Scripts.SuperScript.ONE.getUnicode() +
-				"(" + expression.show() + ")";
+				"(" + expression.show() +
+				((degrees)?Scripts.Operators.DEGREES.getUnicode():
+						Scripts.Operators.RADIANS.getUnicode()) + ")";
 	}
 
 	@Override
 	public double evaluate() throws ParserException {
 		try
 		{
-			return Math.toDegrees(Math.atan(expression.evaluate()));
+			double evaluation;
+			if(degrees) evaluation = Math.toDegrees(Math.atan(expression.evaluate()));
+			else evaluation = Math.atan(expression.evaluate());
+
+			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
+			else return evaluation;
 		}
 		catch(NullPointerException e)
 		{
 			throw new MathematicalSyntaxException(TAG, "Syntax error");
 		}
 	}
-
 }

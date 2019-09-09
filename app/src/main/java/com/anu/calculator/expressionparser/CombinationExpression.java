@@ -18,6 +18,13 @@ public class CombinationExpression implements Expression {
 	private static final String TAG = "COMBINATION_EXPRESSION";
 	private Expression n;
 	private Expression r;
+	private Integer precision;
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
 
 	CombinationExpression(Expression n, Expression r) {
 		this.n = n;
@@ -32,9 +39,13 @@ public class CombinationExpression implements Expression {
 	@Override
 	public double evaluate() throws ParserException {
 		try {
+
 			FactorialExpression numerator = new FactorialExpression(n);
 			MultiplyExpression denominator = new MultiplyExpression(new FactorialExpression(new SubtractExpression(n, r)), new FactorialExpression(r));
-			return numerator.evaluate() / denominator.evaluate();
+			double evaluation = numerator.evaluate() / denominator.evaluate();
+
+			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
+			else return evaluation;
 		}
 		catch(NullPointerException e)
 		{

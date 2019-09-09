@@ -14,6 +14,13 @@ import com.anu.calculator.ParserException;
 
 public class DoubleExpression implements Expression {
 	private double value;
+	private Integer precision;
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
 
 	DoubleExpression(double value) {
 		this.value = value;
@@ -25,8 +32,10 @@ public class DoubleExpression implements Expression {
 	}
 
 	@Override
-	public double evaluate() throws ParserException {
-		return value;
+	public double evaluate() throws ParserException
+	{
+		if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", value));
+		else return value;
 	}
 
 }

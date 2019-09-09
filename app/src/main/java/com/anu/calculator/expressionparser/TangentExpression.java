@@ -17,21 +17,36 @@ public class TangentExpression implements Expression {
 
 	private final String TAG = "TANGENT_EXPRESSION";
 	private Expression expression;
+	private Boolean degrees;
+	private Integer precision;
 
-	TangentExpression(Expression expression) {
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
+
+	TangentExpression(Expression expression, Boolean degrees) {
 		this.expression = expression;
+		this.degrees = degrees;
 	}
 
 	@Override
 	public String show() {
-		return "tan(" + expression.show() + ")";
+		return "tan(" +
+				((degrees)?Scripts.Operators.DEGREES.getUnicode():
+						Scripts.Operators.RADIANS.getUnicode()) + ")";
 	}
 
 	@Override
 	public double evaluate() throws ParserException {
 		try
 		{
-			return Math.tan(Math.toRadians(expression.evaluate()));
+			double evaluation;
+			if(degrees) evaluation = Math.tan(Math.toRadians(expression.evaluate()));
+			else evaluation = Math.tan(expression.evaluate());
+			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
+			else return evaluation;
 		}
 		catch(NullPointerException e)
 		{

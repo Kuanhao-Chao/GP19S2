@@ -16,6 +16,13 @@ import java.util.Random;
 public class RandomNumberExpression implements Expression {
 	private double randDouble;
 	private Random rand;
+	private Integer precision;
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
 
 	RandomNumberExpression() {
 		rand = new Random();
@@ -29,7 +36,8 @@ public class RandomNumberExpression implements Expression {
 
 	@Override
 	public double evaluate() throws ParserException {
-		return randDouble;
+		if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", randDouble));
+		else return randDouble;
 	}
 
 	public String getValue(){ return String.valueOf(randDouble); }

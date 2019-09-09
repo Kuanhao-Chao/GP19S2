@@ -14,6 +14,14 @@ import com.anu.calculator.ParserException;
 
 public class EExpression implements Expression {
 
+	private Integer precision;
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
+
 	@Override
 	public String show() {
 		return "e";
@@ -21,7 +29,8 @@ public class EExpression implements Expression {
 
 	@Override
 	public double evaluate() throws ParserException {
-		return Math.E;
+		if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", Math.E));
+		else return Math.E;
 	}
 
 }

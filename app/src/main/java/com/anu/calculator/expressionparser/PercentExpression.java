@@ -17,6 +17,13 @@ public class PercentExpression implements Expression {
 
 	private static final String TAG = "PERCENT_EXPRESSION";
 	private Expression expression;
+	private Integer precision;
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
 
 	PercentExpression(Expression expression) {
 		this.expression = expression;
@@ -32,7 +39,9 @@ public class PercentExpression implements Expression {
 	public double evaluate() throws ParserException {
 		try
 		{
-			return expression.evaluate()/100;
+			double evaluation = expression.evaluate()/100;
+			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
+			else return evaluation;
 		}
 		catch(NullPointerException e)
 		{

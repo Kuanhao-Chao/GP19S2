@@ -18,6 +18,13 @@ public class PermutationExpression implements Expression {
 	private static final String TAG = "PERMUTATION_EXPRESSION";
 	private Expression n;
 	private Expression r;
+	private Integer precision;
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
 
 	PermutationExpression(Expression n, Expression r) {
 		this.n = n;
@@ -35,7 +42,9 @@ public class PermutationExpression implements Expression {
 		{
 			FactorialExpression numerator = new FactorialExpression(n);
 			FactorialExpression denominator = new FactorialExpression(new SubtractExpression(n, r));
-			return numerator.evaluate() / denominator.evaluate();
+			double evaluation = numerator.evaluate() / denominator.evaluate();
+			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
+			else return evaluation;
 		}
 		catch(NullPointerException e)
 		{

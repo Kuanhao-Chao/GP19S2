@@ -18,9 +18,19 @@ public class ArcCosineExpression implements Expression {
 
 	private static final String TAG = "ARCCOSINE_EXPRESSION";
 	private Expression expression;
+	private Boolean degrees;
+	private Integer precision;
 
-	ArcCosineExpression(Expression expression) {
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
+
+	ArcCosineExpression(Expression expression, Boolean degrees)
+	{
 		this.expression = expression;
+		this.degrees = degrees;
 	}
 
 	@Override
@@ -28,19 +38,25 @@ public class ArcCosineExpression implements Expression {
 		return "cos" +
 				Scripts.SuperScript.MINUS.getUnicode() +
 				Scripts.SuperScript.ONE.getUnicode() +
-				"(" + expression.show() + ")";
+				"(" + expression.show() +
+				((degrees)?Scripts.Operators.DEGREES.getUnicode():
+						Scripts.Operators.RADIANS.getUnicode()) + ")";
 	}
 
 	@Override
 	public double evaluate() throws ParserException {
 		try
 		{
-			return Math.toDegrees(Math.acos(expression.evaluate()));
+			double evaluation;
+			if(degrees) evaluation = Math.toDegrees(Math.acos(expression.evaluate()));
+			else evaluation = Math.acos(expression.evaluate());
+
+			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
+			else return evaluation;
 		}
 		catch(NullPointerException e)
 		{
 			throw new MathematicalSyntaxException(TAG, "Syntax error");
 		}
 	}
-
 }

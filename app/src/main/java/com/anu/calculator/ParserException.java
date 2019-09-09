@@ -4,13 +4,13 @@ import android.util.Log;
 
 public abstract class ParserException extends Exception {
 
-    private String source;
+    private String tag;
     private String errorMessage;
 
-    public ParserException(String source, String errorMessage)
+    public ParserException(String tag, String errorMessage)
     {
         this.errorMessage = errorMessage;
-        this.source = source;
+        this.tag = tag;
         logMe();
     }
 
@@ -24,6 +24,6 @@ public abstract class ParserException extends Exception {
      */
     public void logMe()
     {
-        Log.d(source, getErrorMessage(), this);
+        Log.d(tag, getErrorMessage(), this);
     }
 }

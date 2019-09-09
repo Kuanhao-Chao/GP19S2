@@ -8,7 +8,8 @@ import com.anu.calculator.exceptions.MathematicalSyntaxException;
  * AddExpression: This class is used to represent the expression of addition
  *
  * @author: Michael Betterton (u6797866)
- *
+ * @modified: Samuel Brookes (u5380100)
+ *  - 08/09/2019: Added precision, updatePrecision, updated evaluate
  */
 
 public class AddExpression implements Expression {
@@ -16,6 +17,13 @@ public class AddExpression implements Expression {
 	private static final String TAG = "ADD_EXPRESSION";
 	private Expression expression;
 	private Expression term;
+	private Integer precision;
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
 
 	AddExpression(Expression term, Expression expression) {
 		this.term = term;
@@ -31,12 +39,14 @@ public class AddExpression implements Expression {
 	public double evaluate() throws ParserException {
 		try
 		{
-			return (term.evaluate() + expression.evaluate());
+			double evaluation = term.evaluate() + expression.evaluate();
+
+			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
+			else return evaluation;
 		}
 		catch(NullPointerException e1)
 		{
 			throw new MathematicalSyntaxException(TAG, "Syntax error");
 		}
 	}
-
 }

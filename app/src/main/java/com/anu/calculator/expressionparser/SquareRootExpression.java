@@ -17,6 +17,13 @@ public class SquareRootExpression implements Expression {
 
 	private final String TAG = "SQUARE_ROOT_EXPRESSION";
 	private Expression expression;
+	private Integer precision;
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
 
 	SquareRootExpression(Expression expression) {
 		this.expression = expression;
@@ -31,7 +38,9 @@ public class SquareRootExpression implements Expression {
 	public double evaluate() throws ParserException {
 		try
 		{
-			return Math.sqrt(expression.evaluate());
+			double evaluation  = Math.sqrt(expression.evaluate());
+			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
+			else return evaluation;
 		}
 		catch(NullPointerException e)
 		{

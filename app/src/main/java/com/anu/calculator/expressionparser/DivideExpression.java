@@ -18,6 +18,13 @@ public class DivideExpression implements Expression {
 	private static final String TAG = "DIVIDE_EXPRESSION";
 	private Expression factor;
 	private Expression term;
+	private Integer precision;
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
 
 	DivideExpression(Expression factor, Expression term) {
 		this.factor = factor;
@@ -35,7 +42,12 @@ public class DivideExpression implements Expression {
 		{
 			double checkForZero = term.evaluate();
 			if(checkForZero == 0) throw new DivisionByZeroException(TAG, "Cannot divide by zero");
-			else return (factor.evaluate() / term.evaluate());
+			else
+			{
+				double evaluation = factor.evaluate() / term.evaluate();
+				if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
+				else return evaluation;
+			}
 		}
 		catch(NullPointerException e)
 		{

@@ -16,6 +16,13 @@ import com.anu.calculator.exceptions.MathematicalSyntaxException;
 public class CubedRootExpression implements Expression {
     private static final String TAG = "CUBED_ROOT_EXPRESSION";
     private Expression expression;
+    private Integer precision;
+
+    @Override
+    public void updatePrecision(Integer precision)
+    {
+        this.precision = precision;
+    }
 
     CubedRootExpression(Expression expression)
     {
@@ -33,7 +40,9 @@ public class CubedRootExpression implements Expression {
     {
         try
         {
-            return Math.cbrt(expression.evaluate());
+            double evaluation = Math.cbrt(expression.evaluate());
+            if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
+            else return evaluation;
         }
         catch(NullPointerException e)
         {

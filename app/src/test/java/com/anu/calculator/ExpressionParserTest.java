@@ -105,7 +105,7 @@ public class ExpressionParserTest {
         for (TestCase testCase : testCases) {
             try
             {
-                Expression exp = new Parser().parse(testCase.input);
+                Expression exp = new Parser().parse(testCase.input, true, 10);
                 String assetString = String.format("Expression Parser Error, raw equation: %s; parsed equation: %s", testCase.input, exp.show());
                 assertEquals(assetString, testCase.expected, exp.evaluate(), testCase.delta);
             }
@@ -170,6 +170,31 @@ public class ExpressionParserTest {
         {
             fail();
         }
+    }
+
+    @Test
+    public void testPrecision()
+    {
+        try
+        {
+            double[] values = new double[15];
+            for(int i=0; i<15; i++)
+            {
+                values[i] = new Parser().parse("π", false, i).evaluate();
+            }
+
+            for(int i=0; i<values.length; i++)
+            {
+                String value = String.valueOf(values[i]);
+                assertEquals(value.substring(value.indexOf('.') + 1).length(), i, 1d); //delta of one required for rounding
+            }
+        }
+        catch(ParserException e)
+        {
+            fail("ParserException: " + e.getErrorMessage());
+        }
+
+
     }
 }
 

@@ -18,6 +18,13 @@ public class EqualityExpression implements Expression {
 
     private UnknownVariableExpression variable;
     private Expression expression;
+    private Integer precision;
+
+    @Override
+    public void updatePrecision(Integer precision)
+    {
+        this.precision = precision;
+    }
 
     EqualityExpression(UnknownVariableExpression variable, Expression expression) {
         this.expression = expression;
@@ -31,7 +38,8 @@ public class EqualityExpression implements Expression {
 
     @Override
     public double evaluate() throws ParserException {
-        return (expression.evaluate());
+        if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", expression.evaluate()));
+        else return expression.evaluate();
     }
 
 }
