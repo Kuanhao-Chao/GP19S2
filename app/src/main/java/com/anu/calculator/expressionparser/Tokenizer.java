@@ -91,8 +91,6 @@ public class Tokenizer {
             currentToken = new Token("" + Scripts.SuperScript.TWO.getUnicode(), Token.Type.SQUARE);
         else if(lastChar == Scripts.SuperScript.THREE.getUnicode())
             currentToken = new Token("" + Scripts.SuperScript.THREE.getUnicode(), Token.Type.CUBE);
-        else if(lastChar == 'S')
-            currentToken = new Token("ANS", Token.Type.PREVIOUS_ANSWER);
         else if(lastChar == Scripts.SubScript.ZERO.getUnicode())
             currentToken = new Token("log" +
                     Scripts.SubScript.ONE.getUnicode() +

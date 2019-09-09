@@ -20,7 +20,6 @@ public class Token {
         ARC_COSINE('l'),
         ARC_SINE('l'),
         ARC_TANGENT('l'),
-        PREVIOUS_ANSWER('n'),
         COSINE('l'),
         COMBINATION('b'),
         CUBE('t'),
