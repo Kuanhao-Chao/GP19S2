@@ -3,13 +3,16 @@ package com.anu.calculator.ui;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 
 import com.anu.calculator.R;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.HashSet;
@@ -41,6 +44,10 @@ public class MainActivity extends AppCompatActivity implements HistoryMessenger 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.operations_tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        // Setup the Floating button by Siwei Wu
+        createFloatingButton();
+
+
         // Focus on the Calculation Text Area
         final EditText calculation_area = findViewById(R.id.calculation_textarea);
         calculation_area.setShowSoftInputOnFocus(false);
@@ -49,6 +56,25 @@ public class MainActivity extends AppCompatActivity implements HistoryMessenger 
         put("eval",false); // Set the evaluation state to false.
         put("degrees",false); // Set the slider to use degrees as false
         put("precision", 20); // Set the precision value to 20 places by default.
+    }
+
+    /**
+     * This is the method to create the floating button to navigate between calculator activity and graph activity
+     *
+     * @author: Siwei Wu (u6735397)
+     * @param: nill
+     */
+    public void createFloatingButton() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_graph);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, GraphActivity.class));
+            }
+        });
+
+
+
     }
 
     /**

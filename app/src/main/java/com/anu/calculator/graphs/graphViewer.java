@@ -44,6 +44,8 @@ public class graphViewer extends View {
         super.onDraw(canvas);
         int width = getWidth();
         int height = getHeight();
+        CalcChart chart = new CalcChart(width, height, canvas);
+
         int offset = 0;
         int mid_y = height/2 + offset/2;
         int mid_x = width/2;
@@ -57,25 +59,35 @@ public class graphViewer extends View {
         text_P.setTextSize(text_size);
         p.setColor(Color.BLACK);
         p.setStrokeWidth(4.0f);
-        canvas.drawLine(0.0f,mid_y, width, mid_y,p); // draw main grid
-        canvas.drawLine(mid_x,offset,mid_x, height, p); // draw main grid
+
+
+
+
+        chart.draw_grids();
+        //canvas.drawLine(0.0f,mid_y, width, mid_y,p); // draw main grid
+        //canvas.drawLine(mid_x,offset,mid_x, height, p); // draw main grid
+
+
+
+
+
 
         //Draw minor lines
-        p.setColor(Color.BLUE);
-        p.setStrokeWidth(1.0f);
-        p.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
-        int DIGIT_OFFSET = 0; //additional offset to compensate for 2 digits
+        //p.setColor(Color.BLUE);
+        //p.setStrokeWidth(1.0f);
+        //p.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+        //int DIGIT_OFFSET = 0; //additional offset to compensate for 2 digits
 
-        //draw y axis
+        /*//draw y axis
         for (int i = 1; i <= 6; i++) {
             canvas.drawLine(0.0f, mid_y - scale_y * i * label_factor, width, mid_y - scale_y * i* label_factor,p);
             canvas.drawLine(0.0f, mid_y + scale_y * i* label_factor, width, mid_y + scale_y * i* label_factor,p);
             if (i  >= 5) {DIGIT_OFFSET = 10;}
             canvas.drawText(String.valueOf(i*2),mid_x - (scale_x * label_factor- 20 + DIGIT_OFFSET), mid_y - (scale_y *i* label_factor- 10) ,text_P);
             canvas.drawText(String.valueOf(-i*2),mid_x - (scale_x * label_factor- 20 + DIGIT_OFFSET), mid_y + (scale_y *i* label_factor + 10) ,text_P);
-        }
+        }*/
 
-        //draw x axis
+        /*//draw x axis
         DIGIT_OFFSET = 0; //additional offset to compensate for 2 digits
         for (int i = 1; i <= 10; i++) {
             canvas.drawLine(mid_x + scale_x * i * label_factor,offset,mid_x + scale_x*i* label_factor, height, p);
@@ -83,9 +95,9 @@ public class graphViewer extends View {
             if (i  >= 5) {DIGIT_OFFSET = 10;}
             canvas.drawText(String.valueOf(i*2),mid_x + (scale_x * i * label_factor- 10 - DIGIT_OFFSET), mid_y + (scale_y* label_factor - 20) ,text_P);
             canvas.drawText(String.valueOf(-i*2),mid_x - (scale_x * i * label_factor+ 10 + DIGIT_OFFSET), mid_y + (scale_y* label_factor - 20) ,text_P);
-        }
+        }*/
         for (int i = 0; i < 2; i++) {
-            if (on[i]) {
+            if (!on[i]) {
                 Paint f1_p = new Paint();
                 f1_p.setColor(pallet[i]);
                 f1_p.setStrokeWidth(5.0f);
@@ -97,6 +109,7 @@ public class graphViewer extends View {
                 } else {
                     points = g.genData();
                 }
+
                 float[] coord = convert_coord(points, scale_x, scale_y, mid_x, mid_y);
                 System.out.println("worked");
                 canvas.drawLines(coord, f1_p);
