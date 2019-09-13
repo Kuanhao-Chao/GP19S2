@@ -271,32 +271,38 @@ public class Parser implements ExpressionParser
      * parseLiteral: The lowest level parsing method, returns literals and ensures that parentheses
      * are evaluated first (i.e. [B]ODMAS).
      *
-     * Uses grammar: <literal> ::= π | e | rand | double | -double | <unknown variable>
+     * Uses grammar: <literal> ::= π | e | rand | double | -double | <unknown variable> | double<unknown variable>
      *               <unknown variable> ::= w | x | y | z | ɑ | β | ɣ | Δ
      *
      * @return type: Expression
+     */
+    /**
+     * Modified: Howard Chao (u7022787)
+     *      Move `_tokenizer.next();` into each condition.
+     *      Now can parse both (2×x) & (2x)
      */
     private Expression parseLiteral(Stack<Expression> history)
     {
         Expression literal = null;
 
-        if(_tokenizer.current().type() == Token.Type.RANDOM_NUMBER)
+        if(_tokenizer.current().type() == Token.Type.RANDOM_NUMBER) {
             literal = new RandomNumberExpression();
-        else if(_tokenizer.current().type() == Token.Type.PI)
+            _tokenizer.next();
+        }
+        else if(_tokenizer.current().type() == Token.Type.PI) {
             literal = new PiExpression();
-        else if(_tokenizer.current().type() == Token.Type.E)
+            _tokenizer.next();
+        }
+        else if(_tokenizer.current().type() == Token.Type.E) {
             literal =  new EExpression();
+            _tokenizer.next();
+        }
         else if(_tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE) {
             literal = new UnknownVariableExpression(_tokenizer.current().token().charAt(0));
-
-
-
-
-
-
-
-
-
+            /**
+             * Modified: Howard Chao (u7022787)
+             *      Update history stack.
+             */
             for (int i = 0; i < history.size(); i++) {
                 String outputString = history.elementAt(i).show();
                 if (outputString.contains(_tokenizer.current().token().charAt(0) + "=")) {
@@ -307,6 +313,38 @@ public class Parser implements ExpressionParser
                         e.printStackTrace();
                     }
                 }
+            }
+            /**
+             * Modified: Howard Chao (u7022787)
+             *      Slightly change the parsing rule. Now can parse both (2×x) & (2x)
+             */
+            _tokenizer.next();
+            if (_tokenizer.hasNext() && _tokenizer.current().type() == Token.Type.DOUBLE)
+            { //returns either a 'negative double' or double
+                boolean negative = false;
+                Token next = _tokenizer.checkAhead(1);
+                Token afterNext = _tokenizer.checkAhead(2);
+                Expression doubleExpressionCoef = null;
+                if(next != null && next.type() == Token.Type.SUBTRACT)
+                {
+                    if( afterNext == null ||
+                            afterNext.type() == Token.Type.SUBTRACT ||
+                            afterNext.type() == Token.Type.ADD ||
+                            afterNext.type() == Token.Type.MULTIPLY ||
+                            afterNext.type() == Token.Type.DIVIDE ||
+                            afterNext.type() == Token.Type.LEFT_PARENTHESIS)
+                    {
+                        doubleExpressionCoef = new SubtractExpression(new DoubleExpression(0d),
+                                new DoubleExpression(Double.parseDouble(_tokenizer.current().token())));
+                        negative = true;
+                        _tokenizer.next();
+                    }
+                }
+                if(!negative)
+                    doubleExpressionCoef = new DoubleExpression(Double.parseDouble(_tokenizer.current().token()));
+                MultiplyExpression multiplyExpression = new MultiplyExpression(literal, doubleExpressionCoef);
+                literal = multiplyExpression;
+                _tokenizer.next();
             }
         }
         else if(_tokenizer.current().type() == Token.Type.DOUBLE)
@@ -331,24 +369,27 @@ public class Parser implements ExpressionParser
             }
             if(!negative)
                 literal = new DoubleExpression(Double.parseDouble(_tokenizer.current().token()));
+            _tokenizer.next();
         }
         else if(_tokenizer.current().type() == Token.Type.RIGHT_PARENTHESIS)
         {
             _tokenizer.next();
             literal = parseExp( history);
+            _tokenizer.next();
         }
         else if(_tokenizer.current().type() == Token.Type.RIGHT_BRACE)
         {
             _tokenizer.next();
             literal = parseExp( history);
+            _tokenizer.next();
         }
         else if(_tokenizer.current().type() == Token.Type.RIGHT_BRACKET)
         {
             _tokenizer.next();
             literal = parseExp( history);
+            _tokenizer.next();
         }
 
-        _tokenizer.next();
         return literal;
     }
 }

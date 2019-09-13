@@ -98,6 +98,7 @@ public class ExpressionParserTest {
         testCases.add(new TestCase("√10+∛27-67%×e", 4.341028835, 0.000000002));
         testCases.add(new TestCase("4³×10²-(6!÷2)", 6040d, 0d));
         testCases.add(new TestCase("ln57-100×4^10+5!", -104857476d, 0.1d));
+        testCases.add(new TestCase("2×sin30", 1d, 0.0001d));
 
         //testCases.add(new TestCase( , , ));
 

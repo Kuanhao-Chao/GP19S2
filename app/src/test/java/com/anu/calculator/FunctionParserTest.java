@@ -86,8 +86,8 @@ public class FunctionParserTest {
     public void testVariableReferencing() throws ParserException {
         // Declare the test case and an empty history stack
         String test1 = "x=5";
-        String test2 = "y=2×x";
-        String test3 = "z=3×y";
+        String test2 = "y=2x";
+        String test3 = "z=3y";
         Stack<Expression> history = new Stack<>();
 
         // Instantiate a parser, evaluate each test cash, pushing the parsed expression onto the
@@ -110,10 +110,10 @@ public class FunctionParserTest {
     public void testComplexReferencing() throws ParserException {
         // Declare the test case and an empty history stack
         String test1 = "x=5"; //5
-        String test2 = "y=2×x"; //10
-        String test3 = "z=3×y+y"; //40
+        String test2 = "y=2x"; //10
+        String test3 = "z=3y+y"; //40
         String test4 = "w=z+y-x"; //40+10-5= 45
-        String test5 = "z=2×y-x"; // 20-5=15. w is now 15+10-5=20
+        String test5 = "z=2y-x"; // 20-5=15. w is now 15+10-5=20
         String test6 = "y=x+3"; // y = 5 + 3 = 8. z = 2*y-x = 2*8-5 = 11, w = z+y-x = 11+8-5=14
         String test7 = "y";
         String test8 = "z";
