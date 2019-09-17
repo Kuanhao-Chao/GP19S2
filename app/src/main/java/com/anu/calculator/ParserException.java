@@ -2,6 +2,12 @@ package com.anu.calculator;
 
 import android.util.Log;
 
+/**
+ * An abstract Exception class for all exceptions thrown by the Parser class
+ *
+ * @author Samuel Brookes (u5380100)
+ */
+
 public abstract class ParserException extends Exception {
 
     private String tag;
