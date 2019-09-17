@@ -5,6 +5,7 @@ import com.anu.calculator.expressionparser.Parser;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import static org.junit.Assert.*;
 
@@ -98,6 +99,7 @@ public class ExpressionParserTest {
         testCases.add(new TestCase("√10+∛27-67%×e", 4.341028835, 0.000000002));
         testCases.add(new TestCase("4³×10²-(6!÷2)", 6040d, 0d));
         testCases.add(new TestCase("ln57-100×4^10+5!", -104857476d, 0.1d));
+        testCases.add(new TestCase("2×sin30", 1d, 0.0001d));
 
         //testCases.add(new TestCase( , , ));
 
@@ -105,7 +107,8 @@ public class ExpressionParserTest {
         for (TestCase testCase : testCases) {
             try
             {
-                Expression exp = new Parser().parse(testCase.input, true, 10);
+                Stack<Expression> history = new Stack<>();
+                Expression exp = new Parser().parse(testCase.input, history);
                 String assetString = String.format("Expression Parser Error, raw equation: %s; parsed equation: %s", testCase.input, exp.show());
                 assertEquals(assetString, testCase.expected, exp.evaluate(), testCase.delta);
             }
@@ -128,12 +131,12 @@ public class ExpressionParserTest {
     public void test_infinity() throws ParserException {
         // First generate a obscenely large number
         String infinity_expression = "625!";
-        Expression exp = new Parser().parse(infinity_expression);
+        Expression exp = new Parser().parse(infinity_expression, null);
         double infinity = exp.evaluate();
 
         // Concatenate that number with it to the power of 3.
         String exception_expression = infinity+"^3";
-        exp = new Parser().parse(exception_expression);
+        exp = new Parser().parse(exception_expression, null);
         double exception = exp.evaluate();
     }
 
@@ -153,7 +156,7 @@ public class ExpressionParserTest {
             ArrayList<Expression> randomNumbers = new ArrayList<>(0);
             for(int i=0; i<1000; i++)
             {
-                randomNumbers.add(new Parser().parse("rand"));
+                randomNumbers.add(new Parser().parse("rand", null));
             }
 
             for(int i=0; i<1000; i++)
@@ -180,7 +183,8 @@ public class ExpressionParserTest {
             double[] values = new double[15];
             for(int i=0; i<15; i++)
             {
-                values[i] = new Parser().parse("π", false, i).evaluate();
+                Stack<Expression> history = new Stack<>();
+                values[i] = new Parser().parse("π", false, i, history).evaluate();
             }
 
             for(int i=0; i<values.length; i++)

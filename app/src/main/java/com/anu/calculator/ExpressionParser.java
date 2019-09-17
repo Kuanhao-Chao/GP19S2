@@ -1,5 +1,7 @@
 package com.anu.calculator;
 
+import java.util.Stack;
+
 /**
  * This interface described how a Expression Parser should behave.
  */
@@ -11,7 +13,7 @@ public interface ExpressionParser {
      * @param expression The expression represented as a string.
      * @return The string after the tokenizer has been applied and parsed into a Expression.
      */
-    Expression parse(String expression) throws ParserException;
+    Expression parse(String expression, Stack<Expression> history);
 
     /**
      * Takes a string representation of an expression and returns it as an Expression. Note that the
@@ -22,5 +24,5 @@ public interface ExpressionParser {
      * @param precision The precision to use for the calculation as an int.
      * @return The string after the tokenizer has been applied and parsed into a Expression.
      */
-    Expression parse(String expression, Boolean degrees, Integer precision) throws ParserException;
+    Expression parse(String expression, Boolean degrees, Integer precision, Stack<Expression> history);
 }
