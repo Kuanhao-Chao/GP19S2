@@ -1,6 +1,8 @@
 package com.anu.calculator;
 
+import com.anu.calculator.expressionparser.EExpression;
 import com.anu.calculator.expressionparser.Parser;
+import com.anu.calculator.expressionparser.UnknownVariableExpression;
 
 import org.junit.Test;
 
@@ -89,6 +91,10 @@ public class ExpressionParserTest {
         testCases.add(new TestCase("180×e-π", 486.1491365, 0.000002));
         testCases.add(new TestCase("25²+5³", 750d, 0d));
 
+        //This section tests shorthand multiplication
+        testCases.add(new TestCase("2(10+2)" , 24d, 0d));
+        testCases.add(new TestCase("2+15(30)" , 452d, 0d));
+
         // This section is for more complex test cases demonstrating BODMAS/BOMDAS function ordering
         testCases.add(new TestCase("55.888×1000.0÷80.1", 697.7278402, 0.00000002));
         testCases.add(new TestCase("45%×0.587+15nPr3", 2730.26415, 0d));
@@ -124,7 +130,7 @@ public class ExpressionParserTest {
      * @modified: Samuel Brookes (u5380100)
      *  - 06/09/2019: added Exception expectation, corrected spelling
      */
-    @Test (expected = Exception.class)
+    @Test (expected = ParserException.class)
     public void test_infinity() throws ParserException {
         // First generate a obscenely large number
         String infinity_expression = "625!";
@@ -172,6 +178,11 @@ public class ExpressionParserTest {
         }
     }
 
+    /**
+     * Tests whether the precision functionality is working as intended.
+     *
+     * @author Samuel Brookes (u5380100)
+     */
     @Test
     public void testPrecision()
     {
@@ -192,6 +203,71 @@ public class ExpressionParserTest {
         catch(ParserException e)
         {
             fail("ParserException: " + e.getErrorMessage());
+        }
+    }
+
+    /**
+     * Tests whether all unknown variables are correctly identified by the parser.
+     *
+     * @author Samuel Brookes
+     */
+    @Test
+    public void testAllUnknownVariables()
+    {
+        String[] zorbaChars = {"ɑ", "β", "ɣ", "Δ"};
+        Expression actual;
+        try
+        {
+            //first, test every letter of the alphabet
+            for(char variable = 'a'; variable <= 'z'; variable++)
+            {
+                actual = new Parser().parse("" + variable, false, 20);
+                if(variable != 'e')
+                {
+                    assertEquals(UnknownVariableExpression.class, actual.getClass());
+                }
+                else
+                {
+                    assertEquals(EExpression.class, actual.getClass());
+                }
+            }
+
+            //then test all the greek characters
+            for(int i=0; i<zorbaChars.length; i++)
+            {
+                actual = new Parser().parse("" + zorbaChars[i], false, 20);
+                assertEquals(UnknownVariableExpression.class, actual.getClass());
+            }
+
+        }
+        catch(ParserException e)
+        {
+            fail();
+        }
+    }
+
+    /**
+     * Tests whether the parser is correctly inserting a multiplication symbol
+     * when parsing expressions that use unknown variables with shorthand multiplication
+     *
+     * @author Samuel Brookes
+     */
+    @Test
+    public void testShorthandMultiplicationWithUnknowns()
+    {
+        try
+        {
+            for(char variable = 'a'; variable <= 'z'; variable++) {
+                //testCases
+                assertEquals(new Parser().parse("2" + variable + "+15(30)", false, 20).show(),
+                        "((2.0×" + variable + ")+(15.0×30.0))");
+                assertEquals(new Parser().parse("14+3" + variable + "²-100", false, 20).show(),
+                        "((14.0+(3.0×(" + variable + "^2.0)))-100.0)");
+            }
+        }
+        catch(ParserException e)
+        {
+            fail();
         }
 
 

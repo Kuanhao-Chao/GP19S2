@@ -97,39 +97,62 @@ public class Tokenizer {
                     Scripts.SubScript.ZERO.getUnicode(), Token.Type.LOG_TEN);
         else if(lastChar == 'd')
         {
-            switch(_buffer.charAt(_buffer.length() - 2))
+            if(_buffer.length() > 2)
             {
-                case 'n': currentToken = new Token("rand", Token.Type.RANDOM_NUMBER); break;
-                default : currentToken = new Token("d", Token.Type.UNKNOWN_VARIABLE);
+                switch(_buffer.charAt(_buffer.length() - 2))
+                {
+                    case 'n': currentToken = new Token("rand", Token.Type.RANDOM_NUMBER); break;
+                    default : currentToken = new Token("d", Token.Type.UNKNOWN_VARIABLE);
+                }
             }
+            else currentToken = new Token("d", Token.Type.UNKNOWN_VARIABLE);
         }
         else if(lastChar == 's')
         {
-            switch(_buffer.charAt(_buffer.length() - 2))
+            if(_buffer.length() > 2)
             {
-                case 'o': currentToken = new Token("cos", Token.Type.COSINE); break;
-                default : currentToken = new Token("s", Token.Type.UNKNOWN_VARIABLE);
+                switch(_buffer.charAt(_buffer.length() - 2))
+                {
+                    case 'o': currentToken = new Token("cos", Token.Type.COSINE); break;
+                    default : currentToken = new Token("s", Token.Type.UNKNOWN_VARIABLE);
+                }
             }
-
+            else currentToken = new Token("s", Token.Type.UNKNOWN_VARIABLE);
         }
         else if(lastChar == 'n')
         {
-            switch(_buffer.charAt(_buffer.length() - 2))
+            if(_buffer.length() > 2)
             {
-                case 'i': currentToken = new Token("sin", Token.Type.SINE); break;
-                case 'a': currentToken = new Token("tan", Token.Type.TANGENT); break;
-                case 'l': currentToken = new Token("ln", Token.Type.LOG_NATURAL); break;
-                default : currentToken = new Token("n", Token.Type.UNKNOWN_VARIABLE);
+                switch(_buffer.charAt(_buffer.length() - 2))
+                {
+                    case 'i': currentToken = new Token("sin", Token.Type.SINE); break;
+                    case 'a': currentToken = new Token("tan", Token.Type.TANGENT); break;
+                    case 'l': currentToken = new Token("ln", Token.Type.LOG_NATURAL); break;
+                    default : currentToken = new Token("n", Token.Type.UNKNOWN_VARIABLE);
+                }
             }
+            else if(_buffer.length() == 2)
+            {
+                switch(_buffer.charAt(_buffer.length() - 2))
+                {
+                    case 'l': currentToken = new Token("ln", Token.Type.LOG_NATURAL); break;
+                    default : currentToken = new Token("n", Token.Type.UNKNOWN_VARIABLE);
+                }
+            }
+            else currentToken = new Token("n", Token.Type.UNKNOWN_VARIABLE);
         }
         else if(lastChar == 'r')
         {
-            switch(_buffer.charAt(_buffer.length() - 2))
+            if(_buffer.length() > 2)
             {
-                case 'P': currentToken = new Token("nPr", Token.Type.PERMUTATION); break;
-                case 'C': currentToken = new Token("nCr", Token.Type.COMBINATION); break;
-                default : currentToken = new Token("r", Token.Type.UNKNOWN_VARIABLE);
+                switch(_buffer.charAt(_buffer.length() - 2))
+                {
+                    case 'P': currentToken = new Token("nPr", Token.Type.PERMUTATION); break;
+                    case 'C': currentToken = new Token("nCr", Token.Type.COMBINATION); break;
+                    default : currentToken = new Token("r", Token.Type.UNKNOWN_VARIABLE);
+                }
             }
+            else currentToken = new Token("r", Token.Type.UNKNOWN_VARIABLE);
         }
         else if(lastChar == Scripts.SuperScript.ONE.getUnicode())
         {
@@ -160,5 +183,10 @@ public class Tokenizer {
         // Remove the extracted token from buffer
         int tokenLen = currentToken.token().length();
         _buffer = _buffer.substring(0, _buffer.length() - tokenLen);
+    }
+
+    public void appendMultiply()
+    {
+        _buffer = _buffer + Scripts.Operators.MULTIPLY.getUnicode();
     }
 }

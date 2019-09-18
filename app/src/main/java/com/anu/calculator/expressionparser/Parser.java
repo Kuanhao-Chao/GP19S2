@@ -21,7 +21,7 @@ import com.anu.calculator.exceptions.NothingEnteredException;
  *      tan<exp> | tan⁻¹<exp> | log₁₀<exp> | ln<exp> | !<exp> | √<exp> |
  *      ∛<exp> | <exp>nPr<exp> | <exp>nCr<exp> | <exp>^<exp> | <exp>² |
  *      <exp>³ | -<exp> | <exp>% | (<exp>) | <literal>
- * <literal> ::= π | e | rand | double | <unknown variable>
+ * <literal> ::= π | e | rand | double | -double | <unknown variable>
  * <unknown variable> ::= w | x | y | z | ɑ | β | ɣ | Δ
  *
  * @author: Samuel Brookes (u5380100)
@@ -219,10 +219,12 @@ public class Parser implements ExpressionParser
 
     /**
      * parseLiteral: The lowest level parsing method, returns literals and ensures that parentheses
-     * are evaluated first (i.e. [B]ODMAS).
+     * are evaluated first (i.e. [B]ODMAS). This method handles shorthand multiplication (e.g.
+     * 2x or 2(10)) by appending the buffer in the tokenizer with a multiplication symbol to
+     * ensure that it is processed correctly.
      *
      * Uses grammar: <literal> ::= π | e | rand | double | -double | <unknown variable>
-     *               <unknown variable> ::= w | x | y | z | ɑ | β | ɣ | Δ
+     *               <unknown variable> ::= a-z | ɑ | β | ɣ | Δ
      *
      * @return type: Expression
      */
@@ -233,11 +235,44 @@ public class Parser implements ExpressionParser
         if(_tokenizer.current().type() == Token.Type.RANDOM_NUMBER)
             literal = new RandomNumberExpression();
         else if(_tokenizer.current().type() == Token.Type.PI)
+        {
             literal = new PiExpression();
+            Token next = _tokenizer.checkAhead(1);
+            if(next != null && next.type() == Token.Type.DOUBLE)
+            {
+                _tokenizer.appendMultiply();
+            }
+        }
         else if(_tokenizer.current().type() == Token.Type.E)
+        {
             literal =  new EExpression();
+            Token next = _tokenizer.checkAhead(1);
+            if(next != null && next.type() == Token.Type.DOUBLE)
+            {
+                _tokenizer.appendMultiply();
+            }
+        }
         else if(_tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE)
+        {
             literal = new UnknownVariableExpression(_tokenizer.current().token().charAt(0));
+            Token next = _tokenizer.checkAhead(1);
+            if(next != null && next.type() == Token.Type.DOUBLE)
+            {
+                _tokenizer.appendMultiply();
+            }
+        }
+        else if(_tokenizer.current().type() == Token.Type.RIGHT_PARENTHESIS ||
+                _tokenizer.current().type() == Token.Type.RIGHT_BRACE ||
+                _tokenizer.current().type() == Token.Type.RIGHT_BRACKET)
+        {
+            _tokenizer.next();
+            literal = parseExp();
+            Token next = _tokenizer.checkAhead(1);
+            if(next != null && next.type() == Token.Type.DOUBLE)
+            {
+                _tokenizer.appendMultiply();
+            }
+        }
         else if(_tokenizer.current().type() == Token.Type.DOUBLE)
         { //returns either a 'negative double' or double
             DoubleExpression doubleValue = new DoubleExpression(Double.parseDouble(_tokenizer.current().token()));
@@ -260,21 +295,6 @@ public class Parser implements ExpressionParser
             }
             if(!negative)
                 literal = doubleValue;
-        }
-        else if(_tokenizer.current().type() == Token.Type.RIGHT_PARENTHESIS)
-        {
-            _tokenizer.next();
-            literal = parseExp();
-        }
-        else if(_tokenizer.current().type() == Token.Type.RIGHT_BRACE)
-        {
-            _tokenizer.next();
-            literal = parseExp();
-        }
-        else if(_tokenizer.current().type() == Token.Type.RIGHT_BRACKET)
-        {
-            _tokenizer.next();
-            literal = parseExp();
         }
 
         _tokenizer.next();

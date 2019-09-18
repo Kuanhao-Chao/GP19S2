@@ -17,7 +17,7 @@ public abstract class ParserException extends Exception {
     {
         this.errorMessage = errorMessage;
         this.tag = tag;
-        logMe();
+        //logMe();
     }
 
     public String getErrorMessage()

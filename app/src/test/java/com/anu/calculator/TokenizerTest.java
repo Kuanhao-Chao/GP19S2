@@ -193,5 +193,4 @@ public class TokenizerTest {
             tokenizer.next();
         }
     }
-
 }
