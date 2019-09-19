@@ -2,6 +2,7 @@ package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.InfinityException;
 import com.anu.calculator.exceptions.MathematicalSyntaxException;
 
 /**
@@ -42,6 +43,8 @@ public class PowerExpression implements Expression {
 		try
 		{
 			double evaluation = Math.pow(base.evaluate(), pwr.evaluate());
+
+			if(evaluation == Double.POSITIVE_INFINITY) throw new InfinityException(TAG, "Number is too large for little old me.");
 			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
 			else return evaluation;
 		}

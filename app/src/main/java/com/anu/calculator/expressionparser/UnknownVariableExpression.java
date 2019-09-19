@@ -2,6 +2,7 @@ package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.InfinityException;
 import com.anu.calculator.exceptions.UnassignedVariableException;
 
 /**
@@ -52,6 +53,7 @@ public class UnknownVariableExpression implements Expression {
 	public double evaluate() throws ParserException {
 		if(hasValue())
 		{
+			if(value.evaluate() == Double.POSITIVE_INFINITY) throw new InfinityException(TAG, "Number is too large for little old me.");
 			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", value.evaluate()));
 			else return value.evaluate();
 		}

@@ -2,6 +2,7 @@ package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.InfinityException;
 import com.anu.calculator.exceptions.MathematicalSyntaxException;
 
 /**
@@ -40,6 +41,8 @@ public class PercentExpression implements Expression {
 		try
 		{
 			double evaluation = expression.evaluate()/100;
+
+			if(evaluation == Double.POSITIVE_INFINITY) throw new InfinityException(TAG, "Number is too large for little old me.");
 			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
 			else return evaluation;
 		}

@@ -59,6 +59,8 @@ public class Tokenizer {
             currentToken = new Token("-", Token.Type.SUBTRACT);
         else if(lastChar == Scripts.Operators.DIVIDE.getUnicode())
             currentToken = new Token("" + Scripts.Operators.DIVIDE.getUnicode(), Token.Type.DIVIDE);
+        else if(lastChar == '=')
+            currentToken = new Token("=", Token.Type.EQUALS);
         else if(lastChar == '(')
             currentToken = new Token("(", Token.Type.LEFT_PARENTHESIS);
         else if(lastChar == '{')

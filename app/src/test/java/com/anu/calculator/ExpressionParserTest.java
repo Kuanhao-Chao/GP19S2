@@ -1,5 +1,9 @@
 package com.anu.calculator;
 
+
+import android.util.Log;
+
+import com.anu.calculator.exceptions.InfinityException;
 import com.anu.calculator.expressionparser.EExpression;
 import com.anu.calculator.expressionparser.Parser;
 import com.anu.calculator.expressionparser.UnknownVariableExpression;
@@ -7,6 +11,7 @@ import com.anu.calculator.expressionparser.UnknownVariableExpression;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import static org.junit.Assert.*;
 
@@ -130,7 +135,7 @@ public class ExpressionParserTest {
      * @modified: Samuel Brookes (u5380100)
      *  - 06/09/2019: added Exception expectation, corrected spelling
      */
-    @Test (expected = ParserException.class)
+    @Test (expected = InfinityException.class)
     public void test_infinity() throws ParserException {
         // First generate a obscenely large number
         String infinity_expression = "625!";
@@ -269,8 +274,6 @@ public class ExpressionParserTest {
         {
             fail();
         }
-
-
     }
 }
 

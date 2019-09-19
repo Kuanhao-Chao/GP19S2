@@ -27,6 +27,7 @@ public class Token {
         DIVIDE('n'),
         DOUBLE('n'),
         E('n'),
+        EQUALS('n'),
         FACTORIAL('t'),
         LEFT_PARENTHESIS('n'),
         LEFT_BRACE('n'),

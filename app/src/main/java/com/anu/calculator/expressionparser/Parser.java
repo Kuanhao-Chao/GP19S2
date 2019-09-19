@@ -1,12 +1,12 @@
 package com.anu.calculator.expressionparser;
 
-import android.util.Log;
-
 import com.anu.calculator.Expression;
 import com.anu.calculator.ExpressionParser;
 import com.anu.calculator.ParserException;
 import com.anu.calculator.exceptions.MathematicalSyntaxException;
 import com.anu.calculator.exceptions.NothingEnteredException;
+
+import java.util.Stack;
 
 
 /**
@@ -35,7 +35,7 @@ public class Parser implements ExpressionParser
 {
 
     private static final String TAG = "EXPRESSION_PARSER";
-
+    private Stack<Expression> history;
     private Tokenizer _tokenizer;
     private Boolean degrees;
     private Integer precision;
@@ -67,6 +67,38 @@ public class Parser implements ExpressionParser
     }
 
     /**
+     * The parse method for parsing functions.
+     * @param expression
+     * @param degrees
+     * @param precision
+     * @param history
+     * @return Expression (an EqualityExpression)
+     * @throws ParserException
+     */
+    @Override
+    public Expression parse(String expression, Boolean degrees, Integer precision, Stack<Expression> history) throws ParserException
+    {
+        //initialise fields
+        _tokenizer = new Tokenizer(expression);
+        this.degrees = degrees;
+        this.precision = precision;
+
+        //clone history to preserve the overall history of the app
+        this.history = (Stack<Expression>) history.clone();
+
+        //evaluate everything on the right-hand side of the equation
+        Expression exp = parse(expression);
+
+        //if there is an equals sign, this is an equality expression, otherwise it is any other kind of expression
+        if(expression.indexOf('=') != -1)
+        {
+            _tokenizer.next(); //skip the '=' sign
+            return new EqualityExpression(_tokenizer.current().token().charAt(0), exp);
+        }
+        else return exp; //otherwise it is just an unknown variable statement
+    }
+
+    /**
      * checkRawExpression: conducts a preliminary check of the expression string entered by the user
      * prior to being passed to Parser.parse(). This is to catch any easy-to-detect errors to save
      * time.
@@ -77,7 +109,8 @@ public class Parser implements ExpressionParser
     private boolean checkRawExpression(String expression) throws ParserException
     {
         //check whether the user has entered something
-        if(expression.equals("")) throw new NothingEnteredException(TAG, "");
+        if(expression.equals(""))
+            throw new NothingEnteredException(TAG, "");
 
         //simple check for whether there are matching numbers of brackets, braces and parentheses
         //it DOES NOT check whether they are nested correctly
@@ -94,7 +127,21 @@ public class Parser implements ExpressionParser
         }
         if(braceCnt != 0 || parenCnt != 0 || brackCnt != 0) return false;
 
-        //more tests here
+        //== tests for functions ==
+        if(expression.indexOf('=') != -1)
+        {
+            //test that the left-hand side has only one variable and that it is an unknown var
+            Token leftHandSide = new Tokenizer(expression.split("=")[0].trim()).current();
+            if(leftHandSide == null)
+                throw new MathematicalSyntaxException(TAG, "There must be a variable on the left side of the equation.");
+            else if(leftHandSide.type() != Token.Type.UNKNOWN_VARIABLE)
+                throw new MathematicalSyntaxException(TAG, "The calculator is unable to solve this type of equation.");
+
+            //test that an unknown variable does not occur on either side of the equals sign
+            char variable = expression.split("=")[0].trim().charAt(0);
+            if(expression.indexOf(variable) != expression.lastIndexOf(variable))
+                throw new MathematicalSyntaxException(TAG, "The calculator is unable to solve this type of equation.");
+        }
 
         return true;
     }
@@ -237,29 +284,45 @@ public class Parser implements ExpressionParser
         else if(_tokenizer.current().type() == Token.Type.PI)
         {
             literal = new PiExpression();
+
+            //check for the use of shorthand multiplication
             Token next = _tokenizer.checkAhead(1);
             if(next != null && next.type() == Token.Type.DOUBLE)
-            {
                 _tokenizer.appendMultiply();
-            }
         }
         else if(_tokenizer.current().type() == Token.Type.E)
         {
             literal =  new EExpression();
+
+            //check for the use of shorthand multiplication
             Token next = _tokenizer.checkAhead(1);
             if(next != null && next.type() == Token.Type.DOUBLE)
-            {
                 _tokenizer.appendMultiply();
-            }
         }
         else if(_tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE)
         {
-            literal = new UnknownVariableExpression(_tokenizer.current().token().charAt(0));
+            Expression exp;
+            if(history != null)
+            {
+                //if history is not null,
+                //check through the stack for the first instance of this unknown variable type
+                while(!history.empty())
+                {
+                    exp = history.pop();
+                    if(exp instanceof EqualityExpression && ((EqualityExpression) exp).isSameVariable(_tokenizer.current().token()))
+                    {
+                        literal = new UnknownVariableExpression(_tokenizer.current().token().charAt(0), ((EqualityExpression) exp).getExpression());
+                        break;
+                    }
+                }
+            }
+            if(literal == null)
+                literal = new UnknownVariableExpression(_tokenizer.current().token().charAt(0));
+
+            //check for the use of shorthand multiplication
             Token next = _tokenizer.checkAhead(1);
             if(next != null && next.type() == Token.Type.DOUBLE)
-            {
                 _tokenizer.appendMultiply();
-            }
         }
         else if(_tokenizer.current().type() == Token.Type.RIGHT_PARENTHESIS ||
                 _tokenizer.current().type() == Token.Type.RIGHT_BRACE ||
@@ -267,16 +330,19 @@ public class Parser implements ExpressionParser
         {
             _tokenizer.next();
             literal = parseExp();
+
+            //check for the use of shorthand multiplication
             Token next = _tokenizer.checkAhead(1);
             if(next != null && next.type() == Token.Type.DOUBLE)
-            {
                 _tokenizer.appendMultiply();
-            }
         }
         else if(_tokenizer.current().type() == Token.Type.DOUBLE)
-        { //returns either a 'negative double' or double
+        {
+            //returns either a 'negative double' or double
             DoubleExpression doubleValue = new DoubleExpression(Double.parseDouble(_tokenizer.current().token()));
             boolean negative = false;
+
+            //check whether the double is a negative number
             Token next = _tokenizer.checkAhead(1);
             Token afterNext = _tokenizer.checkAhead(2);
             if(next != null && next.type() == Token.Type.SUBTRACT)
@@ -288,11 +354,14 @@ public class Parser implements ExpressionParser
                     afterNext.type() == Token.Type.DIVIDE ||
                     afterNext.type() == Token.Type.LEFT_PARENTHESIS)
                 {
+                    //if it's negative, return the number subtracted from zero
                     literal = new SubtractExpression(new DoubleExpression(0d), doubleValue);
                     negative = true;
                     _tokenizer.next();
                 }
             }
+
+            //if it's not negative, return the double
             if(!negative)
                 literal = doubleValue;
         }

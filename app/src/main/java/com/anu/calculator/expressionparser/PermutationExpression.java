@@ -2,6 +2,7 @@ package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.InfinityException;
 import com.anu.calculator.exceptions.MathematicalSyntaxException;
 
 /**
@@ -43,6 +44,8 @@ public class PermutationExpression implements Expression {
 			FactorialExpression numerator = new FactorialExpression(n);
 			FactorialExpression denominator = new FactorialExpression(new SubtractExpression(n, r));
 			double evaluation = numerator.evaluate() / denominator.evaluate();
+
+			if(evaluation == Double.POSITIVE_INFINITY) throw new InfinityException(TAG, "Number is too large for little old me.");
 			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
 			else return evaluation;
 		}

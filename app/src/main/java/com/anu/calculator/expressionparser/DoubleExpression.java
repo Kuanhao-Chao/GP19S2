@@ -2,6 +2,7 @@ package com.anu.calculator.expressionparser;
 
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.InfinityException;
 
 /**
  * DoubleExpression: This class is used to represent a double literal
@@ -13,6 +14,8 @@ import com.anu.calculator.ParserException;
  */
 
 public class DoubleExpression implements Expression {
+
+	private static final String TAG = "DOUBLE_EXPRESSION";
 	private double value;
 	private Integer precision;
 
@@ -34,6 +37,7 @@ public class DoubleExpression implements Expression {
 	@Override
 	public double evaluate() throws ParserException
 	{
+		if(value == Double.POSITIVE_INFINITY) throw new InfinityException(TAG, "Number is too large for little old me");
 		if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", value));
 		else return value;
 	}
