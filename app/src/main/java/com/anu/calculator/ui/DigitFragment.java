@@ -275,43 +275,43 @@ public class DigitFragment extends Fragment {
         // 3. Reset the working space.
         // 4. Add to the history fragment the latest expression.
         Button equals = rootView.findViewById(R.id.evaluate);
-//        equals.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View arg0) {
-//                // Parse the expression and evaluate it
-//                String expression = calculation_area.getText().toString();
-//                ExpressionParser parser = new Parser();
-//                try
-//                {
-//                    Expression exp = parser.parse(expression, main.getBoolean("degrees"), main.getInt("precision"));
-//                    double evaluation = exp.evaluate();
-//                    // Reset the Text Area
-//                    resetTextArea(calculation_area);
-//
-//                    // Add the text to the screen
-//                    calculation_area.setText(fmt(evaluation));
-//                    calculation_area.setSelection(calculation_area.length());
-//
-//                    // Pass the history to the history fragment
-//                    historyMessenger.sendHistory("\n"+expression+"="+fmt(evaluation));
-//
-//                    // Store the answer for future use.
-//                    MainActivity main = (MainActivity) Objects.requireNonNull(getActivity());
-//                    main.put("ans",evaluation);
-//                    Log.d(TAG,"stored answer: '"+main.getDouble("ans")+"'");
-//
-//                    // Store that a evaluation has taken place
-//                    main.put("eval", true);
-//                }
-//                catch(ParserException e)
-//                {
-//                    calculation_area.setText(e.getErrorMessage());
-//                    calculation_area.setSelection(calculation_area.length());
-//                    historyMessenger.sendHistory("\n"+expression);
-//                    historyMessenger.sendHistory("\n"+e.getErrorMessage());
-//                }
-//            }
-//        });
+        equals.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // Parse the expression and evaluate it
+                String expression = calculation_area.getText().toString();
+                ExpressionParser parser = new Parser();
+                try
+                {
+                    Expression exp = parser.parse(expression, main.getBoolean("degrees"), main.getInt("precision"));
+                    double evaluation = exp.evaluate();
+                    // Reset the Text Area
+                    resetTextArea(calculation_area);
+
+                    // Add the text to the screen
+                    calculation_area.setText(fmt(evaluation));
+                    calculation_area.setSelection(calculation_area.length());
+
+                    // Pass the history to the history fragment
+                    historyMessenger.sendHistory("\n"+expression+"="+fmt(evaluation));
+
+                    // Store the answer for future use.
+                    MainActivity main = (MainActivity) Objects.requireNonNull(getActivity());
+                    main.put("ans",evaluation);
+                    Log.d(TAG,"stored answer: '"+main.getDouble("ans")+"'");
+
+                    // Store that a evaluation has taken place
+                    main.put("eval", true);
+                }
+                catch(ParserException e)
+                {
+                    calculation_area.setText(e.getErrorMessage());
+                    calculation_area.setSelection(calculation_area.length());
+                    historyMessenger.sendHistory("\n"+expression);
+                    historyMessenger.sendHistory("\n"+e.getErrorMessage());
+                }
+            }
+        });
         Log.d(TAG,"onCreateView: complete");
         return rootView;
     }
