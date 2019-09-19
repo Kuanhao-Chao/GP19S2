@@ -35,7 +35,7 @@ public class Parser implements ExpressionParser
 {
 
     private static final String TAG = "EXPRESSION_PARSER";
-    private Stack<Expression> history;
+    private Stack<Expression> savedHistory;
     private Tokenizer _tokenizer;
     private Boolean degrees;
     private Integer precision;
@@ -83,8 +83,8 @@ public class Parser implements ExpressionParser
         this.degrees = degrees;
         this.precision = precision;
 
-        //clone history to preserve the overall history of the app
-        this.history = (Stack<Expression>) history.clone();
+        //save the history
+        this.savedHistory = history;
 
         //evaluate everything on the right-hand side of the equation
         Expression exp = parse(expression);
@@ -275,6 +275,7 @@ public class Parser implements ExpressionParser
      *
      * @return type: Expression
      */
+    @SuppressWarnings("unchecked")
     private Expression parseLiteral()
     {
         Expression literal = null;
@@ -302,10 +303,11 @@ public class Parser implements ExpressionParser
         else if(_tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE)
         {
             Expression exp;
-            if(history != null)
+            if(savedHistory != null)
             {
                 //if history is not null,
                 //check through the stack for the first instance of this unknown variable type
+                Stack<Expression> history = (Stack<Expression>) savedHistory.clone();
                 while(!history.empty())
                 {
                     exp = history.pop();
@@ -316,6 +318,7 @@ public class Parser implements ExpressionParser
                     }
                 }
             }
+
             if(literal == null)
                 literal = new UnknownVariableExpression(_tokenizer.current().token().charAt(0));
 

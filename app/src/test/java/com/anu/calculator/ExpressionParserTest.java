@@ -109,6 +109,7 @@ public class ExpressionParserTest {
         testCases.add(new TestCase("√10+∛27-67%×e", 4.341028835, 0.000000002));
         testCases.add(new TestCase("4³×10²-(6!÷2)", 6040d, 0d));
         testCases.add(new TestCase("ln57-100×4^10+5!", -104857476d, 0.1d));
+        testCases.add(new TestCase("2×sin30", 1d, 0.0001d));
 
         //testCases.add(new TestCase( , , ));
 
@@ -116,7 +117,7 @@ public class ExpressionParserTest {
         for (TestCase testCase : testCases) {
             try
             {
-                Expression exp = new Parser().parse(testCase.input, true, 10);
+                Expression exp = new Parser().parse(testCase.input, true, 20);
                 String assetString = String.format("Expression Parser Error, raw equation: %s; parsed equation: %s", testCase.input, exp.show());
                 assertEquals(assetString, testCase.expected, exp.evaluate(), testCase.delta);
             }
@@ -196,7 +197,8 @@ public class ExpressionParserTest {
             double[] values = new double[15];
             for(int i=0; i<15; i++)
             {
-                values[i] = new Parser().parse("π", false, i).evaluate();
+                Stack<Expression> history = new Stack<>();
+                values[i] = new Parser().parse("π", false, i, history).evaluate();
             }
 
             for(int i=0; i<values.length; i++)

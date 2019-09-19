@@ -8,6 +8,7 @@ import com.anu.calculator.ParserException;
  *
  * @author: Michael Betterton (u6797866)
  * @modified: Samuel Brookes (u5380100)
+ * @modified: Howard Chao (u7022787)
  *  - 07/09/2019: added throw clause
  *  - 19/09/2019: added isSameVariable() and getExpression()
  *
