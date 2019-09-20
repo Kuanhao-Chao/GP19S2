@@ -33,18 +33,21 @@ import java.util.Stack;
 
 public class Parser implements ExpressionParser
 {
-
     private static final String TAG = "EXPRESSION_PARSER";
-    private Stack<Expression> savedHistory;
+    private Stack<Expression> savedHistory; //FIXME: delete for History
     private Tokenizer _tokenizer;
     private Boolean degrees;
     private Integer precision;
+
+    private boolean historyParser;
+    private History history;
 
     @Override
     public Expression parse(String expression) throws ParserException
     {
         if(checkRawExpression(expression))
         {
+            historyParser = false;
             _tokenizer = new Tokenizer(expression);
             Expression parsedExpression = parseExp();
             if(precision != null) parsedExpression.updatePrecision(precision);
@@ -60,6 +63,7 @@ public class Parser implements ExpressionParser
         //Log.d(TAG,"Degrees: "+degrees);
         //Log.d(TAG,"Precision: "+precision);
 
+        historyParser = false;
         _tokenizer = new Tokenizer(expression);
         this.degrees = degrees;
         this.precision = precision;
@@ -79,12 +83,13 @@ public class Parser implements ExpressionParser
     public Expression parse(String expression, Boolean degrees, Integer precision, Stack<Expression> history) throws ParserException
     {
         //initialise fields
+        historyParser = false;
         _tokenizer = new Tokenizer(expression);
         this.degrees = degrees;
         this.precision = precision;
 
         //save the history
-        this.savedHistory = history;
+        this.savedHistory = history; //FIXME: needs to process history
 
         //evaluate everything on the right-hand side of the equation
         Expression exp = parse(expression);
@@ -96,6 +101,23 @@ public class Parser implements ExpressionParser
             return new EqualityExpression(_tokenizer.current().token().charAt(0), exp);
         }
         else return exp; //otherwise it is just an unknown variable statement
+    }
+
+    /**
+     * Parse method for the History class
+     * @param expression
+     * @param history
+     * @param degrees
+     * @param precision
+     * @return Expression
+     */
+    public Expression parse(String expression, Boolean degrees, Integer precision, History history) throws ParserException
+    {
+        historyParser = true;
+        this.history = history;
+        this.degrees = degrees;
+        this.precision = precision;
+        return parse(expression);
     }
 
     /**
@@ -137,10 +159,13 @@ public class Parser implements ExpressionParser
             else if(leftHandSide.type() != Token.Type.UNKNOWN_VARIABLE)
                 throw new MathematicalSyntaxException(TAG, "The calculator is unable to solve this type of equation.");
 
+            //FIXME: Needs to ensure that the .lastIndexOf is actually an UNKNOWN VAR
             //test that an unknown variable does not occur on either side of the equals sign
             char variable = expression.split("=")[0].trim().charAt(0);
             if(expression.indexOf(variable) != expression.lastIndexOf(variable))
                 throw new MathematicalSyntaxException(TAG, "The calculator is unable to solve this type of equation.");
+
+            //FIXME: Add a test for multiple EQUAL signs
         }
 
         return true;
@@ -301,7 +326,20 @@ public class Parser implements ExpressionParser
                 _tokenizer.appendMultiply();
         }
         else if(_tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE)
-        {
+        { //FIXME: Needs to be updated for History
+
+            if(historyParser)
+            {
+
+            }
+            else
+            {
+
+            }
+
+
+
+
             Expression exp;
             if(savedHistory != null)
             {
