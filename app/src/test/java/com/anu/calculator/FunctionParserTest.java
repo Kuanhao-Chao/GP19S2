@@ -1,5 +1,6 @@
 package com.anu.calculator;
 
+import com.anu.calculator.exceptions.FunctionLoopException;
 import com.anu.calculator.exceptions.UnassignedVariableException;
 import com.anu.calculator.parsers.ExpressionParser;
 
@@ -217,5 +218,38 @@ public class FunctionParserTest {
         ExpressionParser fp = new ExpressionParser();
         Expression exp = fp.parse(test1, true, 0, history);
         exp.evaluate(); //evaluate throws exception, not parse
+    }
+
+    /**
+     * Tests for function loops.
+     *
+     * @author Samuel Brookes
+     * @throws ParserException
+     */
+    @Test(expected = FunctionLoopException.class)
+    public void testForLoops() throws ParserException
+    {
+        String test1 = "x=5";
+        String test2 = "y=2x";
+        String test3 = "x=y";
+        String test4 = "x";
+        Stack<Expression> history = new Stack<>();
+
+        ExpressionParser parser = new ExpressionParser();
+        Expression exp = parser.parse(test1, true, 0, history);
+        assertEquals(5d, exp.evaluate());
+        history.push(exp);
+
+        exp = parser.parse(test2, true, 0, history);
+        assertEquals(10d, exp.evaluate());
+        history.push(exp);
+
+        //should throw error - but doesn't
+        exp = parser.parse(test3, true, 0, history);
+        history.push(exp);
+
+        //this one throws the correct error - but the previous one should
+        exp = parser.parse(test4, true, 0, history);
+        history.push(exp);
     }
 }
