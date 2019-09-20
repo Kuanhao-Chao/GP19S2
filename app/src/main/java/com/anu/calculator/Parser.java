@@ -5,7 +5,7 @@ import java.util.Stack;
 /**
  * This interface described how a Expression Parser should behave.
  */
-public interface ExpressionParser {
+public interface Parser {
     /**
      * Takes a string representation of an expression and returns it as an Expression. Note that the
      * definition of expression is recursive.

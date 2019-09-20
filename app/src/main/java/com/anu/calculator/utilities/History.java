@@ -4,7 +4,7 @@ import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
 import com.anu.calculator.exceptions.FunctionLoopException;
 import com.anu.calculator.expressions.DoubleExpression;
-import com.anu.calculator.parsers.Parser;
+import com.anu.calculator.parsers.ExpressionParser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,7 +86,7 @@ public class History {
         {
             variable = raw.split(EQUALS)[0].trim();
             expression = raw.split(EQUALS)[1].trim();
-            if(new Parser().parse(expression) instanceof DoubleExpression)
+            if(new ExpressionParser().parse(expression) instanceof DoubleExpression)
             {
                 definedVariables.add(variable);
                 orderedHistory.add(raw);

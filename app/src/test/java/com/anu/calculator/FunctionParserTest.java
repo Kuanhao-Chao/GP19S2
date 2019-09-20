@@ -1,7 +1,7 @@
 package com.anu.calculator;
 
 import com.anu.calculator.exceptions.UnassignedVariableException;
-import com.anu.calculator.parsers.Parser;
+import com.anu.calculator.parsers.ExpressionParser;
 
 import org.junit.Test;
 
@@ -21,7 +21,7 @@ public class FunctionParserTest {
         Stack<Expression> history = new Stack<>();
 
         // Instantiate a parser
-        ExpressionParser fp = new Parser();
+        ExpressionParser fp = new ExpressionParser();
         Expression exp = fp.parse(test, true, 0, history);
 
         // Assert the first return as the literal evaluation of the input
@@ -53,7 +53,7 @@ public class FunctionParserTest {
         Stack<Expression> history = new Stack<>();
 
         // Instantiate a parser
-        ExpressionParser fp = new Parser();
+        ExpressionParser fp = new ExpressionParser();
         Expression exp = fp.parse(test, true, 0, history);
 
         // Assert the first return as the literal evaluation of the input
@@ -104,7 +104,7 @@ public class FunctionParserTest {
 
         // Instantiate a parser, evaluate each test cash, pushing the parsed expression onto the
         // stack as we go.
-        ExpressionParser fp = new Parser();
+        ExpressionParser fp = new ExpressionParser();
         Expression exp = fp.parse(test1,true, 0,  history);
         history.push(exp);
 
@@ -122,7 +122,7 @@ public class FunctionParserTest {
     @Test
     public void retroactiveAssignment() throws ParserException
     {
-        ExpressionParser parser = new Parser();
+        ExpressionParser parser = new ExpressionParser();
         Stack<Expression> history = new Stack<>();
         String testCase1 = "x=2", testCase2 = "y=2x", testCase3 = "x=5", testCase4 = "y";
         Expression exp;
@@ -156,7 +156,7 @@ public class FunctionParserTest {
      */
     @Test
     public void testComplexReferencing() throws ParserException {
-        ExpressionParser fp = new Parser();
+        ExpressionParser fp = new ExpressionParser();
         Stack<Expression> history = new Stack<>();
         Expression exp;
 
@@ -215,7 +215,7 @@ public class FunctionParserTest {
         Stack<Expression> history = new Stack<>();
 
         // Instantiate a parser, and try and generate an exception.
-        ExpressionParser fp = new Parser();
+        ExpressionParser fp = new ExpressionParser();
         Expression exp = fp.parse(test1, true, 0, history);
         exp.evaluate(); //evaluate throws exception, not parse
     }

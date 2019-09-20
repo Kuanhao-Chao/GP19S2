@@ -4,10 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.anu.calculator.Expression;
-import com.anu.calculator.ExpressionParser;
 import com.anu.calculator.ParserException;
 import com.anu.calculator.R;
-import com.anu.calculator.parsers.Parser;
+import com.anu.calculator.parsers.ExpressionParser;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -280,7 +279,7 @@ public class DigitFragment extends Fragment {
             public void onClick(View arg0) {
                 // Parse the expression and evaluate it
                 String expression = calculation_area.getText().toString();
-                ExpressionParser parser = new Parser();
+                ExpressionParser parser = new ExpressionParser();
                 try
                 {
                     Expression exp = parser.parse(expression, main.getBoolean("degrees"), main.getInt("precision"));

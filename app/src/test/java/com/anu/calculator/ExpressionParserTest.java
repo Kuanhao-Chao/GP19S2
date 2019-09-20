@@ -3,7 +3,7 @@ package com.anu.calculator;
 
 import com.anu.calculator.exceptions.InfinityException;
 import com.anu.calculator.expressions.EExpression;
-import com.anu.calculator.parsers.Parser;
+import com.anu.calculator.parsers.ExpressionParser;
 import com.anu.calculator.expressions.UnknownVariableExpression;
 
 import org.junit.Test;
@@ -115,7 +115,7 @@ public class ExpressionParserTest {
         for (TestCase testCase : testCases) {
             try
             {
-                Expression exp = new Parser().parse(testCase.input, true, 20);
+                Expression exp = new ExpressionParser().parse(testCase.input, true, 20);
                 String assetString = String.format("Expression Parser Error, raw equation: %s; parsed equation: %s", testCase.input, exp.show());
                 assertEquals(assetString, testCase.expected, exp.evaluate(), testCase.delta);
             }
@@ -138,12 +138,12 @@ public class ExpressionParserTest {
     public void test_infinity() throws ParserException {
         // First generate a obscenely large number
         String infinity_expression = "625!";
-        Expression exp = new Parser().parse(infinity_expression);
+        Expression exp = new ExpressionParser().parse(infinity_expression);
         double infinity = exp.evaluate();
 
         // Concatenate that number with it to the power of 3.
         String exception_expression = infinity+"^3";
-        exp = new Parser().parse(exception_expression);
+        exp = new ExpressionParser().parse(exception_expression);
         double exception = exp.evaluate();
     }
 
@@ -163,7 +163,7 @@ public class ExpressionParserTest {
             ArrayList<Expression> randomNumbers = new ArrayList<>(0);
             for(int i=0; i<1000; i++)
             {
-                randomNumbers.add(new Parser().parse("rand"));
+                randomNumbers.add(new ExpressionParser().parse("rand"));
             }
 
             for(int i=0; i<1000; i++)
@@ -196,7 +196,7 @@ public class ExpressionParserTest {
             for(int i=0; i<15; i++)
             {
                 Stack<Expression> history = new Stack<>();
-                values[i] = new Parser().parse("π", false, i, history).evaluate();
+                values[i] = new ExpressionParser().parse("π", false, i, history).evaluate();
             }
 
             for(int i=0; i<values.length; i++)
@@ -226,7 +226,7 @@ public class ExpressionParserTest {
             //first, test every letter of the alphabet
             for(char variable = 'a'; variable <= 'z'; variable++)
             {
-                actual = new Parser().parse("" + variable, false, 20);
+                actual = new ExpressionParser().parse("" + variable, false, 20);
                 if(variable != 'e')
                 {
                     assertEquals(UnknownVariableExpression.class, actual.getClass());
@@ -240,7 +240,7 @@ public class ExpressionParserTest {
             //then test all the greek characters
             for(int i=0; i<zorbaChars.length; i++)
             {
-                actual = new Parser().parse("" + zorbaChars[i], false, 20);
+                actual = new ExpressionParser().parse("" + zorbaChars[i], false, 20);
                 assertEquals(UnknownVariableExpression.class, actual.getClass());
             }
 
@@ -264,9 +264,9 @@ public class ExpressionParserTest {
         {
             for(char variable = 'a'; variable <= 'z'; variable++) {
                 //testCases
-                assertEquals(new Parser().parse("2" + variable + "+15(30)", false, 20).show(),
+                assertEquals(new ExpressionParser().parse("2" + variable + "+15(30)", false, 20).show(),
                         "((2.0×" + variable + ")+(15.0×30.0))");
-                assertEquals(new Parser().parse("14+3" + variable + "²-100", false, 20).show(),
+                assertEquals(new ExpressionParser().parse("14+3" + variable + "²-100", false, 20).show(),
                         "((14.0+(3.0×(" + variable + "^2.0)))-100.0)");
             }
         }

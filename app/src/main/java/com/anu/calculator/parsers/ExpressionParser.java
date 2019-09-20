@@ -1,7 +1,7 @@
 package com.anu.calculator.parsers;
 
 import com.anu.calculator.Expression;
-import com.anu.calculator.ExpressionParser;
+import com.anu.calculator.Parser;
 import com.anu.calculator.ParserException;
 import com.anu.calculator.exceptions.MathematicalSyntaxException;
 import com.anu.calculator.exceptions.NothingEnteredException;
@@ -59,7 +59,7 @@ import java.util.Stack;
  * 	- 05/09/2019: Altered constructor
  */
 
-public class Parser implements ExpressionParser
+public class ExpressionParser implements Parser
 {
     private static final String TAG = "EXPRESSION_PARSER";
     private Stack<Expression> savedHistory; //FIXME: delete for History
