@@ -5,35 +5,12 @@ import com.anu.calculator.Parser;
 import com.anu.calculator.ParserException;
 import com.anu.calculator.exceptions.MathematicalSyntaxException;
 import com.anu.calculator.exceptions.NothingEnteredException;
-import com.anu.calculator.expressions.AddExpression;
-import com.anu.calculator.expressions.ArcCosineExpression;
-import com.anu.calculator.expressions.ArcSineExpression;
-import com.anu.calculator.expressions.ArcTangentExpression;
-import com.anu.calculator.expressions.CombinationExpression;
-import com.anu.calculator.expressions.CosineExpression;
-import com.anu.calculator.expressions.CubedRootExpression;
-import com.anu.calculator.expressions.DivideExpression;
-import com.anu.calculator.expressions.DoubleExpression;
-import com.anu.calculator.expressions.EExpression;
-import com.anu.calculator.expressions.EqualityExpression;
-import com.anu.calculator.expressions.FactorialExpression;
-import com.anu.calculator.expressions.LogNaturalExpression;
-import com.anu.calculator.expressions.LogTenExpression;
-import com.anu.calculator.expressions.MultiplyExpression;
-import com.anu.calculator.expressions.PercentExpression;
-import com.anu.calculator.expressions.PermutationExpression;
-import com.anu.calculator.expressions.PiExpression;
-import com.anu.calculator.expressions.PowerExpression;
-import com.anu.calculator.expressions.RandomNumberExpression;
-import com.anu.calculator.expressions.SineExpression;
-import com.anu.calculator.expressions.SquareRootExpression;
-import com.anu.calculator.expressions.SubtractExpression;
-import com.anu.calculator.expressions.TangentExpression;
-import com.anu.calculator.expressions.UnknownVariableExpression;
+import com.anu.calculator.expressions.*;
 import com.anu.calculator.utilities.History;
 import com.anu.calculator.utilities.Token;
 import com.anu.calculator.utilities.Tokenizer;
 
+import java.util.HashMap;
 import java.util.Stack;
 
 
@@ -61,21 +38,31 @@ import java.util.Stack;
 
 public class ExpressionParser implements Parser
 {
+    //EXPRESSION_PARSER fields
     private static final String TAG = "EXPRESSION_PARSER";
-    private Stack<Expression> savedHistory; //FIXME: delete for History
     private Tokenizer _tokenizer;
     private Boolean degrees;
     private Integer precision;
+    private ParserMode mode = ParserMode.EXPRESSION_PARSER;
 
-    private boolean historyParser;
+    //FUNCTION_PARSER fields
     private History history;
 
+    //HISTORY_PARSER fields
+    private HashMap<Character, Expression> rawHistory;
+
+    /**
+     * The base parse method.
+     *
+     * @param expression The expression represented as a string.
+     * @return Expression
+     * @throws ParserException
+     */
     @Override
     public Expression parse(String expression) throws ParserException
     {
         if(checkRawExpression(expression))
         {
-            historyParser = false;
             _tokenizer = new Tokenizer(expression);
             Expression parsedExpression = parseExp();
             if(precision != null) parsedExpression.updatePrecision(precision);
@@ -84,22 +71,29 @@ public class ExpressionParser implements Parser
         else throw new MathematicalSyntaxException(TAG, "Syntax error");
     }
 
+    /**
+     * Parse method with user options.
+     *
+     * @param expression The expression represented as a string.
+     * @param degrees Bool if degrees should be used for the calculation
+     * @param precision The precision to use for the calculation as an int.
+     * @return Expression
+     * @throws ParserException
+     */
     @Override
-    public Expression parse(String expression, Boolean degrees, Integer precision) throws ParserException {
-
-        //Interferes with JUnit tests - uncomment if you need to (Sam)
-        //Log.d(TAG,"Degrees: "+degrees);
-        //Log.d(TAG,"Precision: "+precision);
-
-        historyParser = false;
-        _tokenizer = new Tokenizer(expression);
+    public Expression parse(String expression, Boolean degrees, Integer precision) throws ParserException
+    {
+        //Set the user options
         this.degrees = degrees;
         this.precision = precision;
+
+        //Parse the expression
         return parse(expression);
     }
 
     /**
-     * The parse method for parsing functions.
+     * Parse method for functions.
+     *
      * @param expression
      * @param degrees
      * @param precision
@@ -107,44 +101,46 @@ public class ExpressionParser implements Parser
      * @return Expression (an EqualityExpression)
      * @throws ParserException
      */
-    @Override
     public Expression parse(String expression, Boolean degrees, Integer precision, Stack<Expression> history) throws ParserException
     {
-        //initialise fields
-        historyParser = false;
-        _tokenizer = new Tokenizer(expression);
-        this.degrees = degrees;
-        this.precision = precision;
+        //Set mode to FUNCTION_PARSER
+        mode = ParserMode.FUNCTION_PARSER;
 
-        //save the history
-        this.savedHistory = history; //FIXME: needs to process history
+        //Process and save the history stack
+        this.history = new History(history);
 
-        //evaluate everything on the right-hand side of the equation
-        Expression exp = parse(expression);
+        //Evaluate everything on the right-hand side of the equation
+        Expression exp = parse(expression, degrees, precision);
 
-        //if there is an equals sign, this is an equality expression, otherwise it is any other kind of expression
-        if(expression.indexOf('=') != -1)
+        if(expression.contains("="))
         {
-            _tokenizer.next(); //skip the '=' sign
+            //If there is an equals sign, this is an equality expression
+            _tokenizer.next();
             return new EqualityExpression(_tokenizer.current().token().charAt(0), exp);
         }
-        else return exp; //otherwise it is just an unknown variable statement
+        else
+        {
+            //Otherwise it is another kind of expression
+            return exp;
+        }
     }
 
     /**
-     * Parse method for the History class
+     * Parse method for the history class.
+     *
      * @param expression
      * @param history
-     * @param degrees
-     * @param precision
      * @return Expression
      */
-    public Expression parse(String expression, Boolean degrees, Integer precision, History history) throws ParserException
+    public Expression parse(String expression, HashMap<Character, Expression> history) throws ParserException
     {
-        historyParser = true;
-        this.history = history;
-        this.degrees = degrees;
-        this.precision = precision;
+        //Set mode to HISTORY_PARSER
+        mode = ParserMode.HISTORY_PARSER;
+
+        //Save the raw history
+        this.rawHistory = history;
+
+        //Parse the expression
         return parse(expression);
     }
 
@@ -158,6 +154,11 @@ public class ExpressionParser implements Parser
      */
     private boolean checkRawExpression(String expression) throws ParserException
     {
+        /* ============
+         * Basic checks
+         * ============
+         */
+
         //check whether the user has entered something
         if(expression.equals(""))
             throw new NothingEnteredException(TAG, "");
@@ -177,7 +178,10 @@ public class ExpressionParser implements Parser
         }
         if(braceCnt != 0 || parenCnt != 0 || brackCnt != 0) return false;
 
-        //== tests for functions ==
+        /* ====================
+         * Checks for functions
+         * ====================
+         */
         if(expression.indexOf('=') != -1)
         {
             //test that the left-hand side has only one variable and that it is an unknown var
@@ -328,7 +332,6 @@ public class ExpressionParser implements Parser
      *
      * @return type: Expression
      */
-    @SuppressWarnings("unchecked")
     private Expression parseLiteral()
     {
         Expression literal = null;
@@ -354,26 +357,26 @@ public class ExpressionParser implements Parser
                 _tokenizer.appendMultiply();
         }
         else if(_tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE)
-        { //FIXME: Needs to be updated for History
+        {
+            char variable = _tokenizer.current().token().charAt(0);
             Expression exp;
-            if(savedHistory != null)
+
+            if(mode == ParserMode.FUNCTION_PARSER)
             {
-                //if history is not null,
-                //check through the stack for the first instance of this unknown variable type
-                Stack<Expression> history = (Stack<Expression>) savedHistory.clone();
-                while(!history.empty())
+                if(history.hasVariable(variable))
                 {
-                    exp = history.pop();
-                    if(exp instanceof EqualityExpression && ((EqualityExpression) exp).isSameVariable(_tokenizer.current().token()))
-                    {
-                        literal = new UnknownVariableExpression(_tokenizer.current().token().charAt(0), ((EqualityExpression) exp).getExpression());
-                        break;
-                    }
+                    literal = new UnknownVariableExpression(variable, history.getExpression(variable));
                 }
+            }
+            else if(mode == ParserMode.HISTORY_PARSER)
+            {
+                literal = new UnknownVariableExpression(variable, rawHistory.get(variable));
             }
 
             if(literal == null)
-                literal = new UnknownVariableExpression(_tokenizer.current().token().charAt(0));
+            {
+                literal = new UnknownVariableExpression(variable);
+            }
 
             //check for the use of shorthand multiplication
             Token next = _tokenizer.checkAhead(1);
@@ -424,5 +427,15 @@ public class ExpressionParser implements Parser
 
         _tokenizer.next();
         return literal;
+    }
+
+    /**
+     * Enumeration for the mode of the parser.
+     */
+    enum ParserMode
+    {
+        FUNCTION_PARSER,
+        HISTORY_PARSER,
+        EXPRESSION_PARSER;
     }
 }

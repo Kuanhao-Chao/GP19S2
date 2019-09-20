@@ -30,7 +30,7 @@ public class History {
     private LinkedList<String> orderedHistory;
     private HashMap<Character, Expression> processedHistory;
 
-    public History(Boolean degrees, Integer precision, Stack<Expression> history) throws ParserException
+    public History(Stack<Expression> history) throws ParserException
     {
         rawHistory = history;
         stripHistory();
@@ -117,6 +117,7 @@ public class History {
                                 expressionDefined = false;
                             }
                         }
+                        tokenizer.next();
                     }
 
                     if(expressionDefined)
@@ -150,17 +151,17 @@ public class History {
      * as each variable should have been previously given a value.
      * Once it has parsed each value - it stores them into processedHistory.
      */
-    private void processHistory()
+    private void processHistory() throws ParserException
     {
         processedHistory = new HashMap<>(0);
 
         String raw, variable, expression;
-        for(int i=0; i<orderedHistory.size(); i++)
+        while(!orderedHistory.isEmpty())
         {
-            raw = orderedHistory.remove(i);
+            raw = orderedHistory.remove(0);
             variable = raw.split(EQUALS)[0].trim();
             expression = raw.split(EQUALS)[1].trim();
-
+            processedHistory.put(variable.charAt(0), new ExpressionParser().parse(expression, processedHistory));
         }
     }
 

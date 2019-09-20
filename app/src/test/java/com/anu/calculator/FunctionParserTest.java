@@ -202,7 +202,6 @@ public class FunctionParserTest {
 
         exp = fp.parse(test8, true, 0,  history);
         assertEquals(exp.evaluate(),18d);
-        history.push(exp);
     }
 
     /**
