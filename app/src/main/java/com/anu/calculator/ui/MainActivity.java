@@ -72,9 +72,6 @@ public class MainActivity extends AppCompatActivity implements HistoryMessenger 
                 startActivity(new Intent(MainActivity.this, GraphActivity.class));
             }
         });
-
-
-
     }
 
     /**

@@ -28,8 +28,6 @@ public class graphParser {
             y = dummyfunction1(x);
             points[i+200] = x;
             points[i+200+1] = y;
-            //System.out.println("x=" + x);
-            //System.out.println("y=" + y);
         }
         return points;
     }
@@ -42,8 +40,6 @@ public class graphParser {
             y = dummyfunction2(x);
             points[i+200] = x;
             points[i+200+1] = y;
-            System.out.println("x=" + x);
-            System.out.println("y=" + y);
         }
         return points;
     }
