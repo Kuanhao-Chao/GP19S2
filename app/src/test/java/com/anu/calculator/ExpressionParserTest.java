@@ -1,12 +1,10 @@
 package com.anu.calculator;
 
 
-import android.util.Log;
-
 import com.anu.calculator.exceptions.InfinityException;
-import com.anu.calculator.expressionparser.EExpression;
-import com.anu.calculator.expressionparser.Parser;
-import com.anu.calculator.expressionparser.UnknownVariableExpression;
+import com.anu.calculator.expressions.EExpression;
+import com.anu.calculator.parsers.Parser;
+import com.anu.calculator.expressions.UnknownVariableExpression;
 
 import org.junit.Test;
 

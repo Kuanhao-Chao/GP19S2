@@ -2,7 +2,8 @@ package com.anu.calculator;
 
 import org.junit.Test;
 
-import com.anu.calculator.expressionparser.*;
+import com.anu.calculator.utilities.Token;
+import com.anu.calculator.utilities.Tokenizer;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,7 +1,7 @@
 package com.anu.calculator;
 
 import com.anu.calculator.exceptions.UnassignedVariableException;
-import com.anu.calculator.expressionparser.Parser;
+import com.anu.calculator.parsers.Parser;
 
 import org.junit.Test;
 

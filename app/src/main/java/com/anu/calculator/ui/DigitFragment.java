@@ -7,7 +7,7 @@ import com.anu.calculator.Expression;
 import com.anu.calculator.ExpressionParser;
 import com.anu.calculator.ParserException;
 import com.anu.calculator.R;
-import com.anu.calculator.expressionparser.Parser;
+import com.anu.calculator.parsers.Parser;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
