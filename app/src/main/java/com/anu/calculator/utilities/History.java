@@ -3,7 +3,6 @@ package com.anu.calculator.utilities;
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
 import com.anu.calculator.exceptions.FunctionLoopException;
-import com.anu.calculator.exceptions.UnassignedVariableException;
 import com.anu.calculator.expressions.DoubleExpression;
 import com.anu.calculator.parsers.ExpressionParser;
 
@@ -195,7 +194,7 @@ public class History implements Serializable {
                 (i.e. a loop).
              */
             if (!allDefined && prevSize == orderedHistory.size())
-                throw new FunctionLoopException(TAG, "Calculator cannot solve this function.");
+                throw new FunctionLoopException(TAG, "An error occurred.");
             else
                 prevSize = orderedHistory.size();
         }
