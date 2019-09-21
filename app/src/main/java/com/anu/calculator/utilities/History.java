@@ -3,11 +3,11 @@ package com.anu.calculator.utilities;
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
 import com.anu.calculator.exceptions.FunctionLoopException;
+import com.anu.calculator.exceptions.UnassignedVariableException;
 import com.anu.calculator.expressions.DoubleExpression;
 import com.anu.calculator.parsers.ExpressionParser;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * This class takes a history (Stack<Expression>) and processes it
@@ -35,15 +36,14 @@ public class History implements Serializable {
 
     private final String EQUALS = "=";
     private final String TAG = "HISTORY";
-    private Boolean degrees;
 
-    private HashMap<Character, HistoryItem> history;
+    private Stack<HistoryItem> savedHistory;
     private ArrayList<String> strippedHistory;
     private LinkedList<String> orderedHistory;
+    private HashMap<Character, HistoryItem> processedHistory;
 
-    private History(HashMap<Character, HistoryItem> history, Boolean degrees) {
-        this.degrees = degrees;
-        this.history = history;
+    private History(Stack<HistoryItem> history) {
+        this.savedHistory = history;
     }
 
     /**
@@ -53,8 +53,8 @@ public class History implements Serializable {
      * @return History (empty)
      * @author: Sam Brookes
      */
-    public static History getInstance(Boolean degrees) {
-        return new History(new HashMap<Character, HistoryItem>(0), degrees);
+    public static History getInstance() {
+        return new History(new Stack<HistoryItem>());
     }
 
     /**
@@ -63,11 +63,10 @@ public class History implements Serializable {
      * <p>
      * If the file doesn't exist in the file system, a empty history object is returned.
      *
-     * @param degrees The current user preferences for degrees or radians.
      * @return A History class loaded from file or empty if none exist.
      * @author: Michael Betterton (u6797866)
      */
-    public static History load(Boolean degrees) {
+    public static History load() {
         try {
             FileInputStream fileInputStream = new FileInputStream(fileName);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
@@ -75,7 +74,7 @@ public class History implements Serializable {
             objectInputStream.close();
             return history;
         } catch (IOException | ClassNotFoundException e) {
-            return getInstance(degrees);
+            return getInstance();
         }
     }
 
@@ -103,11 +102,12 @@ public class History implements Serializable {
      * @param expression
      * @throws ParserException
      */
-    public void put(Expression expression) throws ParserException {
-        history.put('-', new HistoryItem(false, expression));
+    public void put(Expression expression, Boolean degrees) throws ParserException {
+        savedHistory.push(new HistoryItem(false, expression));
         stripHistory();
         orderHistory();
-        processHistory();
+        processHistory(degrees);
+        saveHistory();
     }
 
     /**
@@ -119,8 +119,9 @@ public class History implements Serializable {
 
         String raw;
         HashSet<String> storedVariables = new HashSet<>(0);
-        for (Map.Entry<Character, HistoryItem> mapEntry : history.entrySet()) {
-            raw = mapEntry.getValue().getExpression().show();
+        while(!savedHistory.empty())
+        {
+            raw = savedHistory.pop().getExpression().show();
             if (raw.contains(EQUALS)) {
                 String variable = raw.split(EQUALS)[0].trim();
                 if (!storedVariables.contains(variable)) {
@@ -206,16 +207,24 @@ public class History implements Serializable {
      * as each variable should have been previously given a value.
      * Once it has parsed each value - it stores them into processedHistory.
      */
-    private void processHistory() throws ParserException {
-        history = new HashMap<>(0);
+    private void processHistory(Boolean degrees) throws ParserException {
+        processedHistory = new HashMap<>(0);
 
-        String raw, variable, expression;
+        String raw;
         while (!orderedHistory.isEmpty()) {
             raw = orderedHistory.remove(0);
-            variable = raw.split(EQUALS)[0].trim();
+            Character variable = raw.split(EQUALS)[0].trim().charAt(0);
+            Expression exp = new ExpressionParser().parseHistory(raw, degrees, processedHistory);
+            processedHistory.put(variable, new HistoryItem(isGraphable(exp), exp));
+        }
+    }
 
-            Expression exp = new ExpressionParser().parseHistory(raw, degrees, history);
-            history.put(variable.charAt(0), new HistoryItem(isGraphable(exp), exp));
+    private void saveHistory()
+    {
+        savedHistory = new Stack<>();
+        for(Map.Entry<Character, HistoryItem> mapEntry : processedHistory.entrySet())
+        {
+            savedHistory.push(mapEntry.getValue());
         }
     }
 
@@ -242,10 +251,10 @@ public class History implements Serializable {
     }
 
     public boolean hasVariable(Character variable) {
-        return history.containsKey(variable);
+        return processedHistory != null && processedHistory.containsKey(variable);
     }
 
-    public Expression getExpression(Character variable) {
-        return history.get(variable).getExpression();
+    public Expression getExpression(Character variable){
+        return processedHistory.get(variable).getExpression();
     }
 }

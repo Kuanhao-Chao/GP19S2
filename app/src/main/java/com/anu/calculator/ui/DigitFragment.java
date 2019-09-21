@@ -283,9 +283,9 @@ public class DigitFragment extends Fragment {
                 ExpressionParser parser = new ExpressionParser();
                 try
                 {
-                    History history = History.load(main.getBoolean("degrees"));
+                    History history = History.load();
                     Expression exp = parser.parse(expression, main.getBoolean("degrees"), main.getInt("precision"), history);
-                    history.put(exp);
+                    history.put(exp, main.getBoolean("degrees"));
                     history.save();
 
                     double evaluation = exp.evaluate();

@@ -66,44 +66,47 @@ public class ExpressionParser implements Parser
         _tokenizer = new Tokenizer(expression);
 
         //Evaluate everything on the right-hand side of the equation (if there is an equals sign)
-        Expression exp = parseExp();
-        Expression equation = null;
-
-        if(_tokenizer.hasNext() && _tokenizer.current().type() == Token.Type.EQUALS)
-        {
-            //If the current token is EQUALS, this is an equality expression
-            _tokenizer.next();
-            equation = new EqualityExpression(_tokenizer.current().token().charAt(0), exp);
-            equation.updatePrecision(precision);
-        }
-        else
-        {
-            //Otherwise it is another kind of expression
-            exp.updatePrecision(precision);
-        }
-
-        return (equation == null)? exp : equation;
+        return checkForEqualityExpression(parseExp(), precision);
     }
 
     /**
      * Parse method for the history class.
      *
      * @param expression
-     * @param history
+     * @param rawHistory
      * @return Expression
      */
-    public Expression parseHistory(String expression, Boolean degrees, HashMap<Character, HistoryItem> history) throws ParserException
+    public Expression parseHistory(String expression, Boolean degrees, HashMap<Character, HistoryItem> rawHistory) throws ParserException
     {
         //Check that the expression is valid
         checkRawExpression(expression);
 
         //Save the raw history
         this.degrees = degrees;
-        this.rawHistory = history;
+        this.rawHistory = rawHistory;
         _tokenizer = new Tokenizer(expression);
 
         //Parse the expression
-        return parseExp();
+        return checkForEqualityExpression(parseExp(), null);
+    }
+
+    private Expression checkForEqualityExpression(Expression exp, Integer precision)
+    {
+        EqualityExpression equality = null;
+        if(_tokenizer.hasNext() && _tokenizer.current().type() == Token.Type.EQUALS)
+        {
+            //If the current token is EQUALS, this is an equality expression
+            _tokenizer.next();
+            equality = new EqualityExpression(_tokenizer.current().token().charAt(0), exp);
+            if(precision != null) equality.updatePrecision(precision);
+        }
+        else
+        {
+            //Otherwise it is another kind of expression
+            if(precision != null) exp.updatePrecision(precision);
+        }
+
+        return (equality == null)? exp : equality;
     }
 
     /**

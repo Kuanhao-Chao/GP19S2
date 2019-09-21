@@ -4,7 +4,7 @@ import com.anu.calculator.Expression;
 
 import java.io.Serializable;
 
-public class HistoryItem {
+public class HistoryItem implements Serializable {
     private boolean graphable;
     private Expression expression;
 

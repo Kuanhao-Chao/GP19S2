@@ -17,7 +17,7 @@ public class FunctionParserTest {
     @Before
     public void loadVariables()
     {
-        history = History.getInstance(true);
+        history = History.getInstance();
     }
 
     /**
@@ -36,13 +36,13 @@ public class FunctionParserTest {
         assertEquals(exp.evaluate(),5d);
 
         // Push the expression we just parsed onto a stack to use as history
-        history.put(exp);
+        history.put(exp, true);
 
         // Create a new test case to use as the recall.
         test = "x";
         exp = fp.parse(test, true, 0, history);
         assertEquals(exp.evaluate(),5d);
-        history.put(exp);
+        history.put(exp, true);
 
         // Test the recall without an equality expression
         test = "2x";
@@ -67,29 +67,29 @@ public class FunctionParserTest {
         assertEquals(exp.evaluate(),4d);
 
         // Push the expression we just parsed onto a stack to use as history
-        history.put(exp);
+        history.put(exp, true);
 
         // Create a new test case that updates the value of the variable
         test = "x=5+1";
         exp = fp.parse(test,true, 0,  history);
         assertEquals(exp.evaluate(),6d);
-        history.put(exp);
+        history.put(exp, true);
 
         test = "x=5+3";
         exp = fp.parse(test, true, 0,  history);
-        assertEquals(exp.evaluate(),8.0);
-        history.put(exp);
+        assertEquals(exp.evaluate(),8d);
+        history.put(exp, true);
 
         test = "x=5+10";
         exp = fp.parse(test,true, 0,   history);
-        assertEquals(exp.evaluate(),15.0);
-        history.put(exp);
+        assertEquals(exp.evaluate(),15d);
+        history.put(exp, true);
 
         // Create a new test case to use as the recall.
         test = "x";
         exp = fp.parse(test,true, 0,  history);
         assertEquals(exp.evaluate(),15d);
-        history.put(exp);
+        history.put(exp, true);
 
         // Test the recall without an equality expression
         test = "5x";
@@ -112,10 +112,10 @@ public class FunctionParserTest {
         // stack as we go.
         ExpressionParser fp = new ExpressionParser();
         Expression exp = fp.parse(test1,true, 0,  history);
-        history.put(exp);
+        history.put(exp, true);
 
         exp = fp.parse(test2, true, 0,  history);
-        history.put(exp);
+        history.put(exp, true);
 
         exp = fp.parse(test3, true, 0,  history);
         assertEquals(exp.evaluate(),30.0);
@@ -134,20 +134,20 @@ public class FunctionParserTest {
 
         exp = parser.parse(testCase1, true, 0, history);
         assertEquals(2d, exp.evaluate());
-        history.put(exp);
+        history.put(exp, true);
 
         exp = parser.parse(testCase2, true, 0, history);
         assertEquals(4d, exp.evaluate());
-        history.put(exp);
+        history.put(exp, true);
 
         exp = parser.parse(testCase3, true, 0, history);
         assertEquals(5d, exp.evaluate());
-        history.put(exp);
+        history.put(exp, true);
 
         //This tests whether a retroactive assignment evaluates correctly
         exp = parser.parse(testCase4, true, 0, history);
         assertEquals(10d, exp.evaluate());
-        history.put(exp);
+        history.put(exp, true);
     }
 
 
@@ -178,34 +178,34 @@ public class FunctionParserTest {
         // stack as we go.
         exp = fp.parse(test1, true, 0,  history);
         assertEquals(exp.evaluate(),5d);
-        history.put(exp);
+        history.put(exp, true);
 
         exp = fp.parse(test2, true, 0,  history);
         assertEquals(exp.evaluate(),10d);
-        history.put(exp);
+        history.put(exp, true);
 
         exp = fp.parse(test3, true, 0,  history);
         assertEquals(exp.evaluate(),40d);
-        history.put(exp);
+        history.put(exp, true);
 
         exp = fp.parse(test4, true, 0,  history);
         assertEquals(exp.evaluate(),45d);
-        history.put(exp);
+        history.put(exp, true);
 
         exp = fp.parse(test5, true, 0,  history);
         assertEquals(exp.evaluate(),15d);
-        history.put(exp);
+        history.put(exp, true);
 
         exp = fp.parse(test6, true, 0,  history);
         assertEquals(exp.evaluate(),8d);
-        history.put(exp);
+        history.put(exp, true);
 
         exp = fp.parse(test7, true, 0,  history);
         assertEquals(exp.evaluate(),11d);
-        history.put(exp);
+        history.put(exp, true);
 
         exp = fp.parse(test8, true, 0,  history);
-        assertEquals(exp.evaluate(),18d);
+        assertEquals(exp.evaluate(),14d);
     }
 
     /**
@@ -239,18 +239,18 @@ public class FunctionParserTest {
         ExpressionParser parser = new ExpressionParser();
         Expression exp = parser.parse(test1, true, 0, history);
         assertEquals(5d, exp.evaluate());
-        history.put(exp);
+        history.put(exp, true);
 
         exp = parser.parse(test2, true, 0, history);
         assertEquals(10d, exp.evaluate());
-        history.put(exp);
+        history.put(exp, true);
 
         //should throw error - but doesn't
         exp = parser.parse(test3, true, 0, history);
-        history.put(exp);
+        history.put(exp, true);
 
         //this one throws the correct error - but the previous one should
         exp = parser.parse(test4, true, 0, history);
-        history.put(exp);
+        history.put(exp, true);
     }
 }
