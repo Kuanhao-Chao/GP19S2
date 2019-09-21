@@ -161,14 +161,14 @@ public class ExpressionParserTest {
              * Test whether random numbers are generated
              */
             ArrayList<Expression> randomNumbers = new ArrayList<>(0);
-            for(int i=0; i<1000; i++)
+            for(int i=0; i<500; i++)
             {
-                randomNumbers.add(new ExpressionParser().parse("rand", true, 0, null));
+                randomNumbers.add(new ExpressionParser().parse("rand", true, 10, null));
             }
 
-            for(int i=0; i<1000; i++)
+            for(int i=0; i<500; i++)
             {
-                for(int j=i+1; j<1000; j++)
+                for(int j=i+1; j<500; j++)
                 {
                         assertNotEquals(randomNumbers.get(i).evaluate(),
                                 randomNumbers.get(j).evaluate());

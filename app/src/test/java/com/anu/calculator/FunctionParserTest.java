@@ -8,8 +8,6 @@ import com.anu.calculator.utilities.History;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Stack;
-
 import static junit.framework.TestCase.assertEquals;
 
 public class FunctionParserTest {

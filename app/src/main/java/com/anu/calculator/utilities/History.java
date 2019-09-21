@@ -150,6 +150,7 @@ public class History {
                             if(!definedVariables.contains(tokenizer.current().token()))
                             {
                                 expressionDefined = false;
+                                break;
                             }
                         }
                         tokenizer.next();
@@ -195,9 +196,8 @@ public class History {
         {
             raw = orderedHistory.remove(0);
             variable = raw.split(EQUALS)[0].trim();
-            expression = raw.split(EQUALS)[1].trim();
 
-            Expression exp = new ExpressionParser().parseHistory(expression, degrees, history);
+            Expression exp = new ExpressionParser().parseHistory(raw, degrees, history);
             history.put(variable.charAt(0), new HistoryItem(isGraphable(exp), exp));
         }
     }
@@ -221,6 +221,7 @@ public class History {
             {
                 unkVarCount++;
             }
+            checkExp.next();
         }
 
         return unkVarCount < 2;

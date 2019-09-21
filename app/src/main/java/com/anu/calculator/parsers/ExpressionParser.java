@@ -69,7 +69,7 @@ public class ExpressionParser implements Parser
         Expression exp = parseExp();
         Expression equation = null;
 
-        if(_tokenizer.current().type() == Token.Type.EQUALS)
+        if(_tokenizer.hasNext() && _tokenizer.current().type() == Token.Type.EQUALS)
         {
             //If the current token is EQUALS, this is an equality expression
             _tokenizer.next();
