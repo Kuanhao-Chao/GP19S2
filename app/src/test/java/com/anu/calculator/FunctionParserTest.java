@@ -253,4 +253,31 @@ public class FunctionParserTest {
         exp = parser.parse(test4, true, 0, history);
         history.put(exp, true);
     }
+
+    /**
+     * Simple test case that evaluates a single variable assignment to a expression.
+     */
+    @Test
+    public void testFunctionInFunction() throws ParserException {
+        // Declare the test case and an empty history stack
+        String test = "x=sin(30)";
+
+        // Instantiate a parser
+        ExpressionParser fp = new ExpressionParser();
+        Expression exp = fp.parse(test, true, 0, history);
+
+        // Push the expression we just parsed onto a stack to use as history
+        history.put(exp, true);
+
+        // Create a new test case to use as the recall.
+        test = "x";
+        exp = fp.parse(test, true, 0, history);
+        assertEquals(exp.evaluate(),0.5d);
+        history.put(exp, true);
+
+        // Test the recall without an equality expression
+        test = "2x";
+        exp = fp.parse(test, true, 0, history);
+        assertEquals(exp.evaluate(),1d);
+    }
 }
