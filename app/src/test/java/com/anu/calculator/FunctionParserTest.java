@@ -12,7 +12,7 @@ import static junit.framework.TestCase.assertEquals;
 
 public class FunctionParserTest {
 
-    History history;
+    private History history;
 
     @Before
     public void loadVariables()
