@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Stack;
+import java.util.Map;
 
 /**
  * This class takes a history (Stack<Expression>) and processes it
@@ -18,23 +18,60 @@ import java.util.Stack;
  * values.
  *
  * @author Samuel Brookes (u5380100)
+ * @modified Michael Betterton (u6797866)
+ *  - added load() and save() methods
  */
 
 public class History {
 
     private final String EQUALS = "=";
     private final String TAG = "HISTORY";
+    private Boolean degrees;
 
-    private Stack<Expression> rawHistory;
+    private HashMap<Character, HistoryItem> history;
     private ArrayList<String> strippedHistory;
     private LinkedList<String> orderedHistory;
-    private HashMap<Character, Expression> processedHistory;
 
-    public History(Stack<Expression> history) throws ParserException
+    private History(HashMap<Character, HistoryItem> history, Boolean degrees)
     {
-        rawHistory = history;
+        this.degrees = degrees;
+        this.history = history;
+    }
+
+    /**
+     * Returns an empty instance of a History object
+     * Primarily used for testing.
+     *
+     * @return History (empty)
+     */
+    public static History getInstance(Boolean degrees)
+    {
+        return new History(new HashMap<Character, HistoryItem>(0), degrees);
+    }
+
+    //FIXME: load() method
+    public static History load(Boolean degrees)
+    {
+        //FIXME: Need to assign degrees
+        return new History(new HashMap<Character, HistoryItem>(0), degrees);
+    }
+
+    //FIXME: save() method
+    public void save()
+    {
+
+    }
+
+    /**
+     * Takes an expression and appends it to the end of
+     * @param expression
+     * @throws ParserException
+     */
+    public void put(Expression expression) throws ParserException
+    {
+        history.put('-', new HistoryItem(false, expression));
         stripHistory();
-        reorderHistory();
+        orderHistory();
         processHistory();
     }
 
@@ -42,17 +79,15 @@ public class History {
      * This method gets the first instance of each unique variable in the
      * history Stack and puts it unordered into strippedHistory.
      */
-    @SuppressWarnings("unchecked")
     private void stripHistory()
     {
         strippedHistory = new ArrayList<>(0);
 
         String raw;
         HashSet<String> storedVariables = new HashSet<>(0);
-        Stack<Expression> history = (Stack<Expression>) rawHistory.clone();
-        while(!history.empty())
+        for(Map.Entry<Character, HistoryItem> mapEntry : history.entrySet())
         {
-            raw = history.pop().show();
+            raw = mapEntry.getValue().getExpression().show();
             if(raw.contains(EQUALS))
             {
                 String variable = raw.split(EQUALS)[0].trim();
@@ -74,7 +109,7 @@ public class History {
      *
      * @throws ParserException
      */
-    private void reorderHistory() throws ParserException
+    private void orderHistory() throws ParserException
     {
         orderedHistory = new LinkedList<>();
         HashSet<String> definedVariables = new HashSet<>(0);
@@ -86,7 +121,7 @@ public class History {
         {
             variable = raw.split(EQUALS)[0].trim();
             expression = raw.split(EQUALS)[1].trim();
-            if(new ExpressionParser().parse(expression) instanceof DoubleExpression)
+            if(new ExpressionParser().parseHistory(expression, true,null) instanceof DoubleExpression)
             {
                 definedVariables.add(variable);
                 orderedHistory.add(raw);
@@ -153,7 +188,7 @@ public class History {
      */
     private void processHistory() throws ParserException
     {
-        processedHistory = new HashMap<>(0);
+        history = new HashMap<>(0);
 
         String raw, variable, expression;
         while(!orderedHistory.isEmpty())
@@ -161,17 +196,43 @@ public class History {
             raw = orderedHistory.remove(0);
             variable = raw.split(EQUALS)[0].trim();
             expression = raw.split(EQUALS)[1].trim();
-            processedHistory.put(variable.charAt(0), new ExpressionParser().parse(expression, processedHistory));
+
+            Expression exp = new ExpressionParser().parseHistory(expression, degrees, history);
+            history.put(variable.charAt(0), new HistoryItem(isGraphable(exp), exp));
         }
+    }
+
+    /**
+     * Checks whether an expression is able to be graphed.
+     * An expression is able to be graphed if it has less than
+     * one unknown variable.
+     *
+     * @param expression
+     * @return
+     */
+    private boolean isGraphable(Expression expression)
+    {
+        String expStr = expression.show();
+        Tokenizer checkExp = new Tokenizer(expStr);
+        int unkVarCount = 0;
+        while(checkExp.hasNext())
+        {
+            if(checkExp.current().type() == Token.Type.UNKNOWN_VARIABLE)
+            {
+                unkVarCount++;
+            }
+        }
+
+        return unkVarCount < 2;
     }
 
     public boolean hasVariable(Character variable)
     {
-        return processedHistory.containsKey(variable);
+        return history.containsKey(variable);
     }
 
     public Expression getExpression(Character variable)
     {
-        return processedHistory.get(variable);
+        return history.get(variable).getExpression();
     }
 }

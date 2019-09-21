@@ -7,11 +7,11 @@ import com.anu.calculator.exceptions.MathematicalSyntaxException;
 import com.anu.calculator.exceptions.NothingEnteredException;
 import com.anu.calculator.expressions.*;
 import com.anu.calculator.utilities.History;
+import com.anu.calculator.utilities.HistoryItem;
 import com.anu.calculator.utilities.Token;
 import com.anu.calculator.utilities.Tokenizer;
 
 import java.util.HashMap;
-import java.util.Stack;
 
 
 /**
@@ -38,58 +38,11 @@ import java.util.Stack;
 
 public class ExpressionParser implements Parser
 {
-    //EXPRESSION_PARSER fields
     private static final String TAG = "EXPRESSION_PARSER";
     private Tokenizer _tokenizer;
     private Boolean degrees;
-    private Integer precision;
-    private ParserMode mode = ParserMode.EXPRESSION_PARSER;
-
-    //FUNCTION_PARSER fields
     private History history;
-
-    //HISTORY_PARSER fields
-    private HashMap<Character, Expression> rawHistory;
-
-    /**
-     * The base parse method.
-     *
-     * @param expression The expression represented as a string.
-     * @return Expression
-     * @throws ParserException
-     */
-    @Override
-    public Expression parse(String expression) throws ParserException
-    {
-        if(checkRawExpression(expression))
-        {
-            _tokenizer = new Tokenizer(expression);
-            Expression parsedExpression = parseExp();
-            if(precision != null) parsedExpression.updatePrecision(precision);
-            return parsedExpression;
-        }
-        else throw new MathematicalSyntaxException(TAG, "Syntax error");
-    }
-
-    /**
-     * Parse method with user options.
-     *
-     * @param expression The expression represented as a string.
-     * @param degrees Bool if degrees should be used for the calculation
-     * @param precision The precision to use for the calculation as an int.
-     * @return Expression
-     * @throws ParserException
-     */
-    @Override
-    public Expression parse(String expression, Boolean degrees, Integer precision) throws ParserException
-    {
-        //Set the user options
-        this.degrees = degrees;
-        this.precision = precision;
-
-        //Parse the expression
-        return parse(expression);
-    }
+    private HashMap<Character, HistoryItem> rawHistory;
 
     /**
      * Parse method for functions.
@@ -101,28 +54,35 @@ public class ExpressionParser implements Parser
      * @return Expression (an EqualityExpression)
      * @throws ParserException
      */
-    public Expression parse(String expression, Boolean degrees, Integer precision, Stack<Expression> history) throws ParserException
+    @Override
+    public Expression parse(String expression, Boolean degrees, Integer precision, History history) throws ParserException
     {
-        //Set mode to FUNCTION_PARSER
-        mode = ParserMode.FUNCTION_PARSER;
+        //Check that the expression is valid
+        checkRawExpression(expression);
 
-        //Process and save the history stack
-        this.history = new History(history);
+        //Initiate global variables
+        this.history = history;
+        this.degrees = degrees;
+        _tokenizer = new Tokenizer(expression);
 
-        //Evaluate everything on the right-hand side of the equation
-        Expression exp = parse(expression, degrees, precision);
+        //Evaluate everything on the right-hand side of the equation (if there is an equals sign)
+        Expression exp = parseExp();
+        Expression equation = null;
 
-        if(expression.contains("="))
+        if(_tokenizer.current().type() == Token.Type.EQUALS)
         {
-            //If there is an equals sign, this is an equality expression
+            //If the current token is EQUALS, this is an equality expression
             _tokenizer.next();
-            return new EqualityExpression(_tokenizer.current().token().charAt(0), exp);
+            equation = new EqualityExpression(_tokenizer.current().token().charAt(0), exp);
+            equation.updatePrecision(precision);
         }
         else
         {
             //Otherwise it is another kind of expression
-            return exp;
+            exp.updatePrecision(precision);
         }
+
+        return (equation == null)? exp : equation;
     }
 
     /**
@@ -132,16 +92,18 @@ public class ExpressionParser implements Parser
      * @param history
      * @return Expression
      */
-    public Expression parse(String expression, HashMap<Character, Expression> history) throws ParserException
+    public Expression parseHistory(String expression, Boolean degrees, HashMap<Character, HistoryItem> history) throws ParserException
     {
-        //Set mode to HISTORY_PARSER
-        mode = ParserMode.HISTORY_PARSER;
+        //Check that the expression is valid
+        checkRawExpression(expression);
 
         //Save the raw history
+        this.degrees = degrees;
         this.rawHistory = history;
+        _tokenizer = new Tokenizer(expression);
 
         //Parse the expression
-        return parse(expression);
+        return parseExp();
     }
 
     /**
@@ -152,7 +114,7 @@ public class ExpressionParser implements Parser
      * @param expression
      * @return type: boolean
      */
-    private boolean checkRawExpression(String expression) throws ParserException
+    private void checkRawExpression(String expression) throws ParserException
     {
         /* ============
          * Basic checks
@@ -176,7 +138,8 @@ public class ExpressionParser implements Parser
             else if(expression.charAt(i) == '}') braceCnt--;
             else if(expression.charAt(i) == ']') brackCnt--;
         }
-        if(braceCnt != 0 || parenCnt != 0 || brackCnt != 0) return false;
+        if(braceCnt != 0 || parenCnt != 0 || brackCnt != 0)
+            throw new MathematicalSyntaxException(TAG, "Syntax error: Brackets used incorrectly.");
 
         /* ====================
          * Checks for functions
@@ -184,23 +147,27 @@ public class ExpressionParser implements Parser
          */
         if(expression.indexOf('=') != -1)
         {
+            //test that there is only one equals sign
+            if(expression.indexOf('=') != expression.lastIndexOf('='))
+                throw new MathematicalSyntaxException(TAG, "Syntax error: More than one equals sign.");
+
             //test that the left-hand side has only one variable and that it is an unknown var
             Token leftHandSide = new Tokenizer(expression.split("=")[0].trim()).current();
             if(leftHandSide == null)
-                throw new MathematicalSyntaxException(TAG, "There must be a variable on the left side of the equation.");
+                throw new MathematicalSyntaxException(TAG, "Syntax error: There must be a variable on the left side of the equation.");
             else if(leftHandSide.type() != Token.Type.UNKNOWN_VARIABLE)
                 throw new MathematicalSyntaxException(TAG, "The calculator is unable to solve this type of equation.");
 
-            //FIXME: Needs to ensure that the .lastIndexOf is actually an UNKNOWN VAR
             //test that an unknown variable does not occur on either side of the equals sign
             char variable = expression.split("=")[0].trim().charAt(0);
-            if(expression.indexOf(variable) != expression.lastIndexOf(variable))
-                throw new MathematicalSyntaxException(TAG, "The calculator is unable to solve this type of equation.");
-
-            //FIXME: Add a test for multiple EQUAL signs
+            Tokenizer varCheck = new Tokenizer(expression.split("=")[1].trim());
+            while(varCheck.hasNext())
+            {
+                if(varCheck.current().type() == Token.Type.UNKNOWN_VARIABLE && varCheck.current().token().charAt(0) == variable)
+                    throw new MathematicalSyntaxException(TAG, "The calculator is unable to solve this type of equation.");
+                varCheck.next();
+            }
         }
-
-        return true;
     }
 
     /**
@@ -359,24 +326,19 @@ public class ExpressionParser implements Parser
         else if(_tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE)
         {
             char variable = _tokenizer.current().token().charAt(0);
-            Expression exp;
 
-            if(mode == ParserMode.FUNCTION_PARSER)
+            if(history != null)
             {
                 if(history.hasVariable(variable))
-                {
                     literal = new UnknownVariableExpression(variable, history.getExpression(variable));
-                }
             }
-            else if(mode == ParserMode.HISTORY_PARSER)
+            else if(rawHistory != null)
             {
-                literal = new UnknownVariableExpression(variable, rawHistory.get(variable));
+                literal = new UnknownVariableExpression(variable, rawHistory.get(variable).getExpression());
             }
 
             if(literal == null)
-            {
                 literal = new UnknownVariableExpression(variable);
-            }
 
             //check for the use of shorthand multiplication
             Token next = _tokenizer.checkAhead(1);
@@ -407,11 +369,11 @@ public class ExpressionParser implements Parser
             if(next != null && next.type() == Token.Type.SUBTRACT)
             {
                 if( afterNext == null ||
-                    afterNext.type() == Token.Type.SUBTRACT ||
-                    afterNext.type() == Token.Type.ADD ||
-                    afterNext.type() == Token.Type.MULTIPLY ||
-                    afterNext.type() == Token.Type.DIVIDE ||
-                    afterNext.type() == Token.Type.LEFT_PARENTHESIS)
+                        afterNext.type() == Token.Type.SUBTRACT ||
+                        afterNext.type() == Token.Type.ADD ||
+                        afterNext.type() == Token.Type.MULTIPLY ||
+                        afterNext.type() == Token.Type.DIVIDE ||
+                        afterNext.type() == Token.Type.LEFT_PARENTHESIS)
                 {
                     //if it's negative, return the number subtracted from zero
                     literal = new SubtractExpression(new DoubleExpression(0d), doubleValue);
@@ -427,15 +389,5 @@ public class ExpressionParser implements Parser
 
         _tokenizer.next();
         return literal;
-    }
-
-    /**
-     * Enumeration for the mode of the parser.
-     */
-    enum ParserMode
-    {
-        FUNCTION_PARSER,
-        HISTORY_PARSER,
-        EXPRESSION_PARSER;
     }
 }

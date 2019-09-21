@@ -3,7 +3,9 @@ package com.anu.calculator;
 import com.anu.calculator.exceptions.FunctionLoopException;
 import com.anu.calculator.exceptions.UnassignedVariableException;
 import com.anu.calculator.parsers.ExpressionParser;
+import com.anu.calculator.utilities.History;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Stack;
@@ -12,6 +14,14 @@ import static junit.framework.TestCase.assertEquals;
 
 public class FunctionParserTest {
 
+    History history;
+
+    @Before
+    public void loadVariables()
+    {
+        history = History.getInstance(true);
+    }
+
     /**
      * Simple test case that evaluates a single variable assignment to a expression.
      */
@@ -19,7 +29,6 @@ public class FunctionParserTest {
     public void testSimpleAssignment() throws ParserException {
         // Declare the test case and an empty history stack
         String test = "x=4+1";
-        Stack<Expression> history = new Stack<>();
 
         // Instantiate a parser
         ExpressionParser fp = new ExpressionParser();
@@ -29,13 +38,13 @@ public class FunctionParserTest {
         assertEquals(exp.evaluate(),5d);
 
         // Push the expression we just parsed onto a stack to use as history
-        history.push(exp);
+        history.put(exp);
 
         // Create a new test case to use as the recall.
         test = "x";
         exp = fp.parse(test, true, 0, history);
         assertEquals(exp.evaluate(),5d);
-        history.push(exp);
+        history.put(exp);
 
         // Test the recall without an equality expression
         test = "2x";
@@ -51,7 +60,6 @@ public class FunctionParserTest {
     public void testVariableUpdating() throws ParserException {
         // Declare the test case and an empty history stack
         String test = "x=5-1";
-        Stack<Expression> history = new Stack<>();
 
         // Instantiate a parser
         ExpressionParser fp = new ExpressionParser();
@@ -61,29 +69,29 @@ public class FunctionParserTest {
         assertEquals(exp.evaluate(),4d);
 
         // Push the expression we just parsed onto a stack to use as history
-        history.push(exp);
+        history.put(exp);
 
         // Create a new test case that updates the value of the variable
         test = "x=5+1";
         exp = fp.parse(test,true, 0,  history);
         assertEquals(exp.evaluate(),6d);
-        history.push(exp);
+        history.put(exp);
 
         test = "x=5+3";
         exp = fp.parse(test, true, 0,  history);
         assertEquals(exp.evaluate(),8.0);
-        history.push(exp);
+        history.put(exp);
 
         test = "x=5+10";
         exp = fp.parse(test,true, 0,   history);
         assertEquals(exp.evaluate(),15.0);
-        history.push(exp);
+        history.put(exp);
 
         // Create a new test case to use as the recall.
         test = "x";
         exp = fp.parse(test,true, 0,  history);
         assertEquals(exp.evaluate(),15d);
-        history.push(exp);
+        history.put(exp);
 
         // Test the recall without an equality expression
         test = "5x";
@@ -101,16 +109,15 @@ public class FunctionParserTest {
         String test1 = "x=5";
         String test2 = "y=2x";
         String test3 = "z=3y";
-        Stack<Expression> history = new Stack<>();
 
         // Instantiate a parser, evaluate each test cash, pushing the parsed expression onto the
         // stack as we go.
         ExpressionParser fp = new ExpressionParser();
         Expression exp = fp.parse(test1,true, 0,  history);
-        history.push(exp);
+        history.put(exp);
 
         exp = fp.parse(test2, true, 0,  history);
-        history.push(exp);
+        history.put(exp);
 
         exp = fp.parse(test3, true, 0,  history);
         assertEquals(exp.evaluate(),30.0);
@@ -124,26 +131,25 @@ public class FunctionParserTest {
     public void retroactiveAssignment() throws ParserException
     {
         ExpressionParser parser = new ExpressionParser();
-        Stack<Expression> history = new Stack<>();
         String testCase1 = "x=2", testCase2 = "y=2x", testCase3 = "x=5", testCase4 = "y";
         Expression exp;
 
         exp = parser.parse(testCase1, true, 0, history);
         assertEquals(2d, exp.evaluate());
-        history.push(exp);
+        history.put(exp);
 
         exp = parser.parse(testCase2, true, 0, history);
         assertEquals(4d, exp.evaluate());
-        history.push(exp);
+        history.put(exp);
 
         exp = parser.parse(testCase3, true, 0, history);
         assertEquals(5d, exp.evaluate());
-        history.push(exp);
+        history.put(exp);
 
         //This tests whether a retroactive assignment evaluates correctly
         exp = parser.parse(testCase4, true, 0, history);
         assertEquals(10d, exp.evaluate());
-        history.push(exp);
+        history.put(exp);
     }
 
 
@@ -158,7 +164,6 @@ public class FunctionParserTest {
     @Test
     public void testComplexReferencing() throws ParserException {
         ExpressionParser fp = new ExpressionParser();
-        Stack<Expression> history = new Stack<>();
         Expression exp;
 
         // Declare the test case and an empty history stack
@@ -175,31 +180,31 @@ public class FunctionParserTest {
         // stack as we go.
         exp = fp.parse(test1, true, 0,  history);
         assertEquals(exp.evaluate(),5d);
-        history.push(exp);
+        history.put(exp);
 
         exp = fp.parse(test2, true, 0,  history);
         assertEquals(exp.evaluate(),10d);
-        history.push(exp);
+        history.put(exp);
 
         exp = fp.parse(test3, true, 0,  history);
         assertEquals(exp.evaluate(),40d);
-        history.push(exp);
+        history.put(exp);
 
         exp = fp.parse(test4, true, 0,  history);
         assertEquals(exp.evaluate(),45d);
-        history.push(exp);
+        history.put(exp);
 
         exp = fp.parse(test5, true, 0,  history);
         assertEquals(exp.evaluate(),15d);
-        history.push(exp);
+        history.put(exp);
 
         exp = fp.parse(test6, true, 0,  history);
         assertEquals(exp.evaluate(),8d);
-        history.push(exp);
+        history.put(exp);
 
         exp = fp.parse(test7, true, 0,  history);
         assertEquals(exp.evaluate(),11d);
-        history.push(exp);
+        history.put(exp);
 
         exp = fp.parse(test8, true, 0,  history);
         assertEquals(exp.evaluate(),18d);
@@ -212,7 +217,6 @@ public class FunctionParserTest {
     public void testExceptionSimple() throws ParserException {
         // Declare the test case and an empty history stack
         String test1 = "x=y";
-        Stack<Expression> history = new Stack<>();
 
         // Instantiate a parser, and try and generate an exception.
         ExpressionParser fp = new ExpressionParser();
@@ -233,23 +237,22 @@ public class FunctionParserTest {
         String test2 = "y=2x";
         String test3 = "x=y";
         String test4 = "x";
-        Stack<Expression> history = new Stack<>();
 
         ExpressionParser parser = new ExpressionParser();
         Expression exp = parser.parse(test1, true, 0, history);
         assertEquals(5d, exp.evaluate());
-        history.push(exp);
+        history.put(exp);
 
         exp = parser.parse(test2, true, 0, history);
         assertEquals(10d, exp.evaluate());
-        history.push(exp);
+        history.put(exp);
 
         //should throw error - but doesn't
         exp = parser.parse(test3, true, 0, history);
-        history.push(exp);
+        history.put(exp);
 
         //this one throws the correct error - but the previous one should
         exp = parser.parse(test4, true, 0, history);
-        history.push(exp);
+        history.put(exp);
     }
 }

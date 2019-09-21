@@ -7,6 +7,7 @@ import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
 import com.anu.calculator.R;
 import com.anu.calculator.parsers.ExpressionParser;
+import com.anu.calculator.utilities.History;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -282,7 +283,11 @@ public class DigitFragment extends Fragment {
                 ExpressionParser parser = new ExpressionParser();
                 try
                 {
-                    Expression exp = parser.parse(expression, main.getBoolean("degrees"), main.getInt("precision"));
+                    History history = History.load(main.getBoolean("degrees"));
+                    Expression exp = parser.parse(expression, main.getBoolean("degrees"), main.getInt("precision"), history);
+                    history.put(exp); //Mike: I've renamed this method put() - because in the case of retroactive variable assignment it's technically not appended [DELETE THIS COMMENT]
+                    history.save();
+
                     double evaluation = exp.evaluate();
                     // Reset the Text Area
                     resetTextArea(calculation_area);

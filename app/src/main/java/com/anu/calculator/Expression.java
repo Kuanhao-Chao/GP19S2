@@ -1,10 +1,12 @@
 package com.anu.calculator;
 
+import java.io.Serializable;
+
 /**
  * Interface for Expressions, any function or operation implemented in the calculator should
  * implement this interface.
  */
-public interface Expression {
+public interface Expression extends Serializable {
 
 	/**
 	 * Show the expression in a text representation.
