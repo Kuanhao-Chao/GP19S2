@@ -13,7 +13,7 @@ public class HistoryItem implements Serializable {
         this.expression = expression;
     }
 
-    public boolean isGraphable() {
+    boolean isGraphable() {
         return graphable;
     }
 

@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Stack;
 
 /**
@@ -78,6 +79,27 @@ public class History implements Serializable {
             e.printStackTrace();
             return getInstance();
         }
+    }
+
+    /**
+     * Helper function that returns only graphable functions from the history object. Only functions
+     * with a single variable on the RHS of the function are graphable according to our arbitrary
+     * rules.
+     *
+     * @author: Michael Betterton (u6797866)
+     * @param ctx The current applications context.
+     * @return A Map of Key-Values of Character - HistoryItem values that can be graphed.
+     */
+    public static Map loadGraphableHistory(Context ctx){
+        History history = load(ctx);
+        Map<Character, HistoryItem> rtn = new HashMap<Character, HistoryItem>(0);
+        for(Character exp : history.processedHistory.keySet())
+        {
+            if(Objects.requireNonNull(history.processedHistory.get(exp)).isGraphable()){
+                rtn.put(exp, history.processedHistory.get(exp));
+            }
+        }
+        return rtn;
     }
 
     /**
