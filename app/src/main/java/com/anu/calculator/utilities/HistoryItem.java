@@ -4,24 +4,20 @@ import com.anu.calculator.Expression;
 
 import java.io.Serializable;
 
-public class HistoryItem implements Serializable
-{
+public class HistoryItem {
     private boolean graphable;
     private Expression expression;
 
-    public HistoryItem(boolean graphable, Expression expression)
-    {
+    HistoryItem(boolean graphable, Expression expression) {
         this.graphable = graphable;
         this.expression = expression;
     }
 
-    public boolean isGraphable()
-    {
+    public boolean isGraphable() {
         return graphable;
     }
 
-    public Expression getExpression()
-    {
+    public Expression getExpression() {
         return expression;
     }
 }

@@ -285,7 +285,7 @@ public class DigitFragment extends Fragment {
                 {
                     History history = History.load(main.getBoolean("degrees"));
                     Expression exp = parser.parse(expression, main.getBoolean("degrees"), main.getInt("precision"), history);
-                    history.put(exp); //Mike: I've renamed this method put() - because in the case of retroactive variable assignment it's technically not appended [DELETE THIS COMMENT]
+                    history.put(exp);
                     history.save();
 
                     double evaluation = exp.evaluate();

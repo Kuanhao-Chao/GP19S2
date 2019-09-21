@@ -6,6 +6,13 @@ import com.anu.calculator.exceptions.FunctionLoopException;
 import com.anu.calculator.expressions.DoubleExpression;
 import com.anu.calculator.parsers.ExpressionParser;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,10 +26,12 @@ import java.util.Map;
  *
  * @author Samuel Brookes (u5380100)
  * @modified Michael Betterton (u6797866)
- *  - added load() and save() methods
+ * - added load() and save() methods
  */
 
-public class History {
+public class History implements Serializable {
+    private static final long serialVersionUID = 21071992L;
+    private static final String fileName = "history.dat";
 
     private final String EQUALS = "=";
     private final String TAG = "HISTORY";
@@ -32,43 +41,69 @@ public class History {
     private ArrayList<String> strippedHistory;
     private LinkedList<String> orderedHistory;
 
-    private History(HashMap<Character, HistoryItem> history, Boolean degrees)
-    {
+    private History(HashMap<Character, HistoryItem> history, Boolean degrees) {
         this.degrees = degrees;
         this.history = history;
     }
 
     /**
-     * Returns an empty instance of a History object
-     * Primarily used for testing.
+     * Returns an empty instance of a History object, can be used for testing or in the load method
+     * when no saved history file exists.
      *
      * @return History (empty)
+     * @author: Sam Brookes
      */
-    public static History getInstance(Boolean degrees)
-    {
+    public static History getInstance(Boolean degrees) {
         return new History(new HashMap<Character, HistoryItem>(0), degrees);
     }
 
-    //FIXME: load() method
-    public static History load(Boolean degrees)
-    {
-        //FIXME: Need to assign degrees
-        return new History(new HashMap<Character, HistoryItem>(0), degrees);
+    /**
+     * Loads a history class from the file system and returns it to the application. The file is
+     * saved as a serialized version of this class and decoded as such.
+     * <p>
+     * If the file doesn't exist in the file system, a empty history object is returned.
+     *
+     * @param degrees The current user preferences for degrees or radians.
+     * @return A History class loaded from file or empty if none exist.
+     * @author: Michael Betterton (u6797866)
+     */
+    public static History load(Boolean degrees) {
+        try {
+            FileInputStream fileInputStream = new FileInputStream(fileName);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            History history = (History) objectInputStream.readObject();
+            objectInputStream.close();
+            return history;
+        } catch (IOException | ClassNotFoundException e) {
+            return getInstance(degrees);
+        }
     }
 
-    //FIXME: save() method
-    public void save()
-    {
-
+    /**
+     * Takes this (class) and saves it to the file system under 'fileName'.dat in the internal
+     * storage of the device. The file format is a serialized version of this class and therefore it
+     * should not be interrogated outside of the save and load methods.
+     *
+     * @author: Michael Betterton (u6797866)
+     */
+    public void save() {
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(fileName);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(this);
+            objectOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Takes an expression and appends it to the end of
+     *
      * @param expression
      * @throws ParserException
      */
-    public void put(Expression expression) throws ParserException
-    {
+    public void put(Expression expression) throws ParserException {
         history.put('-', new HistoryItem(false, expression));
         stripHistory();
         orderHistory();
@@ -79,20 +114,16 @@ public class History {
      * This method gets the first instance of each unique variable in the
      * history Stack and puts it unordered into strippedHistory.
      */
-    private void stripHistory()
-    {
+    private void stripHistory() {
         strippedHistory = new ArrayList<>(0);
 
         String raw;
         HashSet<String> storedVariables = new HashSet<>(0);
-        for(Map.Entry<Character, HistoryItem> mapEntry : history.entrySet())
-        {
+        for (Map.Entry<Character, HistoryItem> mapEntry : history.entrySet()) {
             raw = mapEntry.getValue().getExpression().show();
-            if(raw.contains(EQUALS))
-            {
+            if (raw.contains(EQUALS)) {
                 String variable = raw.split(EQUALS)[0].trim();
-                if(!storedVariables.contains(variable))
-                {
+                if (!storedVariables.contains(variable)) {
                     storedVariables.add(variable);
                     strippedHistory.add(raw);
                 }
@@ -107,22 +138,19 @@ public class History {
      * It checks for the occurrence of loops and throws an Exception if they are
      * detected.
      *
-     * @throws ParserException
+     * @throws ParserException A exception was encountered when parsing the history.
      */
-    private void orderHistory() throws ParserException
-    {
+    private void orderHistory() throws ParserException {
         orderedHistory = new LinkedList<>();
         HashSet<String> definedVariables = new HashSet<>(0);
         Tokenizer tokenizer;
 
         //Do a quick sweep to search for DoubleExpressions as these immediately define a var
         String variable, expression;
-        for(String raw : strippedHistory)
-        {
+        for (String raw : strippedHistory) {
             variable = raw.split(EQUALS)[0].trim();
             expression = raw.split(EQUALS)[1].trim();
-            if(new ExpressionParser().parseHistory(expression, true,null) instanceof DoubleExpression)
-            {
+            if (new ExpressionParser().parseHistory(expression, true, null) instanceof DoubleExpression) {
                 definedVariables.add(variable);
                 orderedHistory.add(raw);
             }
@@ -131,37 +159,28 @@ public class History {
         //Do another sweep to add more complex expressions to orderedHistory
         boolean allDefined = false;
         int prevSize = orderedHistory.size();
-        while(!allDefined)
-        {
+        while (!allDefined) {
             allDefined = true;
-            for(String raw : strippedHistory)
-            {
+            for (String raw : strippedHistory) {
                 variable = raw.split(EQUALS)[0].trim();
                 expression = raw.split(EQUALS)[1].trim();
-                if(!definedVariables.contains(variable))
-                { //this variable has not yet been 'defined'
+                if (!definedVariables.contains(variable)) { //this variable has not yet been 'defined'
                     //check the expression for unknown variables and see if they have been 'defined'
                     tokenizer = new Tokenizer(expression);
                     boolean expressionDefined = true;
-                    while(tokenizer.hasNext())
-                    {
-                        if(tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE)
-                        {
-                            if(!definedVariables.contains(tokenizer.current().token()))
-                            {
+                    while (tokenizer.hasNext()) {
+                        if (tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE) {
+                            if (!definedVariables.contains(tokenizer.current().token())) {
                                 expressionDefined = false;
                             }
                         }
                         tokenizer.next();
                     }
 
-                    if(expressionDefined)
-                    { //all of the variables in the expression are 'defined'
+                    if (expressionDefined) { //all of the variables in the expression are 'defined'
                         definedVariables.add(variable);
                         orderedHistory.add(raw);
-                    }
-                    else
-                    { //there are still undefined variables in the expression - continue loop
+                    } else { //there are still undefined variables in the expression - continue loop
                         allDefined = false;
                     }
                 }
@@ -173,7 +192,7 @@ public class History {
                 it means that there is an expression which cannot be defined
                 (i.e. a loop).
              */
-            if(!allDefined && prevSize == orderedHistory.size())
+            if (!allDefined && prevSize == orderedHistory.size())
                 throw new FunctionLoopException(TAG, "Calculator cannot solve this function.");
             else
                 prevSize = orderedHistory.size();
@@ -186,13 +205,11 @@ public class History {
      * as each variable should have been previously given a value.
      * Once it has parsed each value - it stores them into processedHistory.
      */
-    private void processHistory() throws ParserException
-    {
+    private void processHistory() throws ParserException {
         history = new HashMap<>(0);
 
         String raw, variable, expression;
-        while(!orderedHistory.isEmpty())
-        {
+        while (!orderedHistory.isEmpty()) {
             raw = orderedHistory.remove(0);
             variable = raw.split(EQUALS)[0].trim();
             expression = raw.split(EQUALS)[1].trim();
@@ -210,15 +227,12 @@ public class History {
      * @param expression
      * @return
      */
-    private boolean isGraphable(Expression expression)
-    {
+    private boolean isGraphable(Expression expression) {
         String expStr = expression.show();
         Tokenizer checkExp = new Tokenizer(expStr);
         int unkVarCount = 0;
-        while(checkExp.hasNext())
-        {
-            if(checkExp.current().type() == Token.Type.UNKNOWN_VARIABLE)
-            {
+        while (checkExp.hasNext()) {
+            if (checkExp.current().type() == Token.Type.UNKNOWN_VARIABLE) {
                 unkVarCount++;
             }
         }
@@ -226,13 +240,11 @@ public class History {
         return unkVarCount < 2;
     }
 
-    public boolean hasVariable(Character variable)
-    {
+    public boolean hasVariable(Character variable) {
         return history.containsKey(variable);
     }
 
-    public Expression getExpression(Character variable)
-    {
+    public Expression getExpression(Character variable) {
         return history.get(variable).getExpression();
     }
 }
