@@ -1,5 +1,7 @@
 package com.anu.calculator.utilities;
 
+import android.content.Context;
+
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
 import com.anu.calculator.exceptions.FunctionLoopException;
@@ -65,14 +67,15 @@ public class History implements Serializable {
      * @return A History class loaded from file or empty if none exist.
      * @author: Michael Betterton (u6797866)
      */
-    public static History load() {
+    public static History load(Context ctx) {
         try {
-            FileInputStream fileInputStream = new FileInputStream(fileName);
+            FileInputStream fileInputStream = ctx.openFileInput(fileName);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             History history = (History) objectInputStream.readObject();
             objectInputStream.close();
             return history;
         } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
             return getInstance();
         }
     }
@@ -84,9 +87,9 @@ public class History implements Serializable {
      *
      * @author: Michael Betterton (u6797866)
      */
-    public void save() {
+    public void save(Context ctx) {
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream(fileName);
+            FileOutputStream fileOutputStream = ctx.openFileOutput(fileName, Context.MODE_PRIVATE);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(this);
             objectOutputStream.close();
@@ -118,8 +121,7 @@ public class History implements Serializable {
 
         String raw;
         HashSet<String> storedVariables = new HashSet<>(0);
-        while(!savedHistory.empty())
-        {
+        while (!savedHistory.empty()) {
             raw = savedHistory.pop().getExpression().show();
             if (raw.contains(EQUALS)) {
                 String variable = raw.split(EQUALS)[0].trim();
@@ -218,11 +220,9 @@ public class History implements Serializable {
         }
     }
 
-    private void saveHistory()
-    {
+    private void saveHistory() {
         savedHistory = new Stack<>();
-        for(Map.Entry<Character, HistoryItem> mapEntry : processedHistory.entrySet())
-        {
+        for (Map.Entry<Character, HistoryItem> mapEntry : processedHistory.entrySet()) {
             savedHistory.push(mapEntry.getValue());
         }
     }
@@ -253,7 +253,7 @@ public class History implements Serializable {
         return processedHistory != null && processedHistory.containsKey(variable);
     }
 
-    public Expression getExpression(Character variable){
+    public Expression getExpression(Character variable) {
         return processedHistory.get(variable).getExpression();
     }
 }

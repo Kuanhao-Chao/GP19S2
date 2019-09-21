@@ -3,6 +3,7 @@ package com.anu.calculator.ui;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,17 +13,26 @@ import android.widget.EditText;
 
 import com.anu.calculator.R;
 
+import com.anu.calculator.utilities.History;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.anu.calculator.utilities.History.getInstance;
 
 
 public class MainActivity extends AppCompatActivity implements HistoryMessenger {
 
     private static final String TAG = "MainActivity";
     public static final String PREFS_NAME = "PREFERENCES";
+    private static final String fileName = "history.dat";
 
     OperationsPageAdapter mOperationsPageAdapter;
     ViewPager mViewPager;
@@ -320,7 +330,4 @@ public class MainActivity extends AppCompatActivity implements HistoryMessenger 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         return settings.contains(key);
     }
-
-    
-    
 }

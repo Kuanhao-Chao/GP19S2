@@ -283,10 +283,10 @@ public class DigitFragment extends Fragment {
                 ExpressionParser parser = new ExpressionParser();
                 try
                 {
-                    History history = History.load();
+                    History history = History.load(getContext());
                     Expression exp = parser.parse(expression, main.getBoolean("degrees"), main.getInt("precision"), history);
                     history.put(exp, main.getBoolean("degrees"));
-                    history.save();
+                    history.save(getContext());
 
                     double evaluation = exp.evaluate();
                     // Reset the Text Area
