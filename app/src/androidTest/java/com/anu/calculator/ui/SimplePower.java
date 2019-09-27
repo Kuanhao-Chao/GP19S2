@@ -449,6 +449,219 @@ public class SimplePower {
         ViewInteraction editText8 = onView(allOf(withId(R.id.calculation_textarea),
                 isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
         editText8.check(matches(withText("")));
+
+        ViewInteraction appCompatButton27 = onView(
+                allOf(withId(R.id.dgt_2), withText("2"),
+                        childAtPosition(
+                                allOf(withId(R.id.row_4),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                3)),
+                                1)));
+        appCompatButton27.perform(scrollTo(), click());
+
+        ViewInteraction tabView12 = onView(
+                allOf(withContentDescription("Func"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.operations_tabs),
+                                        0),
+                                1),
+                        isDisplayed()));
+        tabView12.perform(click());
+
+        ViewInteraction appCompatButton28 = onView(
+                allOf(withId(R.id.squared), withText("x²"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        0),
+                                3)));
+        appCompatButton28.perform(scrollTo(), click());
+
+        ViewInteraction tabView13 = onView(
+                allOf(withContentDescription("Main"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.operations_tabs),
+                                        0),
+                                0),
+                        isDisplayed()));
+        tabView13.perform(click());
+
+        ViewInteraction appCompatButton29 = onView(
+                allOf(withId(R.id.evaluate), withText("Solve"),
+                        childAtPosition(
+                                allOf(withId(R.id.row_5),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                4)),
+                                3)));
+        appCompatButton29.perform(scrollTo(), click());
+
+
+        ViewInteraction editText = onView(allOf(withId(R.id.calculation_textarea),
+                isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
+        editText.check(matches(withText("4")));
+
+        ViewInteraction appCompatButton30 = onView(
+                allOf(withId(R.id.all_clear), withText("AC"),
+                        childAtPosition(
+                                allOf(withId(R.id.row_1),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                0)),
+                                0)));
+        appCompatButton30.perform(scrollTo(), click());
+
+        ViewInteraction tabView14 = onView(
+                allOf(withContentDescription("Func"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.operations_tabs),
+                                        0),
+                                1),
+                        isDisplayed()));
+        tabView14.perform(click());
+
+        ViewInteraction tabView15 = onView(
+                allOf(withContentDescription("Main"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.operations_tabs),
+                                        0),
+                                0),
+                        isDisplayed()));
+        tabView15.perform(click());
+
+        ViewInteraction appCompatButton31 = onView(
+                allOf(withId(R.id.dgt_5), withText("5"),
+                        childAtPosition(
+                                allOf(withId(R.id.row_3),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                2)),
+                                1)));
+        appCompatButton31.perform(scrollTo(), click());
+
+
+        ViewInteraction tabView16 = onView(
+                allOf(withContentDescription("Func"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.operations_tabs),
+                                        0),
+                                1),
+                        isDisplayed()));
+        tabView16.perform(click());
+
+        ViewInteraction appCompatButton32 = onView(
+                allOf(withId(R.id.cubed), withText("x³"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        1),
+                                3)));
+        appCompatButton32.perform(scrollTo(), click());
+
+        ViewInteraction tabView17 = onView(
+                allOf(withContentDescription("Main"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.operations_tabs),
+                                        0),
+                                0),
+                        isDisplayed()));
+        tabView17.perform(click());
+
+        ViewInteraction appCompatButton33 = onView(
+                allOf(withId(R.id.evaluate), withText("Solve"),
+                        childAtPosition(
+                                allOf(withId(R.id.row_5),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                4)),
+                                3)));
+        appCompatButton33.perform(scrollTo(), click());
+
+
+        ViewInteraction editText9 = onView(allOf(withId(R.id.calculation_textarea),
+                isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
+        editText9.check(matches(withText("125")));
+
+        ViewInteraction appCompatButton34 = onView(
+                allOf(withId(R.id.all_clear), withText("AC"),
+                        childAtPosition(
+                                allOf(withId(R.id.row_1),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                0)),
+                                0)));
+        appCompatButton34.perform(scrollTo(), click());
+
+        ViewInteraction appCompatButton35 = onView(
+                allOf(withId(R.id.dgt_6), withText("6"),
+                        childAtPosition(
+                                allOf(withId(R.id.row_3),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                2)),
+                                0)));
+        appCompatButton35.perform(scrollTo(), click());
+
+        ViewInteraction tabView18 = onView(
+                allOf(withContentDescription("Func"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.operations_tabs),
+                                        0),
+                                1),
+                        isDisplayed()));
+        tabView18.perform(click());
+
+        ViewInteraction appCompatButton36 = onView(
+                allOf(withId(R.id.factorial), withText("!"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                3)));
+        appCompatButton36.perform(scrollTo(), click());
+
+        ViewInteraction tabView19 = onView(
+                allOf(withContentDescription("Main"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.operations_tabs),
+                                        0),
+                                0),
+                        isDisplayed()));
+        tabView19.perform(click());
+
+        ViewInteraction appCompatButton37 = onView(
+                allOf(withId(R.id.evaluate), withText("Solve"),
+                        childAtPosition(
+                                allOf(withId(R.id.row_5),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                4)),
+                                3)));
+        appCompatButton37.perform(scrollTo(), click());
+
+
+        ViewInteraction editText10 = onView(allOf(withId(R.id.calculation_textarea),
+                isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
+        editText10.check(matches(withText("720")));
+
+        ViewInteraction appCompatButton38 = onView(
+                allOf(withId(R.id.all_clear), withText("AC"),
+                        childAtPosition(
+                                allOf(withId(R.id.row_1),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                0)),
+                                0)));
+        appCompatButton38.perform(scrollTo(), click());
     }
 
     private static Matcher<View> childAtPosition(
