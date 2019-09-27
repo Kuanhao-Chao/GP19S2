@@ -39,9 +39,7 @@ public class ArcSineExpression implements Expression {
 		return "sin" +
 				Scripts.SuperScript.MINUS.getUnicode() +
 				Scripts.SuperScript.ONE.getUnicode() +
-				"(" + expression.show() +
-				((degrees)?Scripts.Operators.DEGREES.getUnicode():
-						Scripts.Operators.RADIANS.getUnicode()) + ")";
+				"(" + expression.show() + ")";
 	}
 
 	@Override

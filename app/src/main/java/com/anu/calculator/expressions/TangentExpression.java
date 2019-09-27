@@ -35,9 +35,7 @@ public class TangentExpression implements Expression {
 
 	@Override
 	public String show() {
-		return "tan(" +
-				((degrees)? Scripts.Operators.DEGREES.getUnicode():
-						Scripts.Operators.RADIANS.getUnicode()) + ")";
+		return "tan(" + expression.show() + ")";
 	}
 
 	@Override

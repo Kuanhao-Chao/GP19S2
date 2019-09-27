@@ -32,7 +32,7 @@ public class FactorialExpression implements Expression {
 
 	@Override
 	public String show() {
-		return "(!" + expression.show() + ")";
+		return "(" + expression.show() + "!)";
 	}
 
 	@Override

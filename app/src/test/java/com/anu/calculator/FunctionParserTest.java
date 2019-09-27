@@ -8,6 +8,8 @@ import com.anu.calculator.utilities.History;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static junit.framework.TestCase.assertEquals;
 
 public class FunctionParserTest {
@@ -256,28 +258,92 @@ public class FunctionParserTest {
 
     /**
      * Simple test case that evaluates a single variable assignment to a expression.
+     *
+     * @author Mike Betterton
+     * @modified Samuel Brookes
+     *  - added more test cases and loop
+     *  - added TestCase class
      */
     @Test
-    public void testFunctionInFunction() throws ParserException {
-        // Declare the test case and an empty history stack
-        String test = "x=sin(30)";
+    public void testOperatorsInFunctions() throws ParserException {
 
-        // Instantiate a parser
-        ExpressionParser fp = new ExpressionParser();
-        Expression exp = fp.parse(test, true, 0, history);
+        ArrayList<TestCase> tests = new ArrayList<>(0);
 
-        // Push the expression we just parsed onto a stack to use as history
-        history.put(exp, true);
+        //single variable test cases
+        tests.add(new TestCase("a=sin30", 0.5));
+        tests.add(new TestCase("b=cos60", 0.5));
+        tests.add(new TestCase("c=tan45", 1d));
+        tests.add(new TestCase("d=-15", -15d));
+        tests.add(new TestCase("f=5!", 120d));
+        tests.add(new TestCase("g=sin⁻¹0.5", 30d));
+        tests.add(new TestCase("h=cos⁻¹0.5", 60d));
+        tests.add(new TestCase("i=tan⁻¹1", 45d));
+        tests.add(new TestCase("j=log₁₀10", 1d));
+        tests.add(new TestCase("k=ln15", 2.708050201));
+        tests.add(new TestCase("l=√100", 10d));
+        tests.add(new TestCase("m=∛47", 3.60882608));
+        tests.add(new TestCase("n=10nPr3", 720d));
+        tests.add(new TestCase("o=15nCr2", 105d));
+        tests.add(new TestCase("p=5^3", 125d));
+        tests.add(new TestCase("q=5²", 25d));
+        tests.add(new TestCase("r=3³", 27d));
+        tests.add(new TestCase("s=2π", 6.283185307));
+        tests.add(new TestCase("t=5e", 13.59140914));
 
-        // Create a new test case to use as the recall.
-        test = "x";
-        exp = fp.parse(test, true, 0, history);
-        assertEquals(exp.evaluate(),0.5d);
-        history.put(exp, true);
+        //composite test cases
+        tests.add(new TestCase("u=a²", 0.25));
+        tests.add(new TestCase("v=b+c", 1.5));
+        tests.add(new TestCase("w=f÷d", -8d));
+        tests.add(new TestCase("x=h-g", 30d));
+        tests.add(new TestCase("y=i×j", 45d));
+        tests.add(new TestCase("z=l^k", 510.5640138));
+        tests.add(new TestCase("ɑ=n-m", 716.3911739));
+        tests.add(new TestCase("β=o+p", 230d));
+        tests.add(new TestCase("ɣ=rnCrq", 351d));
+        tests.add(new TestCase("Δ=s²+t³", 2550.170533));
 
-        // Test the recall without an equality expression
-        test = "2x";
-        exp = fp.parse(test, true, 0, history);
-        assertEquals(exp.evaluate(),1d);
+        ExpressionParser fp;
+        Expression exp;
+        try
+        {
+            for(TestCase test : tests)
+            {
+                fp = new ExpressionParser();
+                exp = fp.parse(test.getTest(), true, 5, history);
+                assertEquals(test.getAnswer(), exp.evaluate(), 0.00001d);
+                history.put(exp, true);
+            }
+        }
+        catch(UnassignedVariableException e)
+        {
+            System.out.println(e.getErrorMessage());
+            throw e;
+        }
+    }
+
+    /**
+     * A container class for test cases
+     * @author Samuel Brookes
+     */
+    class TestCase
+    {
+        String test;
+        Double ans;
+
+        TestCase(String test, Double ans)
+        {
+            this.test = test;
+            this.ans = ans;
+        }
+
+        String getTest()
+        {
+            return test;
+        }
+
+        Double getAnswer()
+        {
+            return ans;
+        }
     }
 }

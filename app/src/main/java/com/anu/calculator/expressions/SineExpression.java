@@ -36,9 +36,7 @@ public class SineExpression implements Expression {
 
 	@Override
 	public String show() {
-		return "sin(" + expression.show() +
-				((degrees)? Scripts.Operators.DEGREES.getUnicode():
-						Scripts.Operators.RADIANS.getUnicode()) + ")";
+		return "sin(" + expression.show() + ")";
 	}
 
 	@Override

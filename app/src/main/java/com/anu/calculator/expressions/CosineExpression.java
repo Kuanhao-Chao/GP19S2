@@ -36,9 +36,7 @@ public class CosineExpression implements Expression {
 
 	@Override
 	public String show() {
-		return "cos(" +
-				((degrees)? Scripts.Operators.DEGREES.getUnicode():
-						Scripts.Operators.RADIANS.getUnicode()) + ")";
+		return "cos(" + expression.show() + ")";
 	}
 
 	@Override

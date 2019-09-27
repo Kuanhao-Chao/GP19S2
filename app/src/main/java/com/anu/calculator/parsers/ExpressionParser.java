@@ -376,7 +376,10 @@ public class ExpressionParser implements Parser
                         afterNext.type() == Token.Type.ADD ||
                         afterNext.type() == Token.Type.MULTIPLY ||
                         afterNext.type() == Token.Type.DIVIDE ||
-                        afterNext.type() == Token.Type.LEFT_PARENTHESIS)
+                        afterNext.type() == Token.Type.LEFT_PARENTHESIS ||
+                        afterNext.type() == Token.Type.LEFT_BRACE ||
+                        afterNext.type() == Token.Type.LEFT_BRACKET ||
+                        afterNext.type() == Token.Type.EQUALS)
                 {
                     //if it's negative, return the number subtracted from zero
                     literal = new SubtractExpression(new DoubleExpression(0d), doubleValue);
