@@ -258,17 +258,25 @@ public class History implements Serializable {
      * @return
      */
     private boolean isGraphable(Expression expression) {
-        String expStr = expression.show();
-        Tokenizer checkExp = new Tokenizer(expStr);
-        int unkVarCount = 0;
-        while (checkExp.hasNext()) {
-            if (checkExp.current().type() == Token.Type.UNKNOWN_VARIABLE) {
-                unkVarCount++;
+        String expStr = expression.show().split("=")[1];
+        Tokenizer tokenizer = new Tokenizer(expStr);
+
+        char unkVar = '$';
+        while (tokenizer.hasNext()) {
+            if (tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE) {
+                if(unkVar == '$')
+                {
+                    unkVar = tokenizer.current().token().charAt(0);
+                }
+                else
+                {
+                    if(tokenizer.current().token().charAt(0) != unkVar) return false;
+                }
             }
-            checkExp.next();
+            tokenizer.next();
         }
 
-        return unkVarCount < 2;
+        return true;
     }
 
     public boolean hasVariable(Character variable) {
