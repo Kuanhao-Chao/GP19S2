@@ -23,7 +23,9 @@
         android:id="@+id/linearLayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <EditText
@@ -46,6 +48,7 @@
             android:textSize="36sp"
             android:windowSoftInputMode="stateAlwaysHidden"
             tools:ignore="LabelFor" />
+
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/operations_tabs"
@@ -86,7 +89,6 @@
             android:layout_weight="0.5">
 
         </androidx.viewpager.widget.ViewPager>
-
 
     </LinearLayout>
 
