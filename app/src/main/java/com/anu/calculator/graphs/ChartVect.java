@@ -1,9 +1,9 @@
 package com.anu.calculator.graphs;
 
 public class ChartVect {
-        public int x = 0;
-        public int y = 0;
-        public ChartVect(int x, int y) {
+        public float x = 0;
+        public float y = 0;
+        public ChartVect(float x, float y) {
             this.x = x;
             this.y = y;
         }

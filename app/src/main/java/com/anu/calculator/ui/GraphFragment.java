@@ -29,7 +29,6 @@ public class GraphFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 graphViewer gView = rootView.findViewById(R.id.graph_view);
-                gView.turnon(0);
                 gView.invalidate();
             }
         });
@@ -38,7 +37,6 @@ public class GraphFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 graphViewer gView = rootView.findViewById(R.id.graph_view);
-                gView.turnon(1);
                 gView.invalidate();
             }
         });

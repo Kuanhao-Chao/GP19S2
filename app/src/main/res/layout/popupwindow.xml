@@ -19,11 +19,11 @@
             android:text="Select Function(s):"
             android:textSize="18sp" />
 
-        <ScrollView
+        <ListView
+            android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="531dp">
-
-        </ScrollView>
+        </ListView>
 
         <LinearLayout
             android:layout_width="match_parent"

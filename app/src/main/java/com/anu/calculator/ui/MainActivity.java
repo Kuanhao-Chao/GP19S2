@@ -68,18 +68,19 @@ public class MainActivity extends AppCompatActivity implements HistoryMessenger 
         put("precision", 20); // Set the precision value to 20 places by default.
     }
 
+
     /**
      * This is the method to create the floating button to navigate between calculator activity and graph activity
      *
      * @author: Siwei Wu (u6735397)
-     * @param: nill
-     */
-    public void createFloatingButton() {
+    */    public void createFloatingButton() {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_graph);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, GraphActivity.class));
+                Intent toGraph = new Intent(MainActivity.this, GraphActivity.class);
+                toGraph.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivityForResult(toGraph, 0);
             }
         });
     }

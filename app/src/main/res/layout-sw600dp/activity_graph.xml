@@ -82,7 +82,7 @@
             android:id="@+id/select_function_button"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="90dp"
             android:layout_weight="1"
             android:text="Select Functions" />
 
