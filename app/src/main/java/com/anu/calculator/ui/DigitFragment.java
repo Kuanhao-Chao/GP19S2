@@ -64,6 +64,10 @@ public class DigitFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.digit_fragment, container, false);
         final MainActivity main = (MainActivity) Objects.requireNonNull(getActivity());
 
+        // Create a history object by loading and saving whatever is there
+        History history = History.load(Objects.requireNonNull(getContext()));
+        history.save(Objects.requireNonNull(getContext()));
+
         Button btn_dgt_0 = rootView.findViewById(R.id.dgt_0);
         btn_dgt_0.setOnClickListener(new View.OnClickListener() {
             @Override

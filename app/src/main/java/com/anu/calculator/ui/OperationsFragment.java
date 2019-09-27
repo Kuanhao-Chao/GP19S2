@@ -214,6 +214,42 @@ public class OperationsFragment extends Fragment {
             }
         });
 
+        Button lbra_square = rootView.findViewById(R.id.lbra_square);
+        lbra_square.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                String input = getString(R.string.lbra_square);
+                addText(calculation_area, input, main, false);
+            }
+        });
+
+        Button rbra_square = rootView.findViewById(R.id.rbra_square);
+        rbra_square.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                String input = getString(R.string.rbra_square);
+                addText(calculation_area, input, main, false);
+            }
+        });
+
+        Button lbra_squigly = rootView.findViewById(R.id.lbra_squigly);
+        lbra_squigly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                String input = getString(R.string.lbra_squigly);
+                addText(calculation_area, input, main, false);
+            }
+        });
+
+        Button rbra_squigly = rootView.findViewById(R.id.rbra_squigly);
+        rbra_squigly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                String input = getString(R.string.rbra_squigly);
+                addText(calculation_area, input, main, false);
+            }
+        });
+
         Button rand = rootView.findViewById(R.id.random_number);
         rand.setOnClickListener(new View.OnClickListener() {
             @Override
