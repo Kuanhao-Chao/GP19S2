@@ -3,7 +3,7 @@ package com.anu.calculator.exceptions;
 import com.anu.calculator.ParserException;
 
 /**
- * An exception class that handles division by zero.
+ * An exception class that handles infinity values
  *
  * @author Samuel Brookes (u5380100)
  */

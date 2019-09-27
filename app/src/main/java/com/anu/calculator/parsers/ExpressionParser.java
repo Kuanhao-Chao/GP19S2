@@ -3,9 +3,8 @@ package com.anu.calculator.parsers;
 import com.anu.calculator.Expression;
 import com.anu.calculator.Parser;
 import com.anu.calculator.ParserException;
-import com.anu.calculator.exceptions.MathematicalSyntaxException;
-import com.anu.calculator.exceptions.NothingEnteredException;
 import com.anu.calculator.expressions.*;
+import com.anu.calculator.utilities.ExpressionChecker;
 import com.anu.calculator.utilities.History;
 import com.anu.calculator.utilities.HistoryItem;
 import com.anu.calculator.utilities.Token;
@@ -33,7 +32,6 @@ import java.util.HashMap;
  * @modified: Michael Betterton (u6797866)
  *  - 05/09/2019: Refactored class to implement ExpressionParser interface
  * 	- 05/09/2019: Refactored name from ExpressionParser to Parser
- * 	- 05/09/2019: Altered constructor
  */
 
 public class ExpressionParser implements Parser
@@ -58,7 +56,7 @@ public class ExpressionParser implements Parser
     public Expression parse(String expression, Boolean degrees, Integer precision, History history) throws ParserException
     {
         //Check that the expression is valid
-        checkRawExpression(expression);
+        new ExpressionChecker(expression).checkExpression();
 
         //Initiate global variables
         this.history = history;
@@ -79,7 +77,7 @@ public class ExpressionParser implements Parser
     public Expression parseHistory(String expression, Boolean degrees, HashMap<Character, HistoryItem> rawHistory) throws ParserException
     {
         //Check that the expression is valid
-        checkRawExpression(expression);
+        new ExpressionChecker(expression).checkExpression();
 
         //Save the raw history
         this.degrees = degrees;
@@ -90,6 +88,16 @@ public class ExpressionParser implements Parser
         return checkForEqualityExpression(parseExp(), null);
     }
 
+    /**
+     * This method checks for whether there is a hanging equals sign once
+     * the parseExp() method is completed. If there is a hanging equals sign,
+     * an EqualityExpression is returned, otherwise the parsed expression
+     * is returned unchanged.
+     *
+     * @param exp
+     * @param precision
+     * @return Expression
+     */
     private Expression checkForEqualityExpression(Expression exp, Integer precision)
     {
         EqualityExpression equality = null;
@@ -107,70 +115,6 @@ public class ExpressionParser implements Parser
         }
 
         return (equality == null)? exp : equality;
-    }
-
-    /**
-     * checkRawExpression: conducts a preliminary check of the expression string entered by the user
-     * prior to being passed to Parser.parse(). This is to catch any easy-to-detect errors to save
-     * time.
-     *
-     * @param expression
-     * @return type: boolean
-     */
-    private void checkRawExpression(String expression) throws ParserException
-    {
-        /* ============
-         * Basic checks
-         * ============
-         */
-
-        //check whether the user has entered something
-        if(expression.equals(""))
-            throw new NothingEnteredException(TAG, "");
-
-        //simple check for whether there are matching numbers of brackets, braces and parentheses
-        //it DOES NOT check whether they are nested correctly
-        int braceCnt, parenCnt, brackCnt;
-        braceCnt = parenCnt = brackCnt = 0;
-        for(int i = 0; i<expression.length(); i++)
-        {
-            if(expression.charAt(i) == '(') parenCnt++;
-            else if(expression.charAt(i) == '{') braceCnt++;
-            else if(expression.charAt(i) == '[') brackCnt++;
-            else if(expression.charAt(i) == ')') parenCnt--;
-            else if(expression.charAt(i) == '}') braceCnt--;
-            else if(expression.charAt(i) == ']') brackCnt--;
-        }
-        if(braceCnt != 0 || parenCnt != 0 || brackCnt != 0)
-            throw new MathematicalSyntaxException(TAG, "Syntax error: Brackets used incorrectly.");
-
-        /* ====================
-         * Checks for functions
-         * ====================
-         */
-        if(expression.indexOf('=') != -1)
-        {
-            //test that there is only one equals sign
-            if(expression.indexOf('=') != expression.lastIndexOf('='))
-                throw new MathematicalSyntaxException(TAG, "Syntax error: More than one equals sign.");
-
-            //test that the left-hand side has only one variable and that it is an unknown var
-            Token leftHandSide = new Tokenizer(expression.split("=")[0].trim()).current();
-            if(leftHandSide == null)
-                throw new MathematicalSyntaxException(TAG, "Syntax error: There must be a variable on the left side of the equation.");
-            else if(leftHandSide.type() != Token.Type.UNKNOWN_VARIABLE)
-                throw new MathematicalSyntaxException(TAG, "The calculator is unable to solve this type of equation.");
-
-            //test that an unknown variable does not occur on either side of the equals sign
-            char variable = expression.split("=")[0].trim().charAt(0);
-            Tokenizer varCheck = new Tokenizer(expression.split("=")[1].trim());
-            while(varCheck.hasNext())
-            {
-                if(varCheck.current().type() == Token.Type.UNKNOWN_VARIABLE && varCheck.current().token().charAt(0) == variable)
-                    throw new MathematicalSyntaxException(TAG, "The calculator is unable to solve this type of equation.");
-                varCheck.next();
-            }
-        }
     }
 
     /**
@@ -224,10 +168,10 @@ public class ExpressionParser implements Parser
     /**
      * parseOperation: The third level parsing method, ensuring that defined operations are
      * evaluated second (i.e. B[O]DMAS). This method handles operators differently depending
-     * upon whether they are leading, trailing, or both.
+     * upon whether they are leading, trailing, or both (see Token class for more information).
      *
      * Uses grammar: <operation> ::= sin<exp> | sin⁻¹<exp> | cos<exp> | cos⁻¹<exp> |
-     *                  tan<exp> | tan⁻¹<exp> | log₁₀<exp> | ln<exp> | !<exp> | √<exp> |
+     *                  tan<exp> | tan⁻¹<exp> | log₁₀<exp> | ln<exp> | <exp>! | √<exp> |
      *                  ∛<exp> | <exp>nPr<exp> | <exp>nCr<exp> | <exp>^<exp> | <exp>² |
      *                  <exp>³ | -<exp> | <exp>% | (<exp>) | <literal>
      *
@@ -298,7 +242,7 @@ public class ExpressionParser implements Parser
      * ensure that it is processed correctly.
      *
      * Uses grammar: <literal> ::= π | e | rand | double | -double | <unknown variable>
-     *               <unknown variable> ::= a-z | ɑ | β | ɣ | Δ
+     *               <unknown variable> ::= a-d, f-z | ɑ | β | ɣ | Δ
      *
      * @return type: Expression
      */

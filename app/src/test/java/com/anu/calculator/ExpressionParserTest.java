@@ -1,7 +1,8 @@
 package com.anu.calculator;
 
-
 import com.anu.calculator.exceptions.InfinityException;
+import com.anu.calculator.exceptions.MathematicalSyntaxException;
+import com.anu.calculator.exceptions.NothingEnteredException;
 import com.anu.calculator.expressions.EExpression;
 import com.anu.calculator.parsers.ExpressionParser;
 import com.anu.calculator.expressions.UnknownVariableExpression;
@@ -9,7 +10,6 @@ import com.anu.calculator.expressions.UnknownVariableExpression;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 import static org.junit.Assert.*;
 
@@ -254,7 +254,7 @@ public class ExpressionParserTest {
      * Tests whether the parser is correctly inserting a multiplication symbol
      * when parsing expressions that use unknown variables with shorthand multiplication
      *
-     * @author Samuel Brookes
+     * @author Samuel Brookes (u5380100)
      */
     @Test
     public void testShorthandMultiplicationWithUnknowns()
@@ -272,6 +272,85 @@ public class ExpressionParserTest {
         catch(ParserException e)
         {
             fail();
+        }
+    }
+
+    /**
+     * Tests whether the ExpressionChecker is catching simple errors as expected
+     *
+     * @author Samuel Brookes (u5380100)
+     */
+    @Test
+    public void testExpressionChecker()
+    {
+        ArrayList<String> testCases = new ArrayList<>(0);
+
+        //user enters nothing
+        testCases.add("");
+
+        //incorrect bracket nesting
+        testCases.add("8+(15-[10×4)+25]");
+        testCases.add("{25+(8-6}+14)×[35-2]");
+        testCases.add("(100+5)×[12×2]+(18+[12-5)×2]");
+
+        //missing bracket
+        testCases.add("(8+15");
+        testCases.add("12-14]");
+        testCases.add("15-{6×2}-[12");
+
+        //incorrect use of functions
+        testCases.add("x=x");
+        testCases.add("=2y");
+        testCases.add("x=2=5y");
+        testCases.add("5=25x");
+
+        assertEquals(testCases.size(), recursivelyCheckTestCases(testCases, 0, 0));
+
+        //these should not throw an exception
+        testCases = new ArrayList<>(0);
+        testCases.add("8+[(2×15)-10]+4-5");
+        testCases.add("(14+[8×25]-{2×100}-15)");
+        testCases.add("(14+[8×{25-2}×100]-15)");
+
+        assertEquals(0, recursivelyCheckTestCases(testCases, 0, 0));
+    }
+
+    /**
+     * This method is used by the testExpressionChecker() method to recursively
+     * iterate through the test cases in the ArrayList and count how many exceptions (of type
+     * MathematicalSyntaxException and NothingEnteredException) are thrown.
+     *
+     * @author Samuel Brookes (u5380100)
+     *
+     * @param testCases
+     * @param idx
+     * @param errors
+     * @return int (number of errors)
+     */
+    private int recursivelyCheckTestCases(ArrayList<String> testCases, int idx, int errors)
+    {
+        //if the idx has reached the end of the ArrayList return the number of errors that occurred
+        if(idx >= testCases.size()) return errors;
+        else
+        {
+            try
+            { //otherwise attempt to parse the incorrect expression
+                new ExpressionParser().parse(testCases.get(idx), true, 5, null);
+            }
+            catch(ParserException e)
+            {
+                if(e instanceof MathematicalSyntaxException ||
+                    e instanceof NothingEnteredException)
+                { //if either of these exceptions are thrown, test the next test case
+                    return recursivelyCheckTestCases(testCases, idx + 1, errors + 1);
+                }
+            }
+            catch(Exception e)
+            { //if any other exception is thrown, abort
+                return errors;
+            }
+            //if this statement is reached then no error was thrown, abort
+            return errors;
         }
     }
 }
