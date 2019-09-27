@@ -30,7 +30,11 @@ import static org.hamcrest.Matchers.allOf;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class NavigationFunctionPlot {
-
+    /**
+     * Tests are first generated through `android expresso` and then do further modification.
+     *
+     * @author: Howard Chao (u7022787)
+     */
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 

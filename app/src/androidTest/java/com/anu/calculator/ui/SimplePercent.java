@@ -34,64 +34,48 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class SimpleMultiplication {
-
+public class SimplePercent {
+    /**
+     * Tests are first generated through `android expresso` and then do further modification.
+     *
+     * @author: Howard Chao (u7022787)
+     */
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void simpleMultiply() {
+    public void simplePercent() {
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.subtraction), withText("-"),
+                allOf(withId(R.id.dgt_1), withText("1"),
                         childAtPosition(
-                                allOf(withId(R.id.row_3),
+                                allOf(withId(R.id.row_4),
                                         childAtPosition(
                                                 withClassName(is("android.widget.LinearLayout")),
-                                                2)),
-                                3)));
+                                                3)),
+                                2)));
         appCompatButton.perform(scrollTo(), click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.dgt_4), withText("4"),
+                allOf(withId(R.id.dgt_0), withText("0"),
                         childAtPosition(
-                                allOf(withId(R.id.row_3),
+                                allOf(withId(R.id.row_5),
                                         childAtPosition(
                                                 withClassName(is("android.widget.LinearLayout")),
-                                                2)),
-                                2)));
+                                                4)),
+                                1)));
         appCompatButton2.perform(scrollTo(), click());
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.multiply), withText("×"),
+                allOf(withId(R.id.percentage), withText("%"),
                         childAtPosition(
-                                allOf(withId(R.id.row_2),
+                                allOf(withId(R.id.row_1),
                                         childAtPosition(
                                                 withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                3)));
+                                                0)),
+                                2)));
         appCompatButton3.perform(scrollTo(), click());
 
         ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.subtraction), withText("-"),
-                        childAtPosition(
-                                allOf(withId(R.id.row_3),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                2)),
-                                3)));
-        appCompatButton4.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton5 = onView(
-                allOf(withId(R.id.dgt_8), withText("8"),
-                        childAtPosition(
-                                allOf(withId(R.id.row_2),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                1)));
-        appCompatButton5.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton6 = onView(
                 allOf(withId(R.id.evaluate), withText("Solve"),
                         childAtPosition(
                                 allOf(withId(R.id.row_5),
@@ -99,12 +83,27 @@ public class SimpleMultiplication {
                                                 withClassName(is("android.widget.LinearLayout")),
                                                 4)),
                                 3)));
-        appCompatButton6.perform(scrollTo(), click());
+        appCompatButton4.perform(scrollTo(), click());
 
 
         ViewInteraction editText = onView(allOf(withId(R.id.calculation_textarea),
                 isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
-        editText.check(matches(withText("32")));
+        editText.check(matches(withText("0.1")));
+
+        ViewInteraction appCompatButton5 = onView(
+                allOf(withId(R.id.all_clear), withText("AC"),
+                        childAtPosition(
+                                allOf(withId(R.id.row_1),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                0)),
+                                0)));
+        appCompatButton5.perform(scrollTo(), click());
+
+
+        ViewInteraction editTex2 = onView(allOf(withId(R.id.calculation_textarea),
+                isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
+        editTex2.check(matches(withText("")));
     }
 
     private static Matcher<View> childAtPosition(

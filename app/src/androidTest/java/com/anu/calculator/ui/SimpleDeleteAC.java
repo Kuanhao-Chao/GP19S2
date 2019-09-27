@@ -34,93 +34,65 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class SimpleDivision {
-
+public class SimpleDeleteAC {
+    /**
+     * Tests are first generated through `android expresso` and then do further modification.
+     *
+     * @author: Howard Chao (u7022787)
+     */
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void simpleDivision() {
+    public void simpleDeleteAC() {
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.dgt_5), withText("5"),
+                allOf(withId(R.id.dgt_9), withText("9"),
                         childAtPosition(
-                                allOf(withId(R.id.row_3),
+                                allOf(withId(R.id.row_2),
                                         childAtPosition(
                                                 withClassName(is("android.widget.LinearLayout")),
-                                                2)),
-                                1)));
+                                                1)),
+                                0)));
         appCompatButton.perform(scrollTo(), click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.divide), withText("÷"),
+                allOf(withId(R.id.dgt_8), withText("8"),
                         childAtPosition(
-                                allOf(withId(R.id.row_1),
+                                allOf(withId(R.id.row_2),
                                         childAtPosition(
                                                 withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                3)));
+                                                1)),
+                                1)));
         appCompatButton2.perform(scrollTo(), click());
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.dgt_2), withText("2"),
-                        childAtPosition(
-                                allOf(withId(R.id.row_4),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                3)),
-                                1)));
-        appCompatButton3.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.evaluate), withText("Solve"),
-                        childAtPosition(
-                                allOf(withId(R.id.row_5),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                4)),
-                                3)));
-        appCompatButton4.perform(scrollTo(), click());
-
-
-        ViewInteraction editText = onView(allOf(withId(R.id.calculation_textarea),
-                isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
-        editText.check(matches(withText("2.5")));
-
-        ViewInteraction appCompatButton5 = onView(
-                allOf(withId(R.id.divide), withText("÷"),
+                allOf(withId(R.id.delete), withText("DEL"),
                         childAtPosition(
                                 allOf(withId(R.id.row_1),
                                         childAtPosition(
                                                 withClassName(is("android.widget.LinearLayout")),
                                                 0)),
-                                3)));
-        appCompatButton5.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton6 = onView(
-                allOf(withId(R.id.dgt_0), withText("0"),
-                        childAtPosition(
-                                allOf(withId(R.id.row_5),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                4)),
                                 1)));
-        appCompatButton6.perform(scrollTo(), click());
+        appCompatButton3.perform(scrollTo(), click());
 
-        ViewInteraction appCompatButton7 = onView(
-                allOf(withId(R.id.evaluate), withText("Solve"),
+        ViewInteraction editText = onView(allOf(withId(R.id.calculation_textarea),
+                isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
+        editText.check(matches(withText("9")));
+
+
+        ViewInteraction appCompatButton5 = onView(
+                allOf(withId(R.id.all_clear), withText("AC"),
                         childAtPosition(
-                                allOf(withId(R.id.row_5),
+                                allOf(withId(R.id.row_1),
                                         childAtPosition(
                                                 withClassName(is("android.widget.LinearLayout")),
-                                                4)),
-                                3)));
-        appCompatButton7.perform(scrollTo(), click());
+                                                0)),
+                                0)));
+        appCompatButton5.perform(scrollTo(), click());
 
         ViewInteraction editText2 = onView(allOf(withId(R.id.calculation_textarea),
                 isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
-        editText2.check(matches(withText("Cannot divide by zero")));
-
-
+        editText2.check(matches(withText("")));
     }
 
     private static Matcher<View> childAtPosition(
