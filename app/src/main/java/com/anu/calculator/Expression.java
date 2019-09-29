@@ -25,7 +25,7 @@ public interface Expression extends Serializable {
 	/**
 	 * Enter a precision value into the Expression so that the top-level
 	 * Expression returns an evaluation with the required precision
-	 * @param precision
+	 * @param precision The precision to show the result as.
 	 */
 	void updatePrecision(Integer precision);
 }
