@@ -22,11 +22,11 @@ import java.util.HashMap;
  * <exp> ::= <term> | <exp> + <term> | <exp> − <term>
  * <term> ::= <operation> | <term> × <operation> | <term> ÷ <operation>
  * <operation> ::= sin<exp> | sin⁻¹<exp> | cos<exp> | cos⁻¹<exp> |
- *      tan<exp> | tan⁻¹<exp> | log₁₀<exp> | ln<exp> | !<exp> | √<exp> |
+ *      tan<exp> | tan⁻¹<exp> | log₁₀<exp> | ln<exp> | <exp>! | √<exp> |
  *      ∛<exp> | <exp>nPr<exp> | <exp>nCr<exp> | <exp>^<exp> | <exp>² |
- *      <exp>³ | -<exp> | <exp>% | (<exp>) | <literal>
+ *      <exp>³ | <exp>% | (<exp>) | <literal>
  * <literal> ::= π | e | rand | double | -double | <unknown variable>
- * <unknown variable> ::= w | x | y | z | ɑ | β | ɣ | Δ
+ * <unknown variable> ::= a-d, f-z | ɑ | β | ɣ | Δ
  *
  * @author: Samuel Brookes (u5380100)
  * @modified: Michael Betterton (u6797866)
@@ -43,14 +43,7 @@ public class ExpressionParser implements Parser
     private HashMap<Character, HistoryItem> rawHistory;
 
     /**
-     * Parse method for functions.
-     *
-     * @param expression
-     * @param degrees
-     * @param precision
-     * @param history
-     * @return Expression (an EqualityExpression)
-     * @throws ParserException
+     * @author Samuel Brookes (u5380100)
      */
     @Override
     public Expression parse(String expression, Boolean degrees, Integer precision, History history) throws ParserException
@@ -58,28 +51,32 @@ public class ExpressionParser implements Parser
         //Check that the expression is valid
         new ExpressionChecker(expression).checkExpression();
 
-        //Initiate global variables
+        //Initialise global variables
         this.history = history;
         this.degrees = degrees;
         _tokenizer = new Tokenizer(expression);
 
-        //Evaluate everything on the right-hand side of the equation (if there is an equals sign)
+        //Evaluate everything on the right-hand side of the equation (if there is an equals sign),
+        //then check whether this is an equality expression
         return checkForEqualityExpression(parseExp(), precision);
     }
 
     /**
-     * Parse method for the history class.
+     * Parse method for the history class. This parse method is used by the History class to
+     * process an ordered history and assign values to variables. This is the only method that assigns
+     * values to variables.
      *
-     * @param expression
-     * @param rawHistory
-     * @return Expression
+     * @param expression : the expression to be parsed
+     * @param rawHistory : a HashMap of history items used to assign values to variables in the expression
+     * @return Expression : a parsed Expression object
+     * @author Samuel Brookes (u5380100)
      */
     public Expression parseHistory(String expression, Boolean degrees, HashMap<Character, HistoryItem> rawHistory) throws ParserException
     {
         //Check that the expression is valid
         new ExpressionChecker(expression).checkExpression();
 
-        //Save the raw history
+        //Initialise the variables
         this.degrees = degrees;
         this.rawHistory = rawHistory;
         _tokenizer = new Tokenizer(expression);
@@ -94,13 +91,16 @@ public class ExpressionParser implements Parser
      * an EqualityExpression is returned, otherwise the parsed expression
      * is returned unchanged.
      *
-     * @param exp
-     * @param precision
-     * @return Expression
+     * @param exp : the parsed expression
+     * @param precision : the user-defined precision for evaluating the root of the parsing tree
+     * @return Expression : either the unchanged parsed expression, or an EqualityExpression
+     * @author Samuel Brookes (u5380100)
      */
     private Expression checkForEqualityExpression(Expression exp, Integer precision)
     {
         EqualityExpression equality = null;
+
+        //check if there is a hanging equals sign
         if(_tokenizer.hasNext() && _tokenizer.current().type() == Token.Type.EQUALS)
         {
             //If the current token is EQUALS, this is an equality expression
@@ -121,13 +121,16 @@ public class ExpressionParser implements Parser
      * parseExp: The top level parsing method, ensuring that addition and subtraction are done
      * last (i.e. BODM[AS]).
      *
-     * Uses grammar: <exp> ::= <term> | <exp> + <term> | <exp> − <term>
+     * Grammar: <exp> ::= <term> | <exp> + <term> | <exp> − <term>
      *
      * @return type: Expression
+     * @author Samuel Brookes (u5380100)
      */
     private Expression parseExp()
     {
         Expression term = parseTerm();
+
+        //check whether there this is an addition or subtraction
         if(_tokenizer.hasNext() && (_tokenizer.current().type() == Token.Type.ADD ||
                 _tokenizer.current().type() == Token.Type.SUBTRACT))
         {
@@ -145,13 +148,16 @@ public class ExpressionParser implements Parser
      * parseTerm: The second level parsing method, ensuring that division and multiplication
      * are done second last (i.e. BO[DM]AS).
      *
-     * Uses grammar: <term> ::= <operation> | <term> × <operation> | <term> ÷ <operation>
+     * Grammar: <term> ::= <operation> | <term> × <operation> | <term> ÷ <operation>
      *
      * @return type: Expression
+     * @author Samuel Brookes (u5380100)
      */
     private Expression parseTerm()
     {
         Expression operation = parseOperation();
+
+        //check if this is a division or multiplication
         if(_tokenizer.hasNext() && (_tokenizer.current().type() == Token.Type.DIVIDE ||
                 _tokenizer.current().type() == Token.Type.MULTIPLY))
         {
@@ -173,18 +179,21 @@ public class ExpressionParser implements Parser
      * Uses grammar: <operation> ::= sin<exp> | sin⁻¹<exp> | cos<exp> | cos⁻¹<exp> |
      *                  tan<exp> | tan⁻¹<exp> | log₁₀<exp> | ln<exp> | <exp>! | √<exp> |
      *                  ∛<exp> | <exp>nPr<exp> | <exp>nCr<exp> | <exp>^<exp> | <exp>² |
-     *                  <exp>³ | -<exp> | <exp>% | (<exp>) | <literal>
+     *                  <exp>³ | <exp>% | (<exp>) | <literal>
      *
      * @return type: Expression
+     * @author Samuel Brookes (u5380100)
      */
     private Expression parseOperation()
     {
         Expression literal;
         Token holdToken;
 
-        //if it's a trailing token - save the token, get the applicable exp and return
+        //check if the current token is a trailing token
         if(_tokenizer.current().type().isTrailing())
         {
+            //if it is - save the token, get the expression to which it applies and
+            //return the associated Expression object
             holdToken = _tokenizer.current();
             _tokenizer.next();
             literal = parseLiteral();
@@ -197,12 +206,13 @@ public class ExpressionParser implements Parser
             }
         }
 
-        //get the next exp
+        //If the token is not a trailing token - get the next Expression
         literal = parseLiteral();
 
-        //check if the current token is leading or both
+        //Check if the current token is leading
         if(_tokenizer.hasNext() && _tokenizer.current().type().isLeading())
         {
+            //if it is, return the applicable Expression object
             holdToken = _tokenizer.current();
             _tokenizer.next();
             switch(holdToken.type())
@@ -219,8 +229,10 @@ public class ExpressionParser implements Parser
                 case CUBED_ROOT: return new CubedRootExpression(literal);
             }
         }
+        //check if the current token is both leading and trailing
         else if(_tokenizer.hasNext() && _tokenizer.current().type().isLeadingAndTrailing())
         {
+            //if it is, get the next Expression and return the applicable Expression type
             holdToken = _tokenizer.current();
             _tokenizer.next();
             Expression expression = parseLiteral();
@@ -245,6 +257,7 @@ public class ExpressionParser implements Parser
      *               <unknown variable> ::= a-d, f-z | ɑ | β | ɣ | Δ
      *
      * @return type: Expression
+     * @author Samuel Brookes
      */
     private Expression parseLiteral()
     {
@@ -288,8 +301,11 @@ public class ExpressionParser implements Parser
                 literal = new UnknownVariableExpression(variable);
 
             //check for the use of shorthand multiplication
+            //for unknown variables, shorthand multiplication is valid if the next
+            //token is either a double OR an unknown variable
             Token next = _tokenizer.checkAhead(1);
-            if(next != null && next.type() == Token.Type.DOUBLE)
+            if(next != null &&
+                    (next.type() == Token.Type.DOUBLE || next.type() == Token.Type.UNKNOWN_VARIABLE))
                 _tokenizer.appendMultiply();
         }
         else if(_tokenizer.current().type() == Token.Type.RIGHT_PARENTHESIS ||

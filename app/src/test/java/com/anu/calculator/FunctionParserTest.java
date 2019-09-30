@@ -12,6 +12,11 @@ import java.util.ArrayList;
 
 import static junit.framework.TestCase.assertEquals;
 
+/**
+ * This test class tests the functionality of the ExpressionParser when parsing functions
+ * (i.e. EqualityExpressions) and when utilising a History object to assign values
+ * to UnknownVariableExpressions.
+ */
 public class FunctionParserTest {
 
     private History history;
@@ -301,6 +306,11 @@ public class FunctionParserTest {
         tests.add(new TestCase("β=o+p", 230d));
         tests.add(new TestCase("ɣ=rnCrq", 351d));
         tests.add(new TestCase("Δ=s²+t³", 2550.170533));
+
+        //shorthand multiplication check
+        tests.add(new TestCase("t=abcf", 30d));
+        tests.add(new TestCase("z=vw", -12d));
+        tests.add(new TestCase("ɑ=2tz", -720d));
 
         ExpressionParser fp;
         Expression exp;

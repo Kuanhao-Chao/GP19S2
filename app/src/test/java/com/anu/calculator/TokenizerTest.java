@@ -11,6 +11,9 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+/**
+ * This test class tests the functionality of the Tokenizer class.
+ */
 public class TokenizerTest {
     // Tokenizer test class, each test case will instantiate this class.
     private class TestCase {

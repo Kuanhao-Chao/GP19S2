@@ -17,20 +17,21 @@ public class EExpression implements Expression {
 	private Integer precision;
 
 	@Override
-	public void updatePrecision(Integer precision)
-	{
-		this.precision = precision;
-	}
-
-	@Override
 	public String show() {
 		return "e";
 	}
 
 	@Override
 	public double evaluate() throws ParserException {
+		//check if this expression is the root of the parsing tree
 		if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", Math.E));
 		else return Math.E;
+	}
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
 	}
 
 }

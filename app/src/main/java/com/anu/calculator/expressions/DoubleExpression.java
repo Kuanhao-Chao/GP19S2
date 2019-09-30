@@ -19,12 +19,6 @@ public class DoubleExpression implements Expression {
 	private double value;
 	private Integer precision;
 
-	@Override
-	public void updatePrecision(Integer precision)
-	{
-		this.precision = precision;
-	}
-
 	public DoubleExpression(double value) {
 		this.value = value;
 	}
@@ -37,9 +31,18 @@ public class DoubleExpression implements Expression {
 	@Override
 	public double evaluate() throws ParserException
 	{
+		//if the value of evaluation is too large for a double type, throw an infinity exception
 		if(value == Double.POSITIVE_INFINITY) throw new InfinityException(TAG, "Number is too large for little old me");
+
+		//check if this expression is the root of the parsing tree
 		if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", value));
 		else return value;
+	}
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
 	}
 
 }

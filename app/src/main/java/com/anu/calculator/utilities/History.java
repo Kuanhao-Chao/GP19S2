@@ -23,9 +23,13 @@ import java.util.Objects;
 import java.util.Stack;
 
 /**
- * This class takes a history (Stack<Expression>) and processes it
- * so that all of the expressions within it are assigned the correct
- * values.
+ * This class processes and saves any value assignments to variables that
+ * have occurred during the session. This is done so that the user can build re-useable
+ * functions. To process the history, the History class 'strips' (i.e. removes it from
+ * the context of a parsing tree by calling the show function of the root node), orders it in
+ * such a way that all variables are assigned a value consecutively, and then re-evaluates each
+ * expression and assigns the correct value to each variable. It then re-saves the History in a
+ * new Stack so that it is processed in the correct order.
  *
  * @author Samuel Brookes (u5380100)
  * @modified Michael Betterton (u6797866)
@@ -53,7 +57,7 @@ public class History implements Serializable {
      * when no saved history file exists.
      *
      * @return History (empty)
-     * @author: Sam Brookes
+     * @author: Samuel Brookes (u5380100)
      */
     public static History getInstance() {
         return new History(new Stack<HistoryItem>());
@@ -121,10 +125,12 @@ public class History implements Serializable {
     }
 
     /**
-     * Takes an expression and appends it to the end of
+     * Takes an expression and puts it into the History stack in the appropriate location. This is
+     * to enable retroactive value assignment to variables (i.e. rather than simply appending).
      *
-     * @param expression
-     * @throws ParserException
+     * @param expression : the expression to be added to the History.
+     * @throws ParserException : thrown by the parseHistory() method.
+     * @author Samuel Brookes (u5380100)
      */
     public void put(Expression expression, Boolean degrees) throws ParserException {
         savedHistory.push(new HistoryItem(false, expression));
@@ -136,18 +142,27 @@ public class History implements Serializable {
 
     /**
      * This method gets the first instance of each unique variable in the
-     * history Stack and puts it unordered into strippedHistory.
+     * history Stack and puts it unordered into strippedHistory after 'stripping' it
+     * (i.e. removing it from a parsing tree by calling show on the root)
+     *
+     * @author Samuel Brookes
      */
     private void stripHistory() {
         strippedHistory = new ArrayList<>(0);
 
         String raw;
+
+        //stores any variables that have been added to strippedHistory to ensure they are unique
         HashSet<String> storedVariables = new HashSet<>(0);
         while (!savedHistory.empty()) {
             raw = savedHistory.pop().getExpression().show();
+
+            //if the stripped expression is an equality expression
             if (raw.contains(EQUALS)) {
                 String variable = raw.split(EQUALS)[0].trim();
                 if (!storedVariables.contains(variable)) {
+
+                    //store the variable and add the expression to strippedHistory
                     storedVariables.add(variable);
                     strippedHistory.add(raw);
                 }
@@ -163,13 +178,14 @@ public class History implements Serializable {
      * detected.
      *
      * @throws ParserException A exception was encountered when parsing the history.
+     * @author Samuel Brookes (u5380100)
      */
     private void orderHistory() throws ParserException {
         orderedHistory = new LinkedList<>();
         HashSet<String> definedVariables = new HashSet<>(0);
         Tokenizer tokenizer;
 
-        //Do a quick sweep to search for DoubleExpressions as these immediately define a var
+        //Do a quick sweep to search for DoubleExpressions as these immediately define a variable
         String variable, expression;
         for (String raw : strippedHistory) {
             variable = raw.split(EQUALS)[0].trim();
@@ -229,6 +245,11 @@ public class History implements Serializable {
      * orderedHistory (from end to beginning) and successfully parse each expression
      * as each variable should have been previously given a value.
      * Once it has parsed each value - it stores them into processedHistory.
+     *
+     * @param degrees : whether the user is using degrees or radians. This is necessary
+     *                in case the expression contains trigonometry expressions
+     * @throws ParserException A exception was encountered when parsing the history.
+     * @author Samuel Brookes (u5380100)
      */
     private void processHistory(Boolean degrees) throws ParserException {
         processedHistory = new HashMap<>(0);
@@ -242,6 +263,14 @@ public class History implements Serializable {
         }
     }
 
+    /**
+     * Returns the processed HistoryItems to a Stack. This is done so that when a new
+     * expression is added to the history, it is the FIRST expression evaluated, otherwise
+     * a previous value for the variable may be evaluated first and the new value will be
+     * ignored.
+     *
+     * @author Samuel Brookes (u5380100)
+     */
     private void saveHistory() {
         savedHistory = new Stack<>();
         for (Map.Entry<Character, HistoryItem> mapEntry : processedHistory.entrySet()) {
@@ -251,13 +280,16 @@ public class History implements Serializable {
 
     /**
      * Checks whether an expression is able to be graphed.
-     * An expression is able to be graphed if it has less than
-     * one unknown variable.
+     * An expression is able to be graphed if it has one or less UNIQUE variables
+     * in the RHS of the equation, e.g. a = 2x + y is not graphable, b = 2x + x is graphable.
      *
-     * @param expression
-     * @return
+     * @param expression : the expression to be check for 'graph-ability'
+     * @return boolean : whether the expression can be graphed or not
+     * @author Samuel Brookes (u5380100)
      */
     private boolean isGraphable(Expression expression) {
+
+        //get the RHS of the equality expression
         String expStr = expression.show().split("=")[1];
         Tokenizer tokenizer = new Tokenizer(expStr);
 
@@ -266,10 +298,12 @@ public class History implements Serializable {
             if (tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE) {
                 if(unkVar == '$')
                 {
+                    //if this is the first variable, assign it to unkVar
                     unkVar = tokenizer.current().token().charAt(0);
                 }
                 else
                 {
+                    //if there is another variable in the expression, it is not graphable
                     if(tokenizer.current().token().charAt(0) != unkVar) return false;
                 }
             }
@@ -279,10 +313,24 @@ public class History implements Serializable {
         return true;
     }
 
+    /**
+     * Checks whether this History object contains the given variable.
+     *
+     * @param variable : the variable in question
+     * @return boolean : whether the History has the variable or not
+     * @author Samuel Brookes (u5380100)
+     */
     public boolean hasVariable(Character variable) {
         return processedHistory != null && processedHistory.containsKey(variable);
     }
 
+    /**
+     * Gets the expression (i.e. value) for the given variable.
+     *
+     * @param variable : the variable in question
+     * @return Expression : the expression (value) of the variable
+     * @author Samuel Brookes (u5380100)
+     */
     public Expression getExpression(Character variable) {
         return processedHistory.get(variable).getExpression();
     }

@@ -22,12 +22,6 @@ public class DivideExpression implements Expression {
 	private Expression term;
 	private Integer precision;
 
-	@Override
-	public void updatePrecision(Integer precision)
-	{
-		this.precision = precision;
-	}
-
 	public DivideExpression(Expression factor, Expression term) {
 		this.factor = factor;
 		this.term = term;
@@ -42,13 +36,18 @@ public class DivideExpression implements Expression {
 	public double evaluate() throws ParserException {
 		try
 		{
+			//check that the user is not dividing by zero
 			double checkForZero = term.evaluate();
 			if(checkForZero == 0) throw new DivisionByZeroException(TAG, "Cannot divide by zero");
 			else
 			{
+				//evaluate the expression
 				double evaluation = factor.evaluate() / term.evaluate();
 
+				//if the value of evaluation is too large for a double type, throw an infinity exception
 				if(evaluation == Double.POSITIVE_INFINITY) throw new InfinityException(TAG, "Number is too large for little old me");
+
+				//check if this expression is the root of the parsing tree
 				if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
 				else return evaluation;
 			}
@@ -63,5 +62,10 @@ public class DivideExpression implements Expression {
 		}
 	}
 
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
 
 }

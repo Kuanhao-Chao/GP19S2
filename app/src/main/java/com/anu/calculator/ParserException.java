@@ -26,7 +26,8 @@ public abstract class ParserException extends Exception {
     }
 
     /**
-     * Default logging method for ParserException.
+     * Default logging method for ParserException. This can be used to
+     * log the occurrence of an exception to the Android log.
      */
     public void logMe()
     {

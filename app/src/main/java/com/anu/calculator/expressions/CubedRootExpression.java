@@ -20,12 +20,6 @@ public class CubedRootExpression implements Expression {
     private Expression expression;
     private Integer precision;
 
-    @Override
-    public void updatePrecision(Integer precision)
-    {
-        this.precision = precision;
-    }
-
     public CubedRootExpression(Expression expression)
     {
         this.expression = expression;
@@ -42,9 +36,13 @@ public class CubedRootExpression implements Expression {
     {
         try
         {
+            //evaluate the expression
             double evaluation = Math.cbrt(expression.evaluate());
 
+            //if the value of evaluation is too large for a double type, throw an infinity exception
             if(evaluation == Double.POSITIVE_INFINITY) throw new InfinityException(TAG, "Number is too large for little old me");
+
+            //check if this expression is the root of the parsing tree
             if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
             else return evaluation;
         }
@@ -52,6 +50,12 @@ public class CubedRootExpression implements Expression {
         {
             throw new MathematicalSyntaxException(TAG, "Syntax error");
         }
+    }
+
+    @Override
+    public void updatePrecision(Integer precision)
+    {
+        this.precision = precision;
     }
 
 }

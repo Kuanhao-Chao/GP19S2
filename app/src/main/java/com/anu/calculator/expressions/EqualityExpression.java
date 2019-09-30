@@ -19,12 +19,6 @@ public class EqualityExpression implements Expression {
     private Expression expression;
     private Integer precision;
 
-    @Override
-    public void updatePrecision(Integer precision)
-    {
-        this.precision = precision;
-    }
-
     public EqualityExpression(char variable, Expression expression) {
         this.expression = expression;
         this.variable = variable;
@@ -37,19 +31,9 @@ public class EqualityExpression implements Expression {
 
     @Override
     public double evaluate() throws ParserException {
+        //check if this expression is the root of the parsing tree
         if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", expression.evaluate()));
         else return expression.evaluate();
-    }
-
-    /**
-     * Checks whether the stored variable is the same as the variable in question
-     * @param token
-     * @return boolean
-     *
-     */
-    public boolean isSameVariable(String token)
-    {
-        return this.variable == token.charAt(0);
     }
 
     /**
@@ -60,4 +44,11 @@ public class EqualityExpression implements Expression {
     {
         return expression;
     }
+
+    @Override
+    public void updatePrecision(Integer precision)
+    {
+        this.precision = precision;
+    }
+
 }

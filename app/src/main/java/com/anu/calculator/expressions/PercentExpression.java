@@ -20,12 +20,6 @@ public class PercentExpression implements Expression {
 	private Expression expression;
 	private Integer precision;
 
-	@Override
-	public void updatePrecision(Integer precision)
-	{
-		this.precision = precision;
-	}
-
 	public PercentExpression(Expression expression) {
 		this.expression = expression;
 	}
@@ -40,9 +34,13 @@ public class PercentExpression implements Expression {
 	public double evaluate() throws ParserException {
 		try
 		{
+			//evaluate the expression
 			double evaluation = expression.evaluate()/100;
 
+			//if the value of evaluation is too large for a double type, throw an infinity exception
 			if(evaluation == Double.POSITIVE_INFINITY) throw new InfinityException(TAG, "Number is too large for little old me.");
+
+			//check if this expression is the root of the parsing tree
 			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
 			else return evaluation;
 		}
@@ -50,5 +48,11 @@ public class PercentExpression implements Expression {
 		{
 			throw new MathematicalSyntaxException(TAG, "Syntax error");
 		}
+	}
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
 	}
 }

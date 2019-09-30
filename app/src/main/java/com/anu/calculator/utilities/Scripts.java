@@ -9,6 +9,10 @@ package com.anu.calculator.utilities;
 
 public class Scripts {
 
+    /**
+     * This enumeration contains superscripts (numbers, minus sign and parentheses).
+     * @author Samuel Brookes (u5380100)
+     */
     public enum SuperScript
     {
         ONE('\u00b9'),
@@ -35,6 +39,10 @@ public class Scripts {
         public char getUnicode() { return unicode; }
     }
 
+    /**
+     * This enumeration contains subscripts (numbers, minus sign and parentheses).
+     * @author Samuel Brookes (u5380100)
+     */
     public enum SubScript
     {
         ONE('\u2081'),
@@ -60,15 +68,18 @@ public class Scripts {
         public char getUnicode() { return unicode; }
     }
 
+    /**
+     * This enumeration contains mathematical operators.
+     *
+     * @author Samuel Brookes (u5380100)
+     */
     public enum Operators
     {
         SQRT('\u221a'),
         CUBE_ROOT('\u221b'),
         PI('\u03c0'),
         MULTIPLY('\u00d7'),
-        DIVIDE('\u00f7'),
-        DEGREES('\u00b0'),
-        RADIANS('\u33ad');
+        DIVIDE('\u00f7');
 
         private char unicode;
 

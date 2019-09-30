@@ -6,6 +6,12 @@ import com.anu.calculator.exceptions.NothingEnteredException;
 
 import java.util.Stack;
 
+/**
+ * The ExpressionChecker class conducts simple tests of the user input to
+ * catch any simple errors prior to parsing the expression.
+ *
+ * @author Samuel Brookes (u5380100)
+ */
 public class ExpressionChecker {
 
     private static final String TAG = "EXPRESSION_CHECKER";
@@ -17,13 +23,15 @@ public class ExpressionChecker {
     }
 
     /**
-     * checkExpression: conducts a preliminary check of the expression string entered by the user
-     * prior to being passed to Parser.parse(). This is to catch any easy-to-detect errors to save
-     * time - rather than trying to detect them within a parsed expression.
+     * This is the public-facing method that is called to check that an expression
+     * does not have any errors. This method does not return anything, but reports
+     * the result of its check by throwing the appropriate ParserException.
+     *
+     * @throws ParserException : if something is wrong with the expression
+     * @author Samuel Brookes
      */
     public void checkExpression() throws ParserException
     {
-
         //check whether the user has entered something
         if(expression.equals(""))
             throw new NothingEnteredException(TAG, "");
@@ -35,6 +43,18 @@ public class ExpressionChecker {
         if(expression.contains("=")) checkFunctions();
     }
 
+    /**
+     * This method tests that the user is using brackets correctly. For example,
+     * whether they have forgotten to put in an open or closing bracket (e.g. "18+(2-5") or whether
+     * they have incorrectly nested brackets (e.g. "{15+[8-9}+sin30]"). It does so by adding
+     * brackets, braces and parentheses to a stack and removing them when the brackets pair
+     * is encountered. If the tokenizer encounters a bracket, brace or parenthesis that is NOT
+     * paired to the token on the top of the stack - the brackets are incorrectly nested.
+     * If the stack is not empty at the end of the method, there are unpaired brackets.
+     *
+     * @throws ParserException : if brackets are used incorrectly
+     * @author Samuel Brookes (u5380100)
+     */
     private void checkBrackets() throws ParserException
     {
         Stack<Token.Type> brackStack = new Stack<>();
@@ -63,11 +83,27 @@ public class ExpressionChecker {
             throw new MathematicalSyntaxException(TAG, "Syntax error: incorrect nesting of brackets");
     }
 
+    /**
+     * This method is used by the checkBrackets() method to check whether a
+     * token is a bracket, brace or parenthesis.
+     *
+     * @param token : the type of the current token
+     * @return boolean : whether the token is a bracket, brace or parenthesis
+     * @author Samuel Brookes (u5380100)
+     */
     private boolean isBracket(Token.Type token)
     {
         return isLeft(token) || isRight(token);
     }
 
+    /**
+     * This method is used by the checkBrackets() method to check whether the
+     * current token is a LEFT bracket, brace or parenthesis
+     *
+     * @param bracket : the current token (a bracket, brace or parenthesis)
+     * @return boolean : whether the current token is a LEFT bracket, brace or parenthesis
+     * @author Samuel Brookes (u5380100)
+     */
     private boolean isLeft(Token.Type bracket)
     {
         return bracket == Token.Type.LEFT_BRACKET ||
@@ -75,6 +111,14 @@ public class ExpressionChecker {
                 bracket == Token.Type.LEFT_PARENTHESIS;
     }
 
+    /**
+     * This method is used by the checkBrackets() method to check whether the
+     * current token is a RIGHT bracket, brace or parenthesis.
+     *
+     * @param bracket : the current token (a bracket, brace or parenthesis)
+     * @return boolean : whether the current token is a RIGHT bracket, brace or parenthesis
+     * @author Samuel Brookes (u5380100)
+     */
     private boolean isRight(Token.Type bracket)
     {
         return bracket == Token.Type.RIGHT_BRACKET ||
@@ -82,6 +126,14 @@ public class ExpressionChecker {
                 bracket == Token.Type.RIGHT_PARENTHESIS;
     }
 
+    /**
+     * This method is used by the checkBrackets() method to check whether the two brackets, braces
+     * or parentheses are each other's pair, e.g. LEFT BRACE and RIGHT BRACE.
+     * @param right : the token on the right side of an expression
+     * @param left : the token on the left side of an expression
+     * @return boolean : whether the tokens are each other's pair
+     * @author Samuel Brookes (u5380100)
+     */
     private boolean isPairTo(Token.Type right, Token.Type left)
     {
         switch(right)
@@ -97,6 +149,12 @@ public class ExpressionChecker {
         }
     }
 
+    /**
+     * This method contains checks that are only valid for functions (equality expressions)
+     *
+     * @throws ParserException : if the function syntax is wrong
+     * @author Samuel Brookes (u5380100)
+     */
     private void checkFunctions() throws ParserException
     {
         //test that there is only one equals sign

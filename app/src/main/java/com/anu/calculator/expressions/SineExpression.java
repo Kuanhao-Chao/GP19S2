@@ -22,12 +22,6 @@ public class SineExpression implements Expression {
 	private Boolean degrees;
 	private Integer precision;
 
-	@Override
-	public void updatePrecision(Integer precision)
-	{
-		this.precision = precision;
-	}
-
 	public SineExpression(Expression expression, Boolean degrees)
 	{
 		this.expression = expression;
@@ -44,10 +38,15 @@ public class SineExpression implements Expression {
 		try
 		{
 			double evaluation;
+
+			//if the preference is set to degrees, convert the value to radians before passing to Math.sin
 			if(degrees) evaluation = Math.sin(Math.toRadians(expression.evaluate()));
 			else evaluation = Math.sin(expression.evaluate());
 
+			//if the value of evaluation is too large for a double type, throw an infinity exception
 			if(evaluation == Double.POSITIVE_INFINITY) throw new InfinityException(TAG, "Number is too large for little old me.");
+
+			//check if this expression is the root of the parsing tree
 			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
 			else return evaluation;
 		}
@@ -55,6 +54,12 @@ public class SineExpression implements Expression {
 		{
 			throw new MathematicalSyntaxException(TAG, "Syntax error");
 		}
+	}
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
 	}
 
 }

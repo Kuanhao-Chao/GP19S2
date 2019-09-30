@@ -7,6 +7,8 @@ package com.anu.calculator.utilities;
  * @author: Michael Betterton (u6797866)
  * @modified: Samuel Brookes (u5380100)
  *  - Wrote the next() method
+ *  - Wrote the checkAhead() method
+ *  - Wrote the appendMultiply() method
  */
 
 public class Tokenizer {
@@ -30,21 +32,19 @@ public class Tokenizer {
         return currentToken != null;
     }
 
-    public Token checkAhead(int numTokens)
-    {
-        Tokenizer checker = new Tokenizer(_buffer);
-        while(numTokens > 1 && checker.current() != null)
-        {
-            checker.next();
-            numTokens--;
-        }
-        return checker.current();
-    }
-
+    /**
+     * Parsing trees are built recursively. Therefore, to ensure that operators with equal
+     * precedence (e.g. addition and subtraction, multiplication and division) are evaluated
+     * from left to right, an expression must be parsed BACKWARDS. The next() method therefore
+     * tokenises a string from RIGHT TO LEFT.
+     *
+     * @author Samuel Brookes (u5380100)
+     */
     public void next()
     {
         _buffer = _buffer.trim();
 
+        //buffer is empty - set currentToken to null
         if(_buffer.equals(""))
         {
             currentToken = null;
@@ -187,6 +187,31 @@ public class Tokenizer {
         _buffer = _buffer.substring(0, _buffer.length() - tokenLen);
     }
 
+    /**
+     * This method allows the tokenizer to check a token beyond the current token
+     * without affecting the current buffer.
+     *
+     * @param numTokens : the number of tokens ahead that the tokenizer should check
+     * @return Token : the Token that is numTokens before the current token
+     * @author Samuel Brookes (u5380100)
+     */
+    public Token checkAhead(int numTokens)
+    {
+        Tokenizer checker = new Tokenizer(_buffer);
+        while(numTokens > 1 && checker.current() != null)
+        {
+            checker.next();
+            numTokens--;
+        }
+        return checker.current();
+    }
+
+    /**
+     * This method appends the buffer with a MULTIPLICATION operator. It does so to
+     * allow the normal parseExp() method in the ExpressionParser to evaluate shorthand multiplication.
+     *
+     * @author Samuel Brookes (u5380100)
+     */
     public void appendMultiply()
     {
         _buffer = _buffer + Scripts.Operators.MULTIPLY.getUnicode();

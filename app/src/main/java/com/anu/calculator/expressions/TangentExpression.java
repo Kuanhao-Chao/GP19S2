@@ -22,12 +22,6 @@ public class TangentExpression implements Expression {
 	private Boolean degrees;
 	private Integer precision;
 
-	@Override
-	public void updatePrecision(Integer precision)
-	{
-		this.precision = precision;
-	}
-
 	public TangentExpression(Expression expression, Boolean degrees) {
 		this.expression = expression;
 		this.degrees = degrees;
@@ -43,10 +37,15 @@ public class TangentExpression implements Expression {
 		try
 		{
 			double evaluation;
+
+			//if the preference is set to degrees, convert the value to radians before passing to Math.tan
 			if(degrees) evaluation = Math.tan(Math.toRadians(expression.evaluate()));
 			else evaluation = Math.tan(expression.evaluate());
 
+			//if the value of evaluation is too large for a double type, throw an infinity exception
 			if(evaluation == Double.POSITIVE_INFINITY) throw new InfinityException(TAG, "Number is too large for little old me.");
+
+			//check if this expression is the root of the parsing tree
 			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
 			else return evaluation;
 		}
@@ -54,6 +53,12 @@ public class TangentExpression implements Expression {
 		{
 			throw new MathematicalSyntaxException(TAG, "Syntax error");
 		}
+	}
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
 	}
 
 }

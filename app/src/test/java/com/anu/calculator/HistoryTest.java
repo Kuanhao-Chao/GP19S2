@@ -9,6 +9,9 @@ import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
 
+/**
+ * This test class tests the functionality of the History class.
+ */
 public class HistoryTest {
 
     /**

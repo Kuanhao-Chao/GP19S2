@@ -13,6 +13,9 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
+/**
+ * This test class tests the functionality of the ExpressionParser.
+ */
 public class ExpressionParserTest {
 
     /**

@@ -18,12 +18,6 @@ public class RandomNumberExpression implements Expression {
 	private Random rand;
 	private Integer precision;
 
-	@Override
-	public void updatePrecision(Integer precision)
-	{
-		this.precision = precision;
-	}
-
 	public RandomNumberExpression() {
 		rand = new Random();
 		randDouble = rand.nextDouble();
@@ -36,9 +30,14 @@ public class RandomNumberExpression implements Expression {
 
 	@Override
 	public double evaluate() throws ParserException {
+		//check if this expression is the root of the parsing tree
 		if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", randDouble));
 		else return randDouble;
 	}
 
-	public String getValue(){ return String.valueOf(randDouble); }
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
 }

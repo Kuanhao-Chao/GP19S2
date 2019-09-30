@@ -23,8 +23,9 @@ public interface Expression extends Serializable {
 	double evaluate() throws ParserException;
 
 	/**
-	 * Enter a precision value into the Expression so that the top-level
-	 * Expression returns an evaluation with the required precision
+	 * Updates the precision field so that when evaluate() is called,
+	 * the correct number of significant figures are returned. If precision
+	 * is null, evaluate returns the evaluation unaltered.
 	 * @param precision The precision to show the result as.
 	 */
 	void updatePrecision(Integer precision);

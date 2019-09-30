@@ -21,12 +21,6 @@ public class PermutationExpression implements Expression {
 	private Expression r;
 	private Integer precision;
 
-	@Override
-	public void updatePrecision(Integer precision)
-	{
-		this.precision = precision;
-	}
-
 	public PermutationExpression(Expression n, Expression r) {
 		this.n = n;
 		this.r = r;
@@ -41,11 +35,17 @@ public class PermutationExpression implements Expression {
 	public double evaluate() throws ParserException {
 		try
 		{
+			//construct a permutation equation using expressions
 			FactorialExpression numerator = new FactorialExpression(n);
 			FactorialExpression denominator = new FactorialExpression(new SubtractExpression(n, r));
+
+			//evaluate the equation
 			double evaluation = numerator.evaluate() / denominator.evaluate();
 
+			//if the value of evaluation is too large for a double type, throw an infinity exception
 			if(evaluation == Double.POSITIVE_INFINITY) throw new InfinityException(TAG, "Number is too large for little old me.");
+
+			//check if this expression is the root of the parsing tree
 			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
 			else return evaluation;
 		}
@@ -54,4 +54,11 @@ public class PermutationExpression implements Expression {
 			throw new MathematicalSyntaxException(TAG, "Syntax error");
 		}
 	}
+
+	@Override
+	public void updatePrecision(Integer precision)
+	{
+		this.precision = precision;
+	}
+
 }
