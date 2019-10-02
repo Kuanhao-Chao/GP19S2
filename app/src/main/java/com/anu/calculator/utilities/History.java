@@ -186,7 +186,7 @@ public class History implements Serializable {
         Tokenizer tokenizer;
 
         //Do a quick sweep to search for DoubleExpressions as these immediately define a variable
-        String variable, expression;
+        String variable = "", expression;
         for (String raw : strippedHistory) {
             variable = raw.split(EQUALS)[0].trim();
             expression = raw.split(EQUALS)[1].trim();
@@ -234,7 +234,7 @@ public class History implements Serializable {
                 (i.e. a loop).
              */
             if (!allDefined && prevSize == orderedHistory.size())
-                throw new FunctionLoopException(TAG, "An error occurred.");
+                throw new FunctionLoopException(TAG, "Variable " + variable + "has no value assigned to it.");
             else
                 prevSize = orderedHistory.size();
         }
