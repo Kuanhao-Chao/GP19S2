@@ -49,42 +49,44 @@ public class SimpleAddSubMulDiv {
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.dgt_0), withText("0"),
                         childAtPosition(
-                                allOf(withId(R.id.row_5),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                4)),
-                                1)));
-        appCompatButton.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                1),
+                        isDisplayed()));
+        appCompatButton.perform( click());
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.addition), withText("+"),
                         childAtPosition(
-                                allOf(withId(R.id.row_4),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                3)),
-                                3)));
-        appCompatButton2.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        3),
+                                3),
+                        isDisplayed()));
+        appCompatButton2.perform(click());
+
+
 
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.dgt_2), withText("2"),
                         childAtPosition(
-                                allOf(withId(R.id.row_4),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                3)),
-                                1)));
-        appCompatButton3.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        3),
+                                1),
+                        isDisplayed()));
+        appCompatButton3.perform(click());
 
         ViewInteraction appCompatButton4 = onView(
                 allOf(withId(R.id.evaluate), withText("Solve"),
                         childAtPosition(
-                                allOf(withId(R.id.row_5),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                4)),
-                                3)));
-        appCompatButton4.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                3),
+                        isDisplayed()));
+        appCompatButton4.perform(click());
 
         ViewInteraction editText = onView(allOf(withId(R.id.calculation_textarea),
                 isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
@@ -94,12 +96,27 @@ public class SimpleAddSubMulDiv {
         ViewInteraction AC1 = onView(
                 allOf(withId(R.id.all_clear), withText("AC"),
                         childAtPosition(
-                                allOf(withId(R.id.row_1),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                0)));
-        AC1.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        AC1.perform(click());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         ViewInteraction afterACEditext = onView(allOf(withId(R.id.calculation_textarea),
                 isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
@@ -114,42 +131,42 @@ public class SimpleAddSubMulDiv {
         ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.dgt_1), withText("1"),
                         childAtPosition(
-                                allOf(withId(R.id.row_4),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                3)),
-                                2)));
-        appCompatButton5.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        3),
+                                2),
+                        isDisplayed()));
+        appCompatButton5.perform(click());
 
         ViewInteraction appCompatButton6 = onView(
                 allOf(withId(R.id.subtraction), withText("-"),
                         childAtPosition(
-                                allOf(withId(R.id.row_3),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                2)),
-                                3)));
-        appCompatButton6.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        2),
+                                3),
+                        isDisplayed()));
+        appCompatButton6.perform(click());
 
         ViewInteraction appCompatButton7 = onView(
                 allOf(withId(R.id.dgt_3), withText("3"),
                         childAtPosition(
-                                allOf(withId(R.id.row_4),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                3)),
-                                0)));
-        appCompatButton7.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        3),
+                                0),
+                        isDisplayed()));
+        appCompatButton7.perform(click());
 
         ViewInteraction appCompatButton8 = onView(
                 allOf(withId(R.id.evaluate), withText("Solve"),
                         childAtPosition(
-                                allOf(withId(R.id.row_5),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                4)),
-                                3)));
-        appCompatButton8.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                3),
+                        isDisplayed()));
+        appCompatButton8.perform(click());
 
 
         ViewInteraction editText2 = onView(allOf(withId(R.id.calculation_textarea),
@@ -160,12 +177,12 @@ public class SimpleAddSubMulDiv {
         ViewInteraction AC2 = onView(
                 allOf(withId(R.id.all_clear), withText("AC"),
                         childAtPosition(
-                                allOf(withId(R.id.row_1),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                0)));
-        AC2.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        AC2.perform(click());
 
         ViewInteraction afterACEditext2 = onView(allOf(withId(R.id.calculation_textarea),
                 isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
@@ -177,165 +194,68 @@ public class SimpleAddSubMulDiv {
         ViewInteraction appCompatButton9 = onView(
                 allOf(withId(R.id.subtraction), withText("-"),
                         childAtPosition(
-                                allOf(withId(R.id.row_3),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                2)),
-                                3)));
-        appCompatButton9.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        2),
+                                3),
+                        isDisplayed()));
+        appCompatButton9.perform(click());
 
         ViewInteraction appCompatButton10 = onView(
                 allOf(withId(R.id.dgt_4), withText("4"),
                         childAtPosition(
-                                allOf(withId(R.id.row_3),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                2)),
-                                2)));
-        appCompatButton10.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        2),
+                                2),
+                        isDisplayed()));
+        appCompatButton10.perform(click());
 
         ViewInteraction appCompatButton11 = onView(
                 allOf(withId(R.id.multiply), withText("×"),
                         childAtPosition(
-                                allOf(withId(R.id.row_2),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                3)));
-        appCompatButton11.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        1),
+                                3),
+                        isDisplayed()));
+        appCompatButton11.perform(click());
 
         ViewInteraction appCompatButton12 = onView(
                 allOf(withId(R.id.subtraction), withText("-"),
                         childAtPosition(
-                                allOf(withId(R.id.row_3),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                2)),
-                                3)));
-        appCompatButton12.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        2),
+                                3),
+                        isDisplayed()));
+        appCompatButton12.perform(click());
 
         ViewInteraction appCompatButton13 = onView(
                 allOf(withId(R.id.dgt_8), withText("8"),
                         childAtPosition(
-                                allOf(withId(R.id.row_2),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                1)));
-        appCompatButton13.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        1),
+                                1),
+                        isDisplayed()));
+        appCompatButton13.perform(click());
 
         ViewInteraction appCompatButton14 = onView(
                 allOf(withId(R.id.evaluate), withText("Solve"),
                         childAtPosition(
-                                allOf(withId(R.id.row_5),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                4)),
-                                3)));
-        appCompatButton14.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                3),
+                        isDisplayed()));
+        appCompatButton14.perform(click());
 
 
         ViewInteraction editText3 = onView(allOf(withId(R.id.calculation_textarea),
                 isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
         editText3.check(matches(withText("32")));
 
-
-        ViewInteraction AC3 = onView(
-                allOf(withId(R.id.all_clear), withText("AC"),
-                        childAtPosition(
-                                allOf(withId(R.id.row_1),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                0)));
-        AC3.perform(scrollTo(), click());
-
-        ViewInteraction afterACEditext3 = onView(allOf(withId(R.id.calculation_textarea),
-                isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
-        afterACEditext3.check(matches(withText("")));
-
-
-
-
-
-        ViewInteraction appCompatButton15 = onView(
-                allOf(withId(R.id.dgt_5), withText("5"),
-                        childAtPosition(
-                                allOf(withId(R.id.row_3),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                2)),
-                                1)));
-        appCompatButton15.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton16 = onView(
-                allOf(withId(R.id.divide), withText("÷"),
-                        childAtPosition(
-                                allOf(withId(R.id.row_1),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                3)));
-        appCompatButton16.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton17 = onView(
-                allOf(withId(R.id.dgt_2), withText("2"),
-                        childAtPosition(
-                                allOf(withId(R.id.row_4),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                3)),
-                                1)));
-        appCompatButton17.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton18 = onView(
-                allOf(withId(R.id.evaluate), withText("Solve"),
-                        childAtPosition(
-                                allOf(withId(R.id.row_5),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                4)),
-                                3)));
-        appCompatButton18.perform(scrollTo(), click());
-
-
-        ViewInteraction editText4 = onView(allOf(withId(R.id.calculation_textarea),
-                isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
-        editText4.check(matches(withText("2.5")));
-
-        ViewInteraction appCompatButton19 = onView(
-                allOf(withId(R.id.divide), withText("÷"),
-                        childAtPosition(
-                                allOf(withId(R.id.row_1),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                3)));
-        appCompatButton19.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton20 = onView(
-                allOf(withId(R.id.dgt_0), withText("0"),
-                        childAtPosition(
-                                allOf(withId(R.id.row_5),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                4)),
-                                1)));
-        appCompatButton20.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton21 = onView(
-                allOf(withId(R.id.evaluate), withText("Solve"),
-                        childAtPosition(
-                                allOf(withId(R.id.row_5),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                4)),
-                                3)));
-        appCompatButton21.perform(scrollTo(), click());
-
-        ViewInteraction editText5 = onView(allOf(withId(R.id.calculation_textarea),
-                isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
-        editText5.check(matches(withText("Cannot divide by zero")));
     }
 
     private static Matcher<View> childAtPosition(

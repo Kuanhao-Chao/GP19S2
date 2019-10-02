@@ -62,8 +62,9 @@ public class SimpleLog {
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
                                         1),
-                                0)));
-        appCompatButton.perform(scrollTo(), click());
+                                0),
+                        isDisplayed()));
+        appCompatButton.perform(click());
 
         ViewInteraction tabView2 = onView(
                 allOf(withContentDescription("Main"),
@@ -78,32 +79,32 @@ public class SimpleLog {
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.dgt_1), withText("1"),
                         childAtPosition(
-                                allOf(withId(R.id.row_4),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                3)),
-                                2)));
-        appCompatButton2.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        3),
+                                2),
+                        isDisplayed()));
+        appCompatButton2.perform(click());
 
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.dgt_0), withText("0"),
                         childAtPosition(
-                                allOf(withId(R.id.row_5),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                4)),
-                                1)));
-        appCompatButton3.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                1),
+                        isDisplayed()));
+        appCompatButton3.perform(click());
 
         ViewInteraction appCompatButton4 = onView(
                 allOf(withId(R.id.evaluate), withText("Solve"),
                         childAtPosition(
-                                allOf(withId(R.id.row_5),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                4)),
-                                3)));
-        appCompatButton4.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                3),
+                        isDisplayed()));
+        appCompatButton4.perform(click());
 
 
         ViewInteraction editText = onView(allOf(withId(R.id.calculation_textarea),
@@ -113,12 +114,12 @@ public class SimpleLog {
         ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.all_clear), withText("AC"),
                         childAtPosition(
-                                allOf(withId(R.id.row_1),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                0)));
-        appCompatButton5.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatButton5.perform(click());
 
 
         ViewInteraction editText2 = onView(allOf(withId(R.id.calculation_textarea),
@@ -141,8 +142,9 @@ public class SimpleLog {
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
                                         1),
-                                1)));
-        appCompatButton6.perform(scrollTo(), click());
+                                1),
+                        isDisplayed()));
+        appCompatButton6.perform(click());
 
         ViewInteraction tabView4 = onView(
                 allOf(withContentDescription("Main"),
@@ -157,32 +159,32 @@ public class SimpleLog {
         ViewInteraction appCompatButton7 = onView(
                 allOf(withId(R.id.dgt_1), withText("1"),
                         childAtPosition(
-                                allOf(withId(R.id.row_4),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                3)),
-                                2)));
-        appCompatButton7.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        3),
+                                2),
+                        isDisplayed()));
+        appCompatButton7.perform(click());
 
         ViewInteraction appCompatButton8 = onView(
                 allOf(withId(R.id.dgt_0), withText("0"),
                         childAtPosition(
-                                allOf(withId(R.id.row_5),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                4)),
-                                1)));
-        appCompatButton8.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                1),
+                        isDisplayed()));
+        appCompatButton8.perform(click());
 
         ViewInteraction appCompatButton9 = onView(
                 allOf(withId(R.id.evaluate), withText("Solve"),
                         childAtPosition(
-                                allOf(withId(R.id.row_5),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                4)),
-                                3)));
-        appCompatButton9.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                3),
+                        isDisplayed()));
+        appCompatButton9.perform(click());
 
 
         ViewInteraction editText3 = onView(allOf(withId(R.id.calculation_textarea),
@@ -192,12 +194,12 @@ public class SimpleLog {
         ViewInteraction appCompatButton10 = onView(
                 allOf(withId(R.id.all_clear), withText("AC"),
                         childAtPosition(
-                                allOf(withId(R.id.row_1),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                0)));
-        appCompatButton10.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatButton10.perform(click());
 
         ViewInteraction editText4 = onView(allOf(withId(R.id.calculation_textarea),
                 isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));

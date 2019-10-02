@@ -24,6 +24,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -61,18 +62,13 @@ public class SimpleVariable {
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
                                         0),
-                                0)));
-        appCompatButton.perform(scrollTo(), click());
-
-        ViewInteraction editText = onView(
-                allOf(withId(R.id.calculation_textarea), withText("a"),
-                        childAtPosition(
-                                allOf(withId(R.id.linearLayout),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class),
-                                                0)),
                                 0),
                         isDisplayed()));
+        appCompatButton.perform( click());
+
+
+        ViewInteraction editText = onView(allOf(withId(R.id.calculation_textarea),
+                isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
         editText.check(matches(withText("a")));
     }
 

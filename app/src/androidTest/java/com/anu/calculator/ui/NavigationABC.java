@@ -22,9 +22,7 @@ import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -35,87 +33,92 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class SimpleTrigonometric {
-    /**
-     * Tests are first generated through `android expresso` and then do further modification.
-     *
-     * @author: Howard Chao (u7022787)
-     */
+public class NavigationABC {
+
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void simpleTrigonometric() {
+    public void navigationABC() {
         ViewInteraction tabView = onView(
-                allOf(withContentDescription("Func"),
+                allOf(withContentDescription("abc"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.operations_tabs),
                                         0),
-                                1),
+                                3),
                         isDisplayed()));
         tabView.perform(click());
 
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.sin), withText("sin"),
+                allOf(withId(R.id.btn_a), withText("a"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatButton.perform( click());
+        appCompatButton.perform(click());
+
+        ViewInteraction button = onView(
+                allOf(withId(R.id.btn_a),
+                        childAtPosition(
+                                childAtPosition(
+                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
+                                        0),
+                                0),
+                        isDisplayed()));
+        button.check(matches(isDisplayed()));
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.pi), withText("π"),
+                allOf(withId(R.id.btn_b), withText("b"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
-                                        2),
-                                2),
+                                        0),
+                                1),
                         isDisplayed()));
-        appCompatButton2.perform( click());
+        appCompatButton2.perform(click());
 
-        ViewInteraction tabView2 = onView(
-                allOf(withContentDescription("Main"),
+        ViewInteraction button2 = onView(
+                allOf(withId(R.id.btn_b),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.operations_tabs),
+                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
                                         0),
-                                0),
+                                1),
                         isDisplayed()));
-        tabView2.perform(click());
+        button2.check(matches(isDisplayed()));
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.evaluate), withText("Solve"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        4),
-                                3),
-                        isDisplayed()));
-        appCompatButton3.perform( click());
-
-
-        ViewInteraction editText = onView(allOf(withId(R.id.calculation_textarea),
-                isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
-        editText.check(matches(withText("1.2246E-16")));
-
-
-        ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.all_clear), withText("AC"),
+                allOf(withId(R.id.btn_c), withText("c"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
                                         0),
-                                0),
+                                2),
                         isDisplayed()));
-        appCompatButton4.perform( click());
+        appCompatButton3.perform(click());
 
+        ViewInteraction button3 = onView(
+                allOf(withId(R.id.btn_c),
+                        childAtPosition(
+                                childAtPosition(
+                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
+                                        0),
+                                2),
+                        isDisplayed()));
+        button3.check(matches(isDisplayed()));
 
-        ViewInteraction editText2 = onView(allOf(withId(R.id.calculation_textarea),
-                isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
-        editText2.check(matches(withText("")));
+        ViewInteraction button4 = onView(
+                allOf(withId(R.id.btn_c),
+                        childAtPosition(
+                                childAtPosition(
+                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
+                                        0),
+                                2),
+                        isDisplayed()));
+        button4.check(matches(isDisplayed()));
     }
 
     private static Matcher<View> childAtPosition(

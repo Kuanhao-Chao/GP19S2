@@ -15,64 +15,58 @@ import com.anu.calculator.R;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class SimplePerCom {
-    /**
-     * Tests are first generated through `android expresso` and then do further modification.
-     *
-     * @author: Howard Chao (u7022787)
-     */
+public class FunctionUpdating {
+
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void simplePerCom() {
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.dgt_4), withText("4"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        2),
-                                2),
-                        isDisplayed()));
-        appCompatButton.perform(click());
-
+    public void functionUpdating() {
         ViewInteraction tabView = onView(
-                allOf(withContentDescription("Func"),
+                allOf(withContentDescription("abc"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.operations_tabs),
                                         0),
-                                1),
+                                3),
                         isDisplayed()));
         tabView.perform(click());
 
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.permutation), withText("nPr"),
+        ViewInteraction appCompatButton = onView(
+                allOf(withId(R.id.btn_a), withText("a"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
-                                        2),
+                                        0),
                                 0),
+                        isDisplayed()));
+        appCompatButton.perform(click());
+
+        ViewInteraction appCompatButton2 = onView(
+                allOf(withId(R.id.equals), withText("="),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                4),
                         isDisplayed()));
         appCompatButton2.perform(click());
 
@@ -106,10 +100,6 @@ public class SimplePerCom {
                         isDisplayed()));
         appCompatButton4.perform(click());
 
-        ViewInteraction editText = onView(allOf(withId(R.id.calculation_textarea),
-                isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
-        editText.check(matches(withText("12")));
-
         ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.all_clear), withText("AC"),
                         childAtPosition(
@@ -120,33 +110,33 @@ public class SimplePerCom {
                         isDisplayed()));
         appCompatButton5.perform(click());
 
-        ViewInteraction appCompatButton6 = onView(
-                allOf(withId(R.id.dgt_4), withText("4"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        2),
-                                2),
-                        isDisplayed()));
-        appCompatButton6.perform(click());
-
         ViewInteraction tabView3 = onView(
-                allOf(withContentDescription("Func"),
+                allOf(withContentDescription("abc"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.operations_tabs),
                                         0),
-                                1),
+                                3),
                         isDisplayed()));
         tabView3.perform(click());
 
-        ViewInteraction appCompatButton7 = onView(
-                allOf(withId(R.id.combinations), withText("nCr"),
+        ViewInteraction appCompatButton6 = onView(
+                allOf(withId(R.id.btn_b), withText("b"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
-                                        2),
+                                        0),
                                 1),
+                        isDisplayed()));
+        appCompatButton6.perform(click());
+
+        ViewInteraction appCompatButton7 = onView(
+                allOf(withId(R.id.equals), withText("="),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                4),
                         isDisplayed()));
         appCompatButton7.perform(click());
 
@@ -161,58 +151,34 @@ public class SimplePerCom {
         tabView4.perform(click());
 
         ViewInteraction appCompatButton8 = onView(
-                allOf(withId(R.id.dgt_2), withText("2"),
+                allOf(withId(R.id.dgt_9), withText("9"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
-                                        3),
-                                1),
+                                        1),
+                                0),
                         isDisplayed()));
         appCompatButton8.perform(click());
 
-        ViewInteraction appCompatButton9 = onView(
-                allOf(withId(R.id.evaluate), withText("Solve"),
+        ViewInteraction tabView5 = onView(
+                allOf(withContentDescription("abc"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        4),
+                                        withId(R.id.operations_tabs),
+                                        0),
                                 3),
                         isDisplayed()));
-        appCompatButton9.perform(click());
+        tabView5.perform(click());
 
-        ViewInteraction editText2 = onView(allOf(withId(R.id.calculation_textarea),
-                isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
-        editText2.check(matches(withText("6")));
-
-        ViewInteraction appCompatButton10 = onView(
-                allOf(withId(R.id.all_clear), withText("AC"),
+        ViewInteraction appCompatButton9 = onView(
+                allOf(withId(R.id.btn_a), withText("a"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatButton10.perform(click());
-
-        ViewInteraction tabView5 = onView(
-                allOf(withContentDescription("Func"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.operations_tabs),
-                                        0),
-                                1),
-                        isDisplayed()));
-        tabView5.perform(click());
-
-        ViewInteraction appCompatButton11 = onView(
-                allOf(withId(R.id.sqrt), withText("√"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        2),
-                                3),
-                        isDisplayed()));
-        appCompatButton11.perform(click());
+        appCompatButton9.perform(click());
 
         ViewInteraction tabView6 = onView(
                 allOf(withContentDescription("Main"),
@@ -224,17 +190,7 @@ public class SimplePerCom {
                         isDisplayed()));
         tabView6.perform(click());
 
-        ViewInteraction appCompatButton12 = onView(
-                allOf(withId(R.id.dgt_9), withText("9"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        1),
-                                0),
-                        isDisplayed()));
-        appCompatButton12.perform(click());
-
-        ViewInteraction appCompatButton13 = onView(
+        ViewInteraction appCompatButton10 = onView(
                 allOf(withId(R.id.evaluate), withText("Solve"),
                         childAtPosition(
                                 childAtPosition(
@@ -242,13 +198,9 @@ public class SimplePerCom {
                                         4),
                                 3),
                         isDisplayed()));
-        appCompatButton13.perform(click());
+        appCompatButton10.perform(click());
 
-        ViewInteraction editText3 = onView(allOf(withId(R.id.calculation_textarea),
-                isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
-        editText3.check(matches(withText("3")));
-
-        ViewInteraction appCompatButton14 = onView(
+        ViewInteraction appCompatButton11 = onView(
                 allOf(withId(R.id.all_clear), withText("AC"),
                         childAtPosition(
                                 childAtPosition(
@@ -256,27 +208,25 @@ public class SimplePerCom {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatButton14.perform(click());
+        appCompatButton11.perform(click());
 
         ViewInteraction tabView7 = onView(
-                allOf(withContentDescription("Func"),
+                allOf(withContentDescription("History"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.operations_tabs),
                                         0),
-                                1),
+                                2),
                         isDisplayed()));
         tabView7.perform(click());
 
-        ViewInteraction appCompatButton15 = onView(
-                allOf(withId(R.id.cubed_root), withText("∛"),
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.history_text),
                         childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        3),
-                                3),
+                                withParent(withId(R.id.container)),
+                                1),
                         isDisplayed()));
-        appCompatButton15.perform(click());
+        textView.check(matches(withText("\na=2=2\nb=9a=18")));
 
         ViewInteraction tabView8 = onView(
                 allOf(withContentDescription("Main"),
@@ -288,27 +238,57 @@ public class SimplePerCom {
                         isDisplayed()));
         tabView8.perform(click());
 
-        ViewInteraction appCompatButton16 = onView(
-                allOf(withId(R.id.dgt_2), withText("2"),
+        ViewInteraction tabView9 = onView(
+                allOf(withContentDescription("abc"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        3),
-                                1),
+                                        withId(R.id.operations_tabs),
+                                        0),
+                                3),
                         isDisplayed()));
-        appCompatButton16.perform(click());
+        tabView9.perform(click());
 
-        ViewInteraction appCompatButton17 = onView(
-                allOf(withId(R.id.dgt_7), withText("7"),
+        ViewInteraction appCompatButton12 = onView(
+                allOf(withId(R.id.btn_a), withText("a"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
-                                        1),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatButton12.perform(click());
+
+        ViewInteraction appCompatButton13 = onView(
+                allOf(withId(R.id.equals), withText("="),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                4),
+                        isDisplayed()));
+        appCompatButton13.perform(click());
+
+        ViewInteraction tabView10 = onView(
+                allOf(withContentDescription("Main"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.operations_tabs),
+                                        0),
+                                0),
+                        isDisplayed()));
+        tabView10.perform(click());
+
+        ViewInteraction appCompatButton14 = onView(
+                allOf(withId(R.id.dgt_4), withText("4"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        2),
                                 2),
                         isDisplayed()));
-        appCompatButton17.perform(click());
+        appCompatButton14.perform(click());
 
-        ViewInteraction appCompatButton18 = onView(
+        ViewInteraction appCompatButton15 = onView(
                 allOf(withId(R.id.evaluate), withText("Solve"),
                         childAtPosition(
                                 childAtPosition(
@@ -316,14 +296,9 @@ public class SimplePerCom {
                                         4),
                                 3),
                         isDisplayed()));
-        appCompatButton18.perform(click());
+        appCompatButton15.perform(click());
 
-
-        ViewInteraction editText4 = onView(allOf(withId(R.id.calculation_textarea),
-                isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
-        editText4.check(matches(withText("3")));
-
-        ViewInteraction appCompatButton19 = onView(
+        ViewInteraction appCompatButton16 = onView(
                 allOf(withId(R.id.all_clear), withText("AC"),
                         childAtPosition(
                                 childAtPosition(
@@ -331,7 +306,25 @@ public class SimplePerCom {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatButton19.perform(click());
+        appCompatButton16.perform(click());
+
+        ViewInteraction tabView11 = onView(
+                allOf(withContentDescription("History"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.operations_tabs),
+                                        0),
+                                2),
+                        isDisplayed()));
+        tabView11.perform(click());
+
+        ViewInteraction textView2 = onView(
+                allOf(withId(R.id.history_text),
+                        childAtPosition(
+                                withParent(withId(R.id.container)),
+                                1),
+                        isDisplayed()));
+        textView2.check(matches(withText("\na=2=2\nb=9a=18\na=4=4")));
     }
 
     private static Matcher<View> childAtPosition(

@@ -62,7 +62,7 @@ public class NavigationFunction {
                                         withClassName(is("android.widget.LinearLayout")),
                                         0),
                                 0)));
-        appCompatButton.perform(scrollTo(), click());
+        appCompatButton.perform(click());
 
         ViewInteraction button = onView(
                 allOf(withId(R.id.sin),

@@ -48,42 +48,42 @@ public class SimplePercent {
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.dgt_1), withText("1"),
                         childAtPosition(
-                                allOf(withId(R.id.row_4),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                3)),
-                                2)));
-        appCompatButton.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        3),
+                                2),
+                        isDisplayed()));
+        appCompatButton.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.dgt_0), withText("0"),
                         childAtPosition(
-                                allOf(withId(R.id.row_5),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                4)),
-                                1)));
-        appCompatButton2.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                1),
+                        isDisplayed()));
+        appCompatButton2.perform(click());
 
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.percentage), withText("%"),
                         childAtPosition(
-                                allOf(withId(R.id.row_1),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                2)));
-        appCompatButton3.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        0),
+                                2),
+                        isDisplayed()));
+        appCompatButton3.perform(click());
 
         ViewInteraction appCompatButton4 = onView(
                 allOf(withId(R.id.evaluate), withText("Solve"),
                         childAtPosition(
-                                allOf(withId(R.id.row_5),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                4)),
-                                3)));
-        appCompatButton4.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                3),
+                        isDisplayed()));
+        appCompatButton4.perform(click());
 
 
         ViewInteraction editText = onView(allOf(withId(R.id.calculation_textarea),
@@ -93,12 +93,12 @@ public class SimplePercent {
         ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.all_clear), withText("AC"),
                         childAtPosition(
-                                allOf(withId(R.id.row_1),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                0)));
-        appCompatButton5.perform(scrollTo(), click());
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatButton5.perform(click());
 
 
         ViewInteraction editTex2 = onView(allOf(withId(R.id.calculation_textarea),

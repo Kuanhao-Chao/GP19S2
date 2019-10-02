@@ -24,9 +24,9 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
@@ -34,68 +34,53 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class SimpleDeleteAC {
-    /**
-     * Tests are first generated through `android expresso` and then do further modification.
-     *
-     * @author: Howard Chao (u7022787)
-     */
+public class NavigationSetting {
+
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void simpleDeleteAC() {
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.dgt_9), withText("9"),
+    public void navigationSetting() {
+        ViewInteraction tabView = onView(
+                allOf(withContentDescription("⚙"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        1),
-                                0),
-                isDisplayed()));
-        appCompatButton.perform(click());
-
-
-
-
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.dgt_8), withText("8"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        1),
-                                1),
-                        isDisplayed()));
-        appCompatButton2.perform(click());
-
-        ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.delete), withText("DEL"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
+                                        withId(R.id.operations_tabs),
                                         0),
-                                1),
+                                4),
                         isDisplayed()));
-        appCompatButton3.perform(click());
+        tabView.perform(click());
 
-        ViewInteraction editText = onView(allOf(withId(R.id.calculation_textarea),
-                isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
-        editText.check(matches(withText("9")));
-
-
-        ViewInteraction appCompatButton5 = onView(
-                allOf(withId(R.id.all_clear), withText("AC"),
+        ViewInteraction switch_ = onView(
+                allOf(withId(R.id.degrees_switch), withText("Use Degrees for Angle Calculations"),
                         childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        0),
+                                allOf(withId(R.id.linearLayout),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.ScrollView")),
+                                                0)),
+                                3)));
+        switch_.perform(scrollTo(), click());
+
+        ViewInteraction switch_2 = onView(
+                allOf(withId(R.id.degrees_switch), withText("Use Degrees for Angle Calculations"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.ScrollView")),
+                                                0)),
+                                3)));
+        switch_2.perform(scrollTo(), click());
+
+        ViewInteraction textView2 = onView(
+                allOf(withId(R.id.preferences_lbl), withText("The following preferences affect future calculations made with the calculator. \n\nEach preference is saved immediately when changed."),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout),
+                                        childAtPosition(
+                                                IsInstanceOf.<View>instanceOf(android.widget.ScrollView.class),
+                                                0)),
                                 0),
                         isDisplayed()));
-        appCompatButton5.perform(click());
-
-        ViewInteraction editText2 = onView(allOf(withId(R.id.calculation_textarea),
-                isDescendantOfA(withId(R.id.linearLayout)))).check(matches(isDisplayed()));
-        editText2.check(matches(withText("")));
+        textView2.check(matches(isDisplayed()));
     }
 
     private static Matcher<View> childAtPosition(
