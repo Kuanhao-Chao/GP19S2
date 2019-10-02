@@ -301,11 +301,22 @@ public class ExpressionParserTest {
         testCases.add("12-14]");
         testCases.add("15-{6×2}-[12");
 
+        //empty brackets
+        testCases.add("2+10()-15");
+        testCases.add("15-5+[]+4");
+        testCases.add("8-{}+10");
+
         //incorrect use of functions
         testCases.add("x=x");
         testCases.add("=2y");
         testCases.add("x=2=5y");
         testCases.add("5=25x");
+
+        //errors checked elsewhere
+        testCases.add("x5");
+        testCases.add("2e2");
+        testCases.add("2π2");
+        testCases.add("xy6");
 
         assertEquals(testCases.size(), recursivelyCheckTestCases(testCases, 0, 0));
 
@@ -325,10 +336,10 @@ public class ExpressionParserTest {
      *
      * @author Samuel Brookes (u5380100)
      *
-     * @param testCases
-     * @param idx
-     * @param errors
-     * @return int (number of errors)
+     * @param testCases : an ArrayList of test case Strings
+     * @param idx : the current index in testCases
+     * @param errors : the number of errors
+     * @return int : the number of errors thrown
      */
     private int recursivelyCheckTestCases(ArrayList<String> testCases, int idx, int errors)
     {

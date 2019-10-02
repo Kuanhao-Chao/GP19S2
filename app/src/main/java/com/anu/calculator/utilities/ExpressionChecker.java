@@ -57,6 +57,11 @@ public class ExpressionChecker {
      */
     private void checkBrackets() throws ParserException
     {
+        //check for empty brackets
+        if(expression.contains("()") || expression.contains("[]") || expression.contains("{}"))
+            throw new MathematicalSyntaxException(TAG, "Syntax error: empty brackets");
+
+        //check the nesting of the brackets
         Stack<Token.Type> brackStack = new Stack<>();
         Tokenizer tokenizer = new Tokenizer(expression);
         while(tokenizer.hasNext())

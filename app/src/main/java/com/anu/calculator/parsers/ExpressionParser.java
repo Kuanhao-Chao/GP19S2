@@ -3,6 +3,7 @@ package com.anu.calculator.parsers;
 import com.anu.calculator.Expression;
 import com.anu.calculator.Parser;
 import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.MathematicalSyntaxException;
 import com.anu.calculator.expressions.*;
 import com.anu.calculator.utilities.ExpressionChecker;
 import com.anu.calculator.utilities.History;
@@ -96,17 +97,21 @@ public class ExpressionParser implements Parser
      * @return Expression : either the unchanged parsed expression, or an EqualityExpression
      * @author Samuel Brookes (u5380100)
      */
-    private Expression checkForEqualityExpression(Expression exp, Integer precision)
+    private Expression checkForEqualityExpression(Expression exp, Integer precision) throws ParserException
     {
         EqualityExpression equality = null;
 
         //check if there is a hanging equals sign
-        if(_tokenizer.hasNext() && _tokenizer.current().type() == Token.Type.EQUALS)
+        if(_tokenizer.hasNext())
         {
-            //If the current token is EQUALS, this is an equality expression
-            _tokenizer.next();
-            equality = new EqualityExpression(_tokenizer.current().token().charAt(0), exp);
-            if(precision != null) equality.updatePrecision(precision);
+            if(_tokenizer.current().type() == Token.Type.EQUALS)
+            {
+                //If the current token is EQUALS, this is an equality expression
+                _tokenizer.next();
+                equality = new EqualityExpression(_tokenizer.current().token().charAt(0), exp);
+                if(precision != null) equality.updatePrecision(precision);
+            }
+            else throw new MathematicalSyntaxException(TAG, "Syntax error: missing operators");
         }
         else
         {
@@ -271,7 +276,11 @@ public class ExpressionParser implements Parser
 
             //check for the use of shorthand multiplication
             Token next = _tokenizer.checkAhead(1);
-            if(next != null && next.type() == Token.Type.DOUBLE)
+            if(next != null &&
+                    (next.type() == Token.Type.DOUBLE ||
+                     next.type() == Token.Type.PI ||
+                     next.type() == Token.Type.E ||
+                     next.type() == Token.Type.UNKNOWN_VARIABLE))
                 _tokenizer.appendMultiply();
         }
         else if(_tokenizer.current().type() == Token.Type.E)
@@ -280,7 +289,11 @@ public class ExpressionParser implements Parser
 
             //check for the use of shorthand multiplication
             Token next = _tokenizer.checkAhead(1);
-            if(next != null && next.type() == Token.Type.DOUBLE)
+            if(next != null &&
+                    (next.type() == Token.Type.DOUBLE ||
+                     next.type() == Token.Type.PI ||
+                     next.type() == Token.Type.E ||
+                     next.type() == Token.Type.UNKNOWN_VARIABLE))
                 _tokenizer.appendMultiply();
         }
         else if(_tokenizer.current().type() == Token.Type.UNKNOWN_VARIABLE)
@@ -305,7 +318,10 @@ public class ExpressionParser implements Parser
             //token is either a double OR an unknown variable
             Token next = _tokenizer.checkAhead(1);
             if(next != null &&
-                    (next.type() == Token.Type.DOUBLE || next.type() == Token.Type.UNKNOWN_VARIABLE))
+                    (next.type() == Token.Type.DOUBLE ||
+                     next.type() == Token.Type.PI ||
+                     next.type() == Token.Type.E ||
+                     next.type() == Token.Type.UNKNOWN_VARIABLE))
                 _tokenizer.appendMultiply();
         }
         else if(_tokenizer.current().type() == Token.Type.RIGHT_PARENTHESIS ||
@@ -317,7 +333,10 @@ public class ExpressionParser implements Parser
 
             //check for the use of shorthand multiplication
             Token next = _tokenizer.checkAhead(1);
-            if(next != null && next.type() == Token.Type.DOUBLE)
+            if(next != null &&
+                    (next.type() == Token.Type.DOUBLE ||
+                     next.type() == Token.Type.PI ||
+                     next.type() == Token.Type.E))
                 _tokenizer.appendMultiply();
         }
         else if(_tokenizer.current().type() == Token.Type.DOUBLE)

@@ -311,6 +311,12 @@ public class FunctionParserTest {
         tests.add(new TestCase("t=abcf", 30d));
         tests.add(new TestCase("z=vw", -12d));
         tests.add(new TestCase("ɑ=2tz", -720d));
+        tests.add(new TestCase("a=2xπ", 188.495559));
+        tests.add(new TestCase("b=2πx", 188.495559));
+        tests.add(new TestCase("c=2ex", 163.0969097));
+        tests.add(new TestCase("d=2xe", 163.0969097));
+        tests.add(new TestCase("f=2π(10)", 62.831853));
+        tests.add(new TestCase("f=2e(10)", 54.365637));
 
         ExpressionParser fp;
         Expression exp;
