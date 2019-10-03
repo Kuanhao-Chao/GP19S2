@@ -1,11 +1,10 @@
 package com.anu.calculator;
 
 import com.anu.calculator.exceptions.InfinityException;
-import com.anu.calculator.exceptions.MathematicalSyntaxException;
-import com.anu.calculator.exceptions.NothingEnteredException;
 import com.anu.calculator.expressions.EExpression;
 import com.anu.calculator.parsers.ExpressionParser;
 import com.anu.calculator.expressions.UnknownVariableExpression;
+import com.anu.calculator.utilities.Scripts;
 
 import org.junit.Test;
 
@@ -124,7 +123,7 @@ public class ExpressionParserTest {
             }
             catch(ParserException e)
             {
-                fail();
+                fail("ParserException: " + e.getErrorMessage());
             }
         }
     }
@@ -181,7 +180,7 @@ public class ExpressionParserTest {
         }
         catch(ParserException e)
         {
-            fail();
+            fail("ParserException: " + e.getErrorMessage());
         }
     }
 
@@ -249,7 +248,7 @@ public class ExpressionParserTest {
         }
         catch(ParserException e)
         {
-            fail();
+            fail("ParserException: " + e.getErrorMessage());
         }
     }
 
@@ -274,7 +273,7 @@ public class ExpressionParserTest {
         }
         catch(ParserException e)
         {
-            fail();
+            fail("Parser Exception: " + e.getErrorMessage());
         }
     }
 
@@ -290,6 +289,15 @@ public class ExpressionParserTest {
 
         //user enters nothing
         testCases.add("");
+
+        //Error messages
+        for(Scripts.ErrorMessage error : Scripts.ErrorMessage.values())
+        {
+            if(error == Scripts.ErrorMessage.UNASSIGNED_VARIABLE)
+                testCases.add("x" + error.getMessage());
+            else
+                testCases.add(error.getMessage());
+        }
 
         //incorrect bracket nesting
         testCases.add("8+(15-[10×4)+25]");
@@ -311,12 +319,8 @@ public class ExpressionParserTest {
         testCases.add("=2y");
         testCases.add("x=2=5y");
         testCases.add("5=25x");
-
-        //errors checked elsewhere
-        testCases.add("x5");
-        testCases.add("2e2");
-        testCases.add("2π2");
-        testCases.add("xy6");
+        testCases.add("10x=");
+        testCases.add("=");
 
         assertEquals(testCases.size(), recursivelyCheckTestCases(testCases, 0, 0));
 
@@ -330,9 +334,57 @@ public class ExpressionParserTest {
     }
 
     /**
+     * Test erroneous user input to see if it is
+     * handled by the ParserExceptions.
+     *
+     * @author Samuel Brookes (u5380100)
+     */
+    @Test
+    public void testExceptions()
+    {
+        ArrayList<String> testCases = new ArrayList<>(0);
+
+        //Incorrect use of shorthand notation
+        testCases.add("x5");
+        testCases.add("2e2");
+        testCases.add("2π2");
+        testCases.add("xy6");
+
+        //operators with no variables or numbers
+        testCases.add("+");
+        testCases.add("-");
+        testCases.add("×");
+        testCases.add("÷");
+        testCases.add("sin");
+        testCases.add("cos");
+        testCases.add("tan");
+        testCases.add("sin⁻¹");
+        testCases.add("cos⁻¹");
+        testCases.add("tan⁻¹");
+        testCases.add("log₁₀");
+        testCases.add("ln");
+        testCases.add("!");
+        testCases.add("√");
+        testCases.add("∛");
+        testCases.add("nPr");
+        testCases.add("nCr");
+        testCases.add("^");
+        testCases.add("²");
+        testCases.add("³");
+
+        //garbage input
+        testCases.add("12304987sdalkfhacvljasdfa908dr723jh");
+        testCases.add("zxcvklzcpvoasiudt09q23845ojadslfa");
+        testCases.add("+-×÷eπsincostansin⁻¹cos⁻¹tan⁻¹log₁₀ln!√∛nPrnCr^²³");
+
+        //Each string in testCases should throw an Exception
+        assertEquals(testCases.size(), recursivelyCheckTestCases(testCases, 0, 0));
+    }
+
+    /**
      * This method is used by the testExpressionChecker() method to recursively
-     * iterate through the test cases in the ArrayList and count how many exceptions (of type
-     * MathematicalSyntaxException and NothingEnteredException) are thrown.
+     * iterate through the test cases in the ArrayList and count how many ParserExceptions
+     * are thrown.
      *
      * @author Samuel Brookes (u5380100)
      *
@@ -353,11 +405,7 @@ public class ExpressionParserTest {
             }
             catch(ParserException e)
             {
-                if(e instanceof MathematicalSyntaxException ||
-                    e instanceof NothingEnteredException)
-                { //if either of these exceptions are thrown, test the next test case
-                    return recursivelyCheckTestCases(testCases, idx + 1, errors + 1);
-                }
+                return recursivelyCheckTestCases(testCases, idx + 1, errors + 1);
             }
             catch(Exception e)
             { //if any other exception is thrown, abort

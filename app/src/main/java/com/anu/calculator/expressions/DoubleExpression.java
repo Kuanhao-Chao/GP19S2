@@ -3,6 +3,7 @@ package com.anu.calculator.expressions;
 import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
 import com.anu.calculator.exceptions.InfinityException;
+import com.anu.calculator.utilities.Scripts;
 
 /**
  * DoubleExpression: This class is used to represent a double literal
@@ -32,7 +33,7 @@ public class DoubleExpression implements Expression {
 	public double evaluate() throws ParserException
 	{
 		//if the value of evaluation is too large for a double type, throw an infinity exception
-		if(value == Double.POSITIVE_INFINITY) throw new InfinityException(TAG, "Number is too large for little old me");
+		if(value == Double.POSITIVE_INFINITY) throw new InfinityException(TAG, Scripts.ErrorMessage.NUMBER_TOO_LARGE.getMessage());
 
 		//check if this expression is the root of the parsing tree
 		if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", value));

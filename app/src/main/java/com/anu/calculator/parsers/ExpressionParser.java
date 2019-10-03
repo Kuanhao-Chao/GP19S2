@@ -3,11 +3,13 @@ package com.anu.calculator.parsers;
 import com.anu.calculator.Expression;
 import com.anu.calculator.Parser;
 import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.InfinityException;
 import com.anu.calculator.exceptions.MathematicalSyntaxException;
 import com.anu.calculator.expressions.*;
 import com.anu.calculator.utilities.ExpressionChecker;
 import com.anu.calculator.utilities.History;
 import com.anu.calculator.utilities.HistoryItem;
+import com.anu.calculator.utilities.Scripts;
 import com.anu.calculator.utilities.Token;
 import com.anu.calculator.utilities.Tokenizer;
 
@@ -111,7 +113,7 @@ public class ExpressionParser implements Parser
                 equality = new EqualityExpression(_tokenizer.current().token().charAt(0), exp);
                 if(precision != null) equality.updatePrecision(precision);
             }
-            else throw new MathematicalSyntaxException(TAG, "Syntax error: missing operators");
+            else throw new MathematicalSyntaxException(TAG, Scripts.ErrorMessage.SYNTAX_ERROR.getMessage()); //"Syntax error: missing operators"
         }
         else
         {
@@ -129,11 +131,14 @@ public class ExpressionParser implements Parser
      * Grammar: <exp> ::= <term> | <exp> + <term> | <exp> − <term>
      *
      * @return type: Expression
+     * @throws ParserException if parseTerm call returns null
      * @author Samuel Brookes (u5380100)
      */
-    private Expression parseExp()
+    private Expression parseExp() throws ParserException
     {
         Expression term = parseTerm();
+        if(term == null)
+            throw new MathematicalSyntaxException(TAG, Scripts.ErrorMessage.SYNTAX_ERROR.getMessage());
 
         //check whether there this is an addition or subtraction
         if(_tokenizer.hasNext() && (_tokenizer.current().type() == Token.Type.ADD ||
@@ -156,11 +161,14 @@ public class ExpressionParser implements Parser
      * Grammar: <term> ::= <operation> | <term> × <operation> | <term> ÷ <operation>
      *
      * @return type: Expression
+     * @throws ParserException if parseOperation call returns null
      * @author Samuel Brookes (u5380100)
      */
-    private Expression parseTerm()
+    private Expression parseTerm() throws ParserException
     {
         Expression operation = parseOperation();
+        if(operation == null)
+            throw new MathematicalSyntaxException(TAG, Scripts.ErrorMessage.SYNTAX_ERROR.getMessage());
 
         //check if this is a division or multiplication
         if(_tokenizer.hasNext() && (_tokenizer.current().type() == Token.Type.DIVIDE ||
@@ -187,9 +195,10 @@ public class ExpressionParser implements Parser
      *                  <exp>³ | <exp>% | (<exp>) | <literal>
      *
      * @return type: Expression
+     * @throws ParserException if parseLiteral call returns null
      * @author Samuel Brookes (u5380100)
      */
-    private Expression parseOperation()
+    private Expression parseOperation() throws ParserException
     {
         Expression literal;
         Token holdToken;
@@ -202,6 +211,9 @@ public class ExpressionParser implements Parser
             holdToken = _tokenizer.current();
             _tokenizer.next();
             literal = parseLiteral();
+            if(literal == null)
+                throw new MathematicalSyntaxException(TAG, Scripts.ErrorMessage.SYNTAX_ERROR.getMessage());
+
             switch(holdToken.type())
             {
                 case PERCENT: return new PercentExpression(literal);
@@ -213,6 +225,8 @@ public class ExpressionParser implements Parser
 
         //If the token is not a trailing token - get the next Expression
         literal = parseLiteral();
+        if(literal == null)
+            throw new MathematicalSyntaxException(TAG, Scripts.ErrorMessage.SYNTAX_ERROR.getMessage());
 
         //Check if the current token is leading
         if(_tokenizer.hasNext() && _tokenizer.current().type().isLeading())
@@ -241,6 +255,9 @@ public class ExpressionParser implements Parser
             holdToken = _tokenizer.current();
             _tokenizer.next();
             Expression expression = parseLiteral();
+            if(expression == null)
+                throw new MathematicalSyntaxException(TAG, Scripts.ErrorMessage.SYNTAX_ERROR.getMessage());
+
             switch(holdToken.type())
             {
                 case POWER: return new PowerExpression(expression, literal);
@@ -262,13 +279,16 @@ public class ExpressionParser implements Parser
      *               <unknown variable> ::= a-d, f-z | ɑ | β | ɣ | Δ
      *
      * @return type: Expression
+     * @throws ParserException if parseExp call throws ParserException
      * @author Samuel Brookes
      */
-    private Expression parseLiteral()
+    private Expression parseLiteral() throws ParserException
     {
         Expression literal = null;
 
-        if(_tokenizer.current().type() == Token.Type.RANDOM_NUMBER)
+        if(_tokenizer.current() == null)
+            return null;
+        else if(_tokenizer.current().type() == Token.Type.RANDOM_NUMBER)
             literal = new RandomNumberExpression();
         else if(_tokenizer.current().type() == Token.Type.PI)
         {
@@ -371,6 +391,7 @@ public class ExpressionParser implements Parser
             if(!negative)
                 literal = doubleValue;
         }
+        else return null;
 
         _tokenizer.next();
         return literal;

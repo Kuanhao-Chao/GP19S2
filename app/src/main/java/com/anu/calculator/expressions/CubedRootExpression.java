@@ -28,7 +28,7 @@ public class CubedRootExpression implements Expression {
     @Override
     public String show()
     {
-        return Scripts.Operators.CUBE_ROOT.getUnicode() + "(" + expression.show() + ")";
+        return Scripts.Operator.CUBE_ROOT.getUnicode() + "(" + expression.show() + ")";
     }
 
     @Override
@@ -40,7 +40,7 @@ public class CubedRootExpression implements Expression {
             double evaluation = Math.cbrt(expression.evaluate());
 
             //if the value of evaluation is too large for a double type, throw an infinity exception
-            if(evaluation == Double.POSITIVE_INFINITY) throw new InfinityException(TAG, "Number is too large for little old me");
+            if(evaluation == Double.POSITIVE_INFINITY) throw new InfinityException(TAG, Scripts.ErrorMessage.NUMBER_TOO_LARGE.getMessage());
 
             //check if this expression is the root of the parsing tree
             if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
@@ -48,7 +48,7 @@ public class CubedRootExpression implements Expression {
         }
         catch(NullPointerException e)
         {
-            throw new MathematicalSyntaxException(TAG, "Syntax error");
+            throw new MathematicalSyntaxException(TAG, Scripts.ErrorMessage.SYNTAX_ERROR.getMessage());
         }
     }
 

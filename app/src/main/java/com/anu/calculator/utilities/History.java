@@ -234,7 +234,7 @@ public class History implements Serializable {
                 (i.e. a loop).
              */
             if (!allDefined && prevSize == orderedHistory.size())
-                throw new FunctionLoopException(TAG, "Variable " + variable + "has no value assigned to it.");
+                throw new FunctionLoopException(TAG, variable + Scripts.ErrorMessage.UNASSIGNED_VARIABLE.getMessage());
             else
                 prevSize = orderedHistory.size();
         }

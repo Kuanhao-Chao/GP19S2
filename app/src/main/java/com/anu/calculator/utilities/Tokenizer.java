@@ -57,8 +57,8 @@ public class Tokenizer {
             currentToken = new Token("+", Token.Type.ADD);
         else if(lastChar == '-')
             currentToken = new Token("-", Token.Type.SUBTRACT);
-        else if(lastChar == Scripts.Operators.DIVIDE.getUnicode())
-            currentToken = new Token("" + Scripts.Operators.DIVIDE.getUnicode(), Token.Type.DIVIDE);
+        else if(lastChar == Scripts.Operator.DIVIDE.getUnicode())
+            currentToken = new Token("" + Scripts.Operator.DIVIDE.getUnicode(), Token.Type.DIVIDE);
         else if(lastChar == '=')
             currentToken = new Token("=", Token.Type.EQUALS);
         else if(lastChar == '(')
@@ -77,16 +77,16 @@ public class Tokenizer {
             currentToken = new Token("!", Token.Type.FACTORIAL);
         else if(lastChar == 'e')
             currentToken = new Token("e", Token.Type.E);
-        else if(lastChar == Scripts.Operators.MULTIPLY.getUnicode())
-            currentToken = new Token("" + Scripts.Operators.MULTIPLY.getUnicode(), Token.Type.MULTIPLY);
+        else if(lastChar == Scripts.Operator.MULTIPLY.getUnicode())
+            currentToken = new Token("" + Scripts.Operator.MULTIPLY.getUnicode(), Token.Type.MULTIPLY);
         else if(lastChar == '%')
             currentToken = new Token("%", Token.Type.PERCENT);
-        else if(lastChar == Scripts.Operators.PI.getUnicode())
-            currentToken = new Token("" + Scripts.Operators.PI.getUnicode(), Token.Type.PI);
-        else if(lastChar == Scripts.Operators.SQRT.getUnicode())
-            currentToken = new Token("" + Scripts.Operators.SQRT.getUnicode(), Token.Type.SQUARE_ROOT);
-        else if(lastChar == Scripts.Operators.CUBE_ROOT.getUnicode())
-            currentToken = new Token("" + Scripts.Operators.CUBE_ROOT.getUnicode(), Token.Type.CUBED_ROOT);
+        else if(lastChar == Scripts.Operator.PI.getUnicode())
+            currentToken = new Token("" + Scripts.Operator.PI.getUnicode(), Token.Type.PI);
+        else if(lastChar == Scripts.Operator.SQRT.getUnicode())
+            currentToken = new Token("" + Scripts.Operator.SQRT.getUnicode(), Token.Type.SQUARE_ROOT);
+        else if(lastChar == Scripts.Operator.CUBE_ROOT.getUnicode())
+            currentToken = new Token("" + Scripts.Operator.CUBE_ROOT.getUnicode(), Token.Type.CUBED_ROOT);
         else if(lastChar == '^')
             currentToken = new Token("^", Token.Type.POWER);
         else if(lastChar == Scripts.SuperScript.TWO.getUnicode())
@@ -214,6 +214,6 @@ public class Tokenizer {
      */
     public void appendMultiply()
     {
-        _buffer = _buffer + Scripts.Operators.MULTIPLY.getUnicode();
+        _buffer = _buffer + Scripts.Operator.MULTIPLY.getUnicode();
     }
 }

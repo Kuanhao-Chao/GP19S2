@@ -1,7 +1,7 @@
 package com.anu.calculator.utilities;
 
 /**
- *  Scripts: contains three enumerations (SuperScript, SubScript and Operators)
+ *  Scripts: contains three enumerations (SuperScript, SubScript and Operator)
  *  that make it easier to retrieve the unicode characters used by the calculator
  *
  * @author: Samuel Brookes (u5380100)
@@ -73,7 +73,7 @@ public class Scripts {
      *
      * @author Samuel Brookes (u5380100)
      */
-    public enum Operators
+    public enum Operator
     {
         SQRT('\u221a'),
         CUBE_ROOT('\u221b'),
@@ -83,11 +83,53 @@ public class Scripts {
 
         private char unicode;
 
-        Operators(char unicode)
+        Operator(char unicode)
         {
             this.unicode = unicode;
         }
 
         public char getUnicode(){ return unicode; }
+    }
+
+    /**
+     * This enumeration contains all error messages
+     * returned by ParserExceptions so that they are easier to
+     * detect by the ExpressionParser, and are homogenised.
+     *
+     * @author Samuel Brookes (u5380100)
+     */
+    public enum ErrorMessage
+    {
+        SYNTAX_ERROR("SYNTAX ERROR!"),
+        ZERO_DIVISION("DIVISION BY ZERO!"),
+        NUMBER_TOO_LARGE("NUMBER TOO LARGE!"),
+        NOTHING_ENTERED(""),
+        UNASSIGNED_VARIABLE(" HAS NO VALUE!"),
+        CANNOT_SOLVE("CANNOT SOLVE!");
+
+        private String msg;
+
+        ErrorMessage(String msg)
+        {
+            this.msg = msg;
+        }
+
+        public String getMessage()
+        {
+            return msg;
+        }
+
+        public boolean containsErrorMessage(String s)
+        {
+            for(ErrorMessage msg : ErrorMessage.values())
+            {
+                if(msg != NOTHING_ENTERED)
+                {
+                    if(s.contains(msg.getMessage()))
+                        return true;
+                }
+            }
+            return false;
+        }
     }
 }

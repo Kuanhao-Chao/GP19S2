@@ -19,7 +19,7 @@ public class PiExpression implements Expression {
 
 	@Override
 	public String show() {
-		return "" + Scripts.Operators.PI.getUnicode();
+		return "" + Scripts.Operator.PI.getUnicode();
 	}
 
 	@Override

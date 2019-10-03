@@ -1,6 +1,7 @@
 package com.anu.calculator.utilities;
 
 import com.anu.calculator.ParserException;
+import com.anu.calculator.exceptions.ContainsErrorMessageException;
 import com.anu.calculator.exceptions.MathematicalSyntaxException;
 import com.anu.calculator.exceptions.NothingEnteredException;
 
@@ -28,19 +29,37 @@ public class ExpressionChecker {
      * the result of its check by throwing the appropriate ParserException.
      *
      * @throws ParserException : if something is wrong with the expression
-     * @author Samuel Brookes
+     * @author Samuel Brookes (u5380100)
      */
     public void checkExpression() throws ParserException
+    {
+        //check for general syntax errors
+        checkGeneral();
+
+        //check for correct use of brackets
+        checkBrackets();
+
+        //if this is a function, check that the function syntax is correct
+        if(expression.contains("=")) checkFunctions();
+    }
+
+    /**
+     * This method checks for general syntax errors in the user input:
+     *  - whether nothing was entered
+     *  - whether the input contains an error message
+     *
+     * @throws ParserException : if something is wrong with the expression
+     * @author Samuel Brookes (u5380100)
+     */
+    private void checkGeneral() throws ParserException
     {
         //check whether the user has entered something
         if(expression.equals(""))
             throw new NothingEnteredException(TAG, "");
 
-        //check for correct bracket nesting
-        checkBrackets();
-
-        //if this is a function, check that the function syntax is correct
-        if(expression.contains("=")) checkFunctions();
+        //check for error messages
+        if(Scripts.ErrorMessage.SYNTAX_ERROR.containsErrorMessage(expression))
+            throw new ContainsErrorMessageException(TAG, Scripts.ErrorMessage.SYNTAX_ERROR.getMessage());
     }
 
     /**
@@ -59,7 +78,7 @@ public class ExpressionChecker {
     {
         //check for empty brackets
         if(expression.contains("()") || expression.contains("[]") || expression.contains("{}"))
-            throw new MathematicalSyntaxException(TAG, "Syntax error: empty brackets");
+            throw new MathematicalSyntaxException(TAG, Scripts.ErrorMessage.SYNTAX_ERROR.getMessage());
 
         //check the nesting of the brackets
         Stack<Token.Type> brackStack = new Stack<>();
@@ -73,8 +92,7 @@ public class ExpressionChecker {
                     if(brackStack.empty() ||
                             !isPairTo(brackStack.pop(), tokenizer.current().type()))
                     {
-                        throw new MathematicalSyntaxException(TAG, "Syntax error: incorrect " +
-                                "nesting of brackets");
+                        throw new MathematicalSyntaxException(TAG, Scripts.ErrorMessage.SYNTAX_ERROR.getMessage());
                     }
                 }
                 else if(isRight(tokenizer.current().type()))
@@ -85,7 +103,7 @@ public class ExpressionChecker {
             tokenizer.next();
         }
         if(!brackStack.empty())
-            throw new MathematicalSyntaxException(TAG, "Syntax error: incorrect nesting of brackets");
+            throw new MathematicalSyntaxException(TAG, Scripts.ErrorMessage.SYNTAX_ERROR.getMessage());
     }
 
     /**
@@ -162,16 +180,23 @@ public class ExpressionChecker {
      */
     private void checkFunctions() throws ParserException
     {
+        //test that there is something on either side of the equals sign
+        if(expression.length() < 3 || //if there's an equals sign, the expression must be at least 3 characters long
+                expression.indexOf('=') == 0 || //if the equals sign is the first character
+                expression.indexOf('=') == expression.length() - 1) //if the equals sign is the last character
+            throw new MathematicalSyntaxException(TAG, Scripts.ErrorMessage.SYNTAX_ERROR.getMessage());
+
+
         //test that there is only one equals sign
         if(expression.indexOf('=') != expression.lastIndexOf('='))
-            throw new MathematicalSyntaxException(TAG, "Syntax error: More than one equals sign.");
+            throw new MathematicalSyntaxException(TAG, Scripts.ErrorMessage.SYNTAX_ERROR.getMessage());
 
         //test that the left-hand side has only one variable and that it is an unknown var
         Token leftHandSide = new Tokenizer(expression.split("=")[0].trim()).current();
         if(leftHandSide == null)
-            throw new MathematicalSyntaxException(TAG, "Syntax error: There must be a variable on the left side of the equation.");
+            throw new MathematicalSyntaxException(TAG, Scripts.ErrorMessage.SYNTAX_ERROR.getMessage());
         else if(leftHandSide.type() != Token.Type.UNKNOWN_VARIABLE)
-            throw new MathematicalSyntaxException(TAG, "The calculator is unable to solve this type of equation.");
+            throw new MathematicalSyntaxException(TAG, Scripts.ErrorMessage.CANNOT_SOLVE.getMessage());
 
         //test that an unknown variable does not occur on either side of the equals sign
         char variable = expression.split("=")[0].trim().charAt(0);
@@ -179,7 +204,7 @@ public class ExpressionChecker {
         while(varCheck.hasNext())
         {
             if(varCheck.current().type() == Token.Type.UNKNOWN_VARIABLE && varCheck.current().token().charAt(0) == variable)
-                throw new MathematicalSyntaxException(TAG, "The calculator is unable to solve this type of equation.");
+                throw new MathematicalSyntaxException(TAG, Scripts.ErrorMessage.CANNOT_SOLVE.getMessage());
             varCheck.next();
         }
     }

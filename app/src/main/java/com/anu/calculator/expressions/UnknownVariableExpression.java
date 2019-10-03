@@ -4,6 +4,7 @@ import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
 import com.anu.calculator.exceptions.InfinityException;
 import com.anu.calculator.exceptions.UnassignedVariableException;
+import com.anu.calculator.utilities.Scripts;
 
 /**
  * UnknownVariableExpression: This class is used to represent a variable with an unknown value,
@@ -53,13 +54,13 @@ public class UnknownVariableExpression implements Expression {
 		if(hasValue())
 		{
 			//if the value of evaluation is too large for a double type, throw an infinity exception
-			if(value.evaluate() == Double.POSITIVE_INFINITY) throw new InfinityException(TAG, "Number is too large for little old me.");
+			if(value.evaluate() == Double.POSITIVE_INFINITY) throw new InfinityException(TAG, Scripts.ErrorMessage.NUMBER_TOO_LARGE.getMessage());
 
 			//check if this expression is the root of the parsing tree
 			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", value.evaluate()));
 			else return value.evaluate();
 		}
-		else throw new UnassignedVariableException(TAG, "Variable " + variable + " has no value assigned to it.");
+		else throw new UnassignedVariableException(TAG, variable + Scripts.ErrorMessage.UNASSIGNED_VARIABLE.getMessage());
 	}
 
 	/**

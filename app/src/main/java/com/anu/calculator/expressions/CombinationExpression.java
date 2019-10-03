@@ -4,6 +4,7 @@ import com.anu.calculator.Expression;
 import com.anu.calculator.ParserException;
 import com.anu.calculator.exceptions.InfinityException;
 import com.anu.calculator.exceptions.MathematicalSyntaxException;
+import com.anu.calculator.utilities.Scripts;
 
 /**
  * CombinationExpression: This class is used to represent an expression of a combination
@@ -43,7 +44,7 @@ public class CombinationExpression implements Expression {
 			double evaluation = numerator.evaluate() / denominator.evaluate();
 
 			//if the value of evaluation is too large for a double type, throw an infinity exception
-			if(evaluation == Double.POSITIVE_INFINITY) throw new InfinityException(TAG, "Number is too large for little old me");
+			if(evaluation == Double.POSITIVE_INFINITY) throw new InfinityException(TAG, Scripts.ErrorMessage.NUMBER_TOO_LARGE.getMessage());
 
 			//check if this expression is the root of the parsing tree
 			if(precision != null) return Double.parseDouble(String.format("%." + precision + "f", evaluation));
@@ -51,7 +52,7 @@ public class CombinationExpression implements Expression {
 		}
 		catch(NullPointerException e)
 		{
-			throw new MathematicalSyntaxException(TAG, "Syntax error");
+			throw new MathematicalSyntaxException(TAG, Scripts.ErrorMessage.SYNTAX_ERROR.getMessage());
 		}
 	}
 
