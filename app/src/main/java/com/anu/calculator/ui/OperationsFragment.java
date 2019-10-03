@@ -115,6 +115,15 @@ public class OperationsFragment extends Fragment {
             }
         });
 
+        Button euler = rootView.findViewById(R.id.euler);
+        euler.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                String input = getString(R.string.euler);
+                addText(calculation_area, input, main, false);
+            }
+        });
+
         Button cubed = rootView.findViewById(R.id.cubed);
         cubed.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,7 +191,7 @@ public class OperationsFragment extends Fragment {
         arc_tan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                String input = getString(R.string.arc_tan) + getString(R.string.lbra) + getString(R.string.rbra);
+                String input = getString(R.string.arc_tan);
                 addText(calculation_area, input, main, false);
             }
         });
