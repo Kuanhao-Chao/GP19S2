@@ -186,6 +186,9 @@ public class ExpressionChecker {
                 expression.indexOf('=') == expression.length() - 1) //if the equals sign is the last character
             throw new MathematicalSyntaxException(TAG, Scripts.ErrorMessage.SYNTAX_ERROR.getMessage());
 
+        //test that there is only one character on the LHS
+        if(expression.split("=")[0].trim().length() > 1)
+            throw new MathematicalSyntaxException(TAG, Scripts.ErrorMessage.CANNOT_SOLVE.getMessage());
 
         //test that there is only one equals sign
         if(expression.indexOf('=') != expression.lastIndexOf('='))
