@@ -1,18 +1,23 @@
 package com.anu.calculator.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 
 
 import com.anu.calculator.R;
@@ -54,13 +59,26 @@ public class PreferencesFragment extends Fragment {
 
         final View rootView = inflater.inflate(R.layout.preferences_fragment, container, false);
 
-        final EditText precision = rootView.findViewById(R.id.precision_text);
-        precision.setText("20");
-        precision.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        final EditText precision = (EditText) rootView.findViewById(R.id.precision_text);
+        precision.setText((Integer) R.string.default_precision);
+        precision.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                Integer input = Integer.parseInt(precision.getText().toString());
-                main.put("precision",input);
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    int input = Integer.parseInt(precision.getText().toString());
+                    // If the precision is >16, set it to 16 because reasons
+                    if (input > 16) input = 16;
+                    main.put("precision",input);
+                    // Hide the soft keyboard as we don't need it anymore
+                    InputMethodManager inputManager = (InputMethodManager)
+                    Objects.requireNonNull(getContext()).getSystemService(Context.INPUT_METHOD_SERVICE);
+                    assert inputManager != null;
+                    inputManager.toggleSoftInput(0, 0);
+                    // Remove the focus from the edit text entirely
+                    precision.clearFocus();
+                    return true;
+                }
+                return false;
             }
         });
 

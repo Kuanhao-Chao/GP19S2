@@ -95,5 +95,6 @@
     <string name="degrees_switch">Use Degrees for Angle Calculations</string>
     <string name="lbl_degrees">Setting degrees to off means the calculator will use Radians.</string>
     <string name="lbl_precision">This precision will be used for calculation evaluations.</string>
-    <string name="precision">Precision (places)</string>
+    <string name="precision">Precision places to use when displaying calculation results.</string>
+    <string name="default_precision">16</string>
 </resources>

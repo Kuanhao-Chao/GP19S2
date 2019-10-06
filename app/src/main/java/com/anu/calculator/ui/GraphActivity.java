@@ -2,11 +2,13 @@ package com.anu.calculator.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 
@@ -19,6 +21,7 @@ import com.anu.calculator.graphs.popup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class GraphActivity extends AppCompatActivity {
     static graphViewer gView;
@@ -101,9 +104,14 @@ public class GraphActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println("me!");
                 Intent toMain = new Intent(GraphActivity.this, MainActivity.class);
                 toMain.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivityForResult(toMain, 0);
+                // Hide the soft keyboard.
+                InputMethodManager inputManager = (InputMethodManager)
+                Objects.requireNonNull(getSystemService(Context.INPUT_METHOD_SERVICE));
+                inputManager.toggleSoftInput(0, 0);
             }
         });
     }
