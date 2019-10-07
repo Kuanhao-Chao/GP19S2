@@ -43,7 +43,7 @@ public class GraphActivity extends AppCompatActivity {
         setContentView(R.layout.activity_graph);
         createGraph(new GraphRange(new ChartVect(-INIT_RANGE,-INIT_RANGE), new ChartVect(INIT_RANGE,INIT_RANGE)));
         createFloatingButton();
-        createFunctionButton();
+        createFunctionButtons();
         createOptions();
     }
     public void createOptions(){
@@ -84,12 +84,20 @@ public class GraphActivity extends AppCompatActivity {
             }
         });
     }
-    public void createFunctionButton() {
+    public void createFunctionButtons() {
         Button b = findViewById(R.id.select_function_button);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(GraphActivity.this, popup.class));
+            }
+        });
+        Button b2 = findViewById(R.id.reset_view);
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gView.reset_view();
+                gView.invalidate();
             }
         });
     }

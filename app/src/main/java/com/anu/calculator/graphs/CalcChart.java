@@ -26,7 +26,6 @@ public class CalcChart {
     private Canvas canvas;
     private GraphRange range;
     private ChartVect label_scale;
-    private ChartVect upper_range, lower_range;
     private final int GRID_NUM = 10;//per quadrant
     private int text_size;
     private static int[] pallet = {Color.RED,
@@ -92,7 +91,22 @@ public class CalcChart {
             }
         }
     }
+    public String format_label_text(float label){
+        String label_text = String.valueOf(label);
+        if (Math.abs(label) >= 100){
+            label_text = String.format("%3.1e",label);
+        } else if (Math.abs(label) <= 1){
+            label_text = String.format("%3.1e",label);
+        } else {
+            label_text = String.format("%.1f%n",label);
+        }
 
+        if (label == 0.0) {
+            label_text = String.format("%.0f%n",label);
+        }
+
+        return label_text;
+    }
 
     public void draw_grids(boolean isAxis, boolean isGrid, boolean isAxisLabel){
         Paint text_P = new Paint();
@@ -111,33 +125,29 @@ public class CalcChart {
         p.setColor(Color.BLUE);
         p.setStrokeWidth(2.0f);
         p.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
-
+        //Draw y axis
         for (int i = 0; i <= (range.span.y/label_scale.y) ; i++) {
             if (isGrid) {
                 canvas.drawLine(0.0f, origin.y - lines.y * i, dim.x, origin.y - lines.y * i, p);
                 canvas.drawLine(0.0f, origin.y + lines.y * i, dim.x, origin.y + lines.y * i, p);
             }
             if (isAxisLabel) {
-                if (i >= 1 / label_scale.y) {
-                    digit_offset = text_size + 40;
-                }
-                canvas.drawText(String.valueOf(i * label_scale.y), origin.x - digit_offset, origin.y - (lines.y * i - 10), text_P);
-                canvas.drawText(String.valueOf(-i * label_scale.y), origin.x - digit_offset, origin.y + (lines.y * i + 10), text_P);
+                String text = format_label_text(i * label_scale.y);
+                digit_offset = text_size * text.length()/2;
+                canvas.drawText(text, origin.x - digit_offset, origin.y - (lines.y * i - 10), text_P);
+                canvas.drawText(text, origin.x - digit_offset, origin.y + (lines.y * i + 10), text_P);
             }
         }
-        digit_offset = text_size - 10; //additional offset to compensate for 2 digits
+        //Draw x axis
         for (int i = 0; i <= range.span.x/label_scale.x; i++) {
             if (isGrid) {
                 canvas.drawLine(origin.x + lines.x * i, 0.0f, origin.x + lines.x * i, dim.y, p);
                 canvas.drawLine(origin.x - lines.x * i, 0.0f, origin.x - lines.x * i, dim.y, p);
             }
             if (isAxisLabel) {
-                if (i >= 10 / label_scale.x) {
-                    digit_offset = text_size;
-                }
-
-                canvas.drawText(String.valueOf(i * label_scale.x), origin.x + (lines.x * i - digit_offset), origin.y + 30, text_P);
-                canvas.drawText(String.valueOf(-i * label_scale.y), origin.x - (lines.x * i + digit_offset), origin.y + 30, text_P);
+                String text = format_label_text(i * label_scale.x);
+                canvas.drawText(text, origin.x + (lines.x * i ), origin.y + 30, text_P);
+                canvas.drawText(text, origin.x - (lines.x * i ), origin.y + 30, text_P);
             }
         }
     }

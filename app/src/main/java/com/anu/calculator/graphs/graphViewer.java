@@ -26,6 +26,7 @@ public class graphViewer extends View {
         super(c, as);
         mScaleGestureDetctor = new ScaleGestureDetector(c, new ScaleListner());
     }
+
     public boolean isAxis = true;
     public boolean isAxisLabel = true;
     public boolean isGrid = true;
@@ -62,11 +63,14 @@ public class graphViewer extends View {
             System.out.println(mScaleFactor_y);
             System.out.println("range" + range.span.x);
             System.out.println("range" + range.span.y);
-            init_functions(range);
+            refresh_function();
             invalidate();
 
             return true;
         }
+    }
+    public void reset_view(){
+        this.range = new GraphRange(new ChartVect(-20,-20), new ChartVect(20, 20));
     }
     public void init_functions(GraphRange range){
         Map<Character, HistoryItem> funMap = History.loadGraphableHistory(getContext());
@@ -77,6 +81,7 @@ public class graphViewer extends View {
             functionList.add(new ListModel(val_e,false));
         }
     }
+
     public void refresh_function(){
         Map<Character, HistoryItem> funMap = History.loadGraphableHistory(getContext());
         boolean isNew;

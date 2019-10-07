@@ -10,6 +10,7 @@ import org.junit.runners.Suite.SuiteClasses;
         FunctionParserTest.class,
         HistoryTest.class,
         TokenizerTest.class,
+        GraphTest.class
 })
 public class TestSuite {
 }
