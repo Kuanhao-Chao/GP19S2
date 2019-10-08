@@ -43,6 +43,7 @@ public class Token {
         RIGHT_PARENTHESIS('n'),
         RIGHT_BRACE('n'),
         RIGHT_BRACKET('n'),
+        SCIENTIFIC_NOTATION('b'),
         SINE('l'),
         SUBTRACT('n'),
         SQUARE('t'),

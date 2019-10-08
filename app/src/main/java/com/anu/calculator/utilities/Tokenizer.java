@@ -77,6 +77,8 @@ public class Tokenizer {
             currentToken = new Token("!", Token.Type.FACTORIAL);
         else if(lastChar == 'e')
             currentToken = new Token("e", Token.Type.E);
+        else if(lastChar == 'E')
+            currentToken = new Token("E", Token.Type.SCIENTIFIC_NOTATION);
         else if(lastChar == Scripts.Operator.MULTIPLY.getUnicode())
             currentToken = new Token("" + Scripts.Operator.MULTIPLY.getUnicode(), Token.Type.MULTIPLY);
         else if(lastChar == '%')

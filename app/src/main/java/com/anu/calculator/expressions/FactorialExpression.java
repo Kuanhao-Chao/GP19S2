@@ -55,11 +55,23 @@ public class FactorialExpression implements Expression {
 	 * @author Samuel Brookes (u5380100)
 	 * @param value : the value for which the factorial is to be calculated
 	 * @return double : factorial of the value
+	 * @throws ParserException if the number is too large (> 170) or the value is a fraction
 	 */
-	private double factorial(double value)
+	private double factorial(double value) throws ParserException
 	{
-		if(value <= 0) return 0;
-		if(value == 1) return 1;
+		//if the value is too large, throw an exception
+		if(value > 170)
+			throw new InfinityException(TAG, Scripts.ErrorMessage.NUMBER_TOO_LARGE.getMessage());
+
+		//if the value is not an integer, throw an exception
+		if(Integer.parseInt(String.valueOf(value).substring(String.valueOf(value).indexOf(".") + 1)) != 0)
+			throw new MathematicalSyntaxException(TAG, Scripts.ErrorMessage.SYNTAX_ERROR.getMessage());
+
+		//otherwise evaluate
+		if(value <= 0)
+			return 0;
+		if(value == 1)
+			return 1;
 		return value * factorial(value - 1);
 	}
 

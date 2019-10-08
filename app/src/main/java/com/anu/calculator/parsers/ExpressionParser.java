@@ -263,6 +263,7 @@ public class ExpressionParser implements Parser
                 case POWER: return new PowerExpression(expression, literal);
                 case PERMUTATION: return new PermutationExpression(expression, literal);
                 case COMBINATION: return new CombinationExpression(expression, literal);
+                case SCIENTIFIC_NOTATION: return new ScientificNotationExpression(expression, literal);
             }
         }
 

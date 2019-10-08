@@ -137,7 +137,7 @@ public class ExpressionParserTest {
      *  - 06/09/2019: added Exception expectation, corrected spelling
      */
     @Test (expected = InfinityException.class)
-    public void test_infinity() throws ParserException {
+    public void testInfinity() throws ParserException {
         // First generate a obscenely large number
         String infinity_expression = "625!";
         Expression exp = new ExpressionParser().parse(infinity_expression, true, 0, null);
@@ -322,7 +322,7 @@ public class ExpressionParserTest {
         testCases.add("10x=");
         testCases.add("=");
 
-        assertEquals(testCases.size(), recursivelyCheckTestCases(testCases, 0, 0));
+        assertEquals(testCases.size(), recursivelyCheckTestCases(testCases, 0, 0, false));
 
         //these should not throw an exception
         testCases = new ArrayList<>(0);
@@ -330,7 +330,7 @@ public class ExpressionParserTest {
         testCases.add("(14+[8×25]-{2×100}-15)");
         testCases.add("(14+[8×{25-2}×100]-15)");
 
-        assertEquals(0, recursivelyCheckTestCases(testCases, 0, 0));
+        assertEquals(0, recursivelyCheckTestCases(testCases, 0, 0, false));
     }
 
     /**
@@ -378,7 +378,21 @@ public class ExpressionParserTest {
         testCases.add("+-×÷eπsincostansin⁻¹cos⁻¹tan⁻¹log₁₀ln!√∛nPrnCr^²³");
 
         //Each string in testCases should throw an Exception
-        assertEquals(testCases.size(), recursivelyCheckTestCases(testCases, 0, 0));
+        assertEquals(testCases.size(), recursivelyCheckTestCases(testCases, 0, 0, false));
+    }
+
+    /**
+     * Tests that incorrect input for factorials is caught by exception handlers
+     * @author Samuel Brookes (u5380100)
+     */
+    @Test
+    public void testFactorialExceptions()
+    {
+        ArrayList<String> testCases = new ArrayList<>(0);
+        testCases.add("1.5!");
+        testCases.add("30000000000!");
+
+        assertEquals(testCases.size(), recursivelyCheckTestCases(testCases, 0, 0, true));
     }
 
     /**
@@ -393,7 +407,7 @@ public class ExpressionParserTest {
      * @param errors : the number of errors
      * @return int : the number of errors thrown
      */
-    private int recursivelyCheckTestCases(ArrayList<String> testCases, int idx, int errors)
+    private int recursivelyCheckTestCases(ArrayList<String> testCases, int idx, int errors, boolean evaluate)
     {
         //if the idx has reached the end of the ArrayList return the number of errors that occurred
         if(idx >= testCases.size()) return errors;
@@ -401,11 +415,12 @@ public class ExpressionParserTest {
         {
             try
             { //otherwise attempt to parse the incorrect expression
-                new ExpressionParser().parse(testCases.get(idx), true, 5, null);
+                Expression exp = new ExpressionParser().parse(testCases.get(idx), true, 5, null);
+                if(evaluate) exp.evaluate();
             }
             catch(ParserException e)
             {
-                return recursivelyCheckTestCases(testCases, idx + 1, errors + 1);
+                return recursivelyCheckTestCases(testCases, idx + 1, errors + 1, evaluate);
             }
             catch(Exception e)
             { //if any other exception is thrown, abort
@@ -413,6 +428,24 @@ public class ExpressionParserTest {
             }
             //if this statement is reached then no error was thrown, abort
             return errors;
+        }
+    }
+
+    /**
+     * Tests whether parser can properly evaluate scientific notation
+     * @author Samuel Brookes (u5380100)
+     */
+    @Test
+    public void testScientificNotation() throws ParserException
+    {
+        ArrayList<TestCase> testCases = new ArrayList<>(0);
+        testCases.add(new TestCase("5.024E3×5.024E3", 25240576d, 0d));
+        testCases.add(new TestCase("1.23456789E8÷200000π",1939.25471, 0.00002));
+        testCases.add(new TestCase("1.2345E4(9.8765E4)", 1219253925d, 0d));
+
+        for(TestCase test : testCases)
+        {
+            assertEquals(test.expected, new ExpressionParser().parse(test.input, true, 20, null).evaluate(), test.delta);
         }
     }
 }
