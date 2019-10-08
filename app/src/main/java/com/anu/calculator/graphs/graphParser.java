@@ -38,7 +38,6 @@ public class graphParser {
         String x_str;
         if (x < 0.0) {
             x_str = String.valueOf(x);
-            System.out.println(x_str);
         } else {
             x_str = String.valueOf(x);
         }
@@ -59,7 +58,6 @@ public class graphParser {
 
         if (hasVari) {
             temp_str = temp_str + "=" + x_str;
-            System.out.println(temp_str);
             try {
                 temp_exp = temp_parser.parse(temp_str, false, 3, temp_history);
                 temp_history.put(temp_exp,false);
@@ -92,37 +90,4 @@ public class graphParser {
 
         return ret;
     }
-
-
-    public float[] genData2(){
-        float[] points = new float[400];
-        float x,y = 0.0f;
-        for (int i = -20 * 10; i < 20 * 10 - 1; i = i + 2) {
-            x = i * 0.1f;
-            y = dummyfunction1(x);
-            points[i+200] = x;
-            points[i+200+1] = y;
-        }
-        return points;
-    }
-
-    public float[] genData(int form){
-        float[] points = new float[400];
-        float x,y = 0.0f;
-        for (int i = (-20 * 10); i < (20 * 10); i = i + 2) {
-            x = i * 0.1f;
-            y = dummyfunction2(x);
-            points[i+200] = x;
-            points[i+200+1] = y;
-        }
-        return points;
-    }
-    public float dummyfunction1(float x) {
-        return x;
-    }
-
-    public float dummyfunction2(float x) {
-        return 5* (float)Math.cos((double)x);
-    }
-
 }
