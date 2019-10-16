@@ -2,21 +2,14 @@ package com.anu.calculator.graphs;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.CornerPathEffect;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
-import android.text.format.Formatter;
-
-
-import androidx.arch.core.util.Function;
-
-import com.google.android.gms.common.util.ArrayUtils;
-
-import java.text.Format;
-import java.text.Normalizer;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 
+/**
+ *
+ * @author: Siwei Wu (u6735397)
+ */
 public class CalcChart {
 
     private ChartVect dim;
@@ -44,9 +37,28 @@ public class CalcChart {
             Color.rgb(250,190,190),
             Color.rgb(170,255,195),
             Color.rgb(225,250,200)};
+
+
+    /**
+     * Return one of 16 color options for the drawing of graphs
+     *
+     * @param i index of color pallet
+     * @return Color (rgb) integer associated with index mod 16 so regardless of number of functions, a color will be returned
+     */
     public static int getPallet(int i){
         return pallet[i % 16];
     }
+
+    /**
+     * Constructor for the Graph points calculator, initialised by the canvas properties and range of the current graph
+     * Initialises the conversion variables for grids, text location and function - (conversion from x,y coordinate to canvas x, y position)
+     *
+     *
+     * @param dim_x chart canvas dimension y
+     * @param dim_y chart canvas dimension x
+     * @param range the range of the chart displayed
+     * @param canvas the canvas to draw on
+     */
     public CalcChart(int dim_x, int dim_y, GraphRange range, Canvas canvas){
         this.canvas = canvas;
         this.range = range;
@@ -62,13 +74,19 @@ public class CalcChart {
         text_size = (int) (2.0f * lines.x / GRID_NUM);
     }
 
+    /**
+     * Converts an array of floating point coordinates to canvas positions (float)
+     *
+     * @param points - array of x-y points to be plotted
+     * @return
+     */
     public float[] convert_coord(float[] points) {
         int new_len = points.length*2 -4;
         float[] coord = new float[new_len];
         ChartVect o = new ChartVect(range.min.x + range.span.x/2, range.min.y + range.span.y/2);
 
         coord[0] = (-o.x + points[0])* step.x  + origin.x;
-        coord[1] = (-o.y - points[1])* step.y - origin.y;
+        coord[1] = (-o.y - points[1])* step.y + origin.y;
         coord[new_len-2] = (-o.x + points[points.length-2]) * step.x + origin.x;
         coord[new_len-1] = (-o.y - points[points.length-1])* step.y + origin.y;
         for (int i = 2; i < points.length-2; i = i + 2){
@@ -79,6 +97,13 @@ public class CalcChart {
         }
         return coord;
     }
+
+    /** For each functions, generate the points (if its checked), convert into canvas coordinates and then draw the lines on the canvas
+     *
+     * @param functionList - array list of function list model (function, boolean on if will be graphed)
+     *
+     *
+     */
     public void draw_functions(ArrayList<ListModel> functionList){
         for (int i = 0; i < functionList.size(); i++) {
             if (functionList.get(i).checked) {
@@ -93,6 +118,12 @@ public class CalcChart {
             }
         }
     }
+
+    /**Reformat the text based on the number digits and convert to string for efficient print on screen
+     *
+     * @param label the floating number label to be printed
+     * @return
+     */
     public String format_label_text(float label){
         String label_text = String.valueOf(label);
         if (Math.abs(label) >= 100){
@@ -110,6 +141,13 @@ public class CalcChart {
         return label_text;
     }
 
+    /**
+     * Draw the non-function aspect of the graph - axis, grids and labels
+     *
+     * @param isAxis - boolean on if Axis is drawn, true = yes
+     * @param isGrid- boolean on if Grid is drawn, true = yes
+     * @param isAxisLabel- boolean on if Labels is drawn, true = yes
+     */
     public void draw_grids(boolean isAxis, boolean isGrid, boolean isAxisLabel){
         Paint text_P = new Paint();
         Paint p = new Paint();

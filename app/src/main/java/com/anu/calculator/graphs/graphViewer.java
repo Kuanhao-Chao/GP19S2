@@ -24,14 +24,26 @@ import com.anu.calculator.utilities.HistoryItem;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * @author: Siwei Wu (u6735397)
+ */
 
+/**
+ * UI for the Graph canvas and the user gesture and options controller
+ *
+ */
 public class graphViewer extends View {
+
+
+    /**
+     * Initialize the Gesture detectors
+     * @param c - context
+     * @param as - attribute set
+     */
     public graphViewer(Context c, AttributeSet as) {
         super(c, as);
         mScaleGestureDetctor = new ScaleGestureDetector(c, new ScaleListner());
         mGestureDetctor = new GestureDetector(c, new otherGestureListener());
-
-
 
     }
 
@@ -51,6 +63,12 @@ public class graphViewer extends View {
     private int delay = 0;
     private boolean isScale = false;
 
+    /**
+     * Controller for the touch event
+     *
+     * @param event - the event of user gesture
+     * @return true
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         mScaleGestureDetctor.onTouchEvent(event);
@@ -63,8 +81,19 @@ public class graphViewer extends View {
         return true;
     }
 
-
+    /**
+     * Controller for a scroll and double gesture and action the user gesture
+     */
     private class otherGestureListener extends GestureDetector.SimpleOnGestureListener {
+        /**
+         * Scrolling event controller
+         *
+         * @param e1 - finger down event
+         * @param e2 - finger up event
+         * @param distanceX Distance x swiped
+         * @param distanceY Distance y swiped
+         * @return
+         */
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2,
                                 float distanceX, float distanceY) {
@@ -78,6 +107,13 @@ public class graphViewer extends View {
             invalidate();
             return true;
         }
+
+
+        /**
+         * Double tap event contoller - reset the range of the graph
+         * @param motionEvent the event
+         * @return
+         */
         @Override
         public boolean onDoubleTapEvent(MotionEvent motionEvent) {
             reset_view();
@@ -88,7 +124,18 @@ public class graphViewer extends View {
 
     }
 
+    /**
+     * pinch/zoom controller to rescale the graph
+     *
+     */
     private class ScaleListner extends ScaleGestureDetector.SimpleOnScaleGestureListener{
+
+        /**
+         * controller to rescale the graph based on the x-y pinch data
+         *
+         * @param detector - detector
+         * @return
+         */
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
             delay = 3;
@@ -107,9 +154,17 @@ public class graphViewer extends View {
             return true;
         }
     }
+
+    /**
+     * resets the graph range (-20 to 20)
+     */
     public void reset_view(){
         this.range = new GraphRange(new ChartVect(-20,-20), new ChartVect(20, 20));
     }
+
+    /**
+     * Initialise the function by reparsing the historylist
+     */
     public void init_functions(GraphRange range){
         Map<Character, HistoryItem> funMap = History.loadGraphableHistory(getContext());
         this.range = range;
@@ -120,6 +175,9 @@ public class graphViewer extends View {
         }
     }
 
+    /**
+     * refresh the graph - unlike init_function, only add new functions
+     */
     public void refresh_function(){
         Map<Character, HistoryItem> funMap = History.loadGraphableHistory(getContext());
         boolean isNew;
@@ -137,6 +195,12 @@ public class graphViewer extends View {
             }
         }
     }
+
+    /**
+     * Draws the grid data and functions
+     *
+     * @param canvas canvas to be drawn on
+     */
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);

@@ -12,7 +12,13 @@ import com.google.android.gms.common.util.ArrayUtils;
 import java.util.ArrayList;
 
 import static java.lang.Float.NaN;
+/**
+ * @author: Siwei Wu (u6735397)
+ */
 
+/**
+ * Generate the plot points based on an expression and the range of the grpah
+ */
 public class graphParser {
     Expression expression;
     public static int NUM_POINTS = 200;
@@ -20,10 +26,12 @@ public class graphParser {
         this.expression = expression;
     }
 
-    public graphParser() {
-        this.expression = expression;
-    }
 
+    /**
+     *
+     * @param x - x position
+     * @return y position returned from the expression parsing
+     */
     public float get_point(double x){
         String expStr = expression.show();
         History temp_history;
@@ -71,6 +79,11 @@ public class graphParser {
         }
     }
 
+    /**
+     *
+     * @param range - the range of the graph (x,y min and max) in view
+     * @return array of floating point coordinates generated based on the range of view and expression
+     */
     public float[] genData(GraphRange range){
         ArrayList<Float> points = new ArrayList<>();
         float x,y = 0.0f;

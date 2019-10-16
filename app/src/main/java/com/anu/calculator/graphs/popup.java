@@ -25,12 +25,26 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
+/**
+ * @author: Siwei Wu (u6735397)
+ */
 
+/**
+ * The activity for the pop up window for user to select the functions
+ */
 public class popup extends Activity {
     ListView listView;
     ArrayList<ListModel> functionsList = new ArrayList<>();
     ArrayList<ListModel> temp = new ArrayList<>();
     functionlistAdaptor list_adaptor;
+
+    /**
+     * Generate the list of functions and cooresponding radio button
+     *
+     * based on example code: https://www.journaldev.com/14171/android-checkbox
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +79,6 @@ public class popup extends Activity {
         View.OnClickListener onClick_cancel = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("closing");
                 GraphActivity.setFunctions(temp);
                 finish();
             }
