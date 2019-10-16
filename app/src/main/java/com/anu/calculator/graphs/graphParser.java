@@ -42,12 +42,12 @@ public class graphParser {
             x_str = String.valueOf(x);
         }
 
-
         while (checkExp.hasNext()) {
             if (checkExp.current().type() == Token.Type.EQUALS){
                     stop = true;
             }
             if (!stop) {
+
                 if (checkExp.current().type() == Token.Type.UNKNOWN_VARIABLE) {
                     hasVari = true;
                     temp_str = checkExp.current().token();
@@ -75,6 +75,7 @@ public class graphParser {
         ArrayList<Float> points = new ArrayList<>();
         float x,y = 0.0f;
         for (int i = 0; i < NUM_POINTS- 1; i = i + 2) {
+
             x = range.min.x + i * range.span.x/ NUM_POINTS;
             y = get_point((double)x);
             if (y != NaN) {

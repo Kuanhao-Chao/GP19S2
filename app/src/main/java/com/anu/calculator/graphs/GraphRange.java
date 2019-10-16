@@ -20,4 +20,12 @@ public class GraphRange {
         this.max.y = max.y* scale;
         span.y = max.y - min.y;
     }
+    public void move_x(float moved){
+        this.min.x = this.min.x + moved;
+        this.max.x = this.max.x + moved;
+    }
+    public void move_y(float moved){
+        this.min.y = this.min.y + moved;
+        this.max.y = this.max.y + moved;
+    }
 }
