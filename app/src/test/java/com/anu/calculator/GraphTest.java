@@ -50,32 +50,27 @@ public class GraphTest {
             float[] points = g.genData(range);
             assertArrayEquals(points, results.get(i),0.0f);
         }
-
+        
     }
-    /*
+
     @Test
-    public void ConvertCoordinateTest() throws ParserException{
-        ArrayList<ListModel> functionList = new ArrayList<>();
-        String test1 = "x=5";
-        String test2 = "y=2x";
-        String test3 = "z=cos(x)";
+    public void GraphRangeTest() throws ParserException{
+        ChartVect v1 = new ChartVect(1.0f, 1.0f);
+        ChartVect v2 = new ChartVect(2.0f, 2.0f);
+        ChartVect span = new ChartVect(1.0f, 1.0f);
+        ChartVect rescaled = new ChartVect(10.0f, 10.0f);
+        ChartVect moved = new ChartVect(13.0f, 13.0f);
 
-        results.add(res1);
-        results.add(res2);
-        results.add(res3);
-        GraphRange range = new GraphRange(new ChartVect(-20, -20), new ChartVect(20, 20));
-        History history_1 = History.getInstance();
-        ExpressionParser fp = new ExpressionParser();
-        functionList.add(new ListModel(fp.parse(test1, true, 0, history_1), false));
-        functionList.add(new ListModel(fp.parse(test2, true, 0, history_1), false));
-        functionList.add(new ListModel(fp.parse(test3, true, 0, history_1), false));
-        Canvas c = new Canvas();
-        CalcChart chart = new CalcChart(1000,1000,range, c);
-        for (int i = 0; i < functionList.size(); i++) {
-            graphParser g = new graphParser(functionList.get(i).func);
-            float[] points = chart.convert_coord(g.genData(range));
-            System.out.println(Arrays.toString(points));
-
-        }
-    }*/
+        GraphRange r = new GraphRange(v1, v2);
+        assertEquals(r.span.x, span.x, 0.0f);
+        assertEquals(r.span.y,span.y,0.0f);
+        r.rescale_x(10.0f);
+        r.rescale_y(10.0f);
+        assertEquals(r.span.x,rescaled.x,0.0f);
+        assertEquals(r.span.y,rescaled.y,0.0f);
+        r.move_x(3.0f);
+        r.move_y(3.0f);
+        assertEquals(r.min.x,moved.x,0.0f);
+        assertEquals(r.min.y,moved.y,0.0f);
+    }
 }
